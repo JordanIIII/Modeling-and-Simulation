@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Document>
- <Model version="5.0" build="5.0.3.12565">
+ <Model version="5.1" build="5.1.6.14106">
   <Sidops><![CDATA[model 128 184
  description '<Information>
   <Description>
-    <Version>5.0</Version>
+    <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 1\Blood Pump Model.emx</LibraryPath>
-    <TimeStamp>2026-4-20 12:51:22</TimeStamp>
+    <LibraryPath>C:\Users\solis\Downloads\Blood Pump Model.emx</LibraryPath>
+    <TimeStamp>2026-4-22 11:48:02</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -19,11 +19,11 @@
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
-      power in p;
+      rotation in p;
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 504 280 color 0 18 bold;
+      text 'RS' 504 280 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -31,27 +31,28 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Driver 168 216
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type Se
+   Constant1 416 -8
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
      ports
-      power out p;
-     restrictions
-      causality fixed out p;
+      signal out output;
     end;
-    icon bg ellipse bottom
+    icon bg bottom
      figures
-      text 'Se' 168 216 color 0 18 bold;
+      rectangle 400.1 -24 431.9 8 color 0 fill 15132390;
+      line 404.9 -12.4 426.9 -12.4 color 16711680 width 2;
+      line 402.2 -1.3 427.9 -1.3 color 0;
+      line 404.5 -17.3 404.5 1 color 0;
     end;
     implementation eq
 parameters
-	real effort = 12;
-variables
-	real flow;
+	real C = 80.0/60*2*3.14159;		// output value (RPM to rad/s)
 equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
+	output = C;
+     implementation_end;
    J_load 504 152
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
@@ -132,25 +133,33 @@ equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   n 440 216
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\TF.emx</LibraryPath><TimeStamp>2011-11-29 16:43:47</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type TF
+   MSe1 176 216
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
      ports
-      power in p1;
-      power out p2;
+      power out p;
+      signal in effort;
      restrictions
-      causality constraint not_equal p1 p2;
+      causality fixed out p;
     end;
     icon bg ellipse bottom
      figures
-      text 'TF' 440 216 color 0 18 bold;
+      text 'MSe' 176 216 color 0 18 bold;
     end;
     implementation eq
-parameters
-	real r = 60;
+variables
+	real flow;
 equations
-	p1.e = r * p2.e;
-	p2.f = r * p1.f;
+	p.e = effort;
+	flow = p.f;
 implementation_end;
    OneJunction 232 216
     description '<Information>
@@ -191,7 +200,7 @@ implementation_end;
 </Information>';
     knot OneJunction
      ports
-      power knot duplicatable none p [1];
+      rotation knot duplicatable none p [1];
       signal knot out flow [1];
      restrictions
       causality constraint one_out p;
@@ -218,7 +227,7 @@ implementation_end;
 </Information>';
     knot OneJunction
      ports
-      power knot duplicatable none p [1];
+      rotation knot duplicatable none p [1];
       signal knot out flow [1];
      restrictions
       causality constraint one_out p;
@@ -233,34 +242,349 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   R 232 280
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type R
+   PID1 344 56
+    description '<Description>
+ <Version>4.0</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Continuous\PID.emx</LibraryPath>
+  <TimeStamp>2008-1-17 10:49:30</TimeStamp>
+</Description>';
+    type PID
      ports
-      power in p;
+      signal in error;
+      signal out output;
     end;
-    icon bg ellipse bottom
+    icon bg bottom
      figures
-      text 'R' 232 280 color 0 18 bold;
+      rectangle 328 40 360 72 color 0 fill 15132390;
+      text 'PID' 344 55.5 color 16711680 18 bold;
     end;
     implementation eq
 parameters
-	real r = 0.6;
+	real kp = 2.5 {};			// Proportional gain
+	real tauD = 0.025 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.9 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 0.08 {s};		// Integral time constant: tauI > 0
+variables
+	real pdout, pdrate, pdstate;
+	real pirate, pistate;
+equations
+	pdrate = (kp * error - pdout) / (beta * tauD);
+	pdstate = int (pdrate);
+	pdout = pdstate + (kp * error / beta);
+	pirate = pdout / tauI;
+	pistate = int (pirate);
+	output = pistate + pdout;
+      implementation_end;
+   PlusMinus1 416 56
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse bottom
+     figures
+      ellipse 408 48 424 64 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   R3 232 280
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+    type R
+     ports
+      power in p;
+      thermal out dQ;
+     restrictions
+      causality fixed in dQ;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'RS' 232 280 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real r = 1.0;
 equations
 	p.e = r * p.f;
+	// Pin = p.e * p.f; 
+	// Pout = Pin;
+	// Pout = dQ.T * dQ.dS; // Thermal and power laws
+	dQ.dS = p.e * p.f / dq.T;
+	
 implementation_end;
+   Transmission1 440 235.6
+			specifications active 'Efficiency'
+				specification 'Efficiency'
+ description '<Information>
+ <Description>
+    <Version>4.5</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2014-11-4 20:07:47</TimeStamp>
+<AllowLibraryUpdate>True</AllowLibraryUpdate>
+  <Configuration>
+   <struct>
+    <member>
+     <name>DocumentationMask</name>
+     <value>
+      <struct></struct>
+     </value>
+    </member>
+   </struct>
+  </Configuration>
+ </Description>
+</Information>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality constraint not_equal p_in p_out;
+ end;
+ icon ipm bottom
+  figures
+   line 408 216 423.5 216 color 0;
+   line 423.5 244.2 439.5 244.2 color 0;
+   line 439.5 216 472 216 color 0;
+   group
+    line 423.5 228 423.5 260.3 color 0 width 2;
+    line 420.3 228 426.7 228 color 0 width 2;
+    line 420.3 260.3 426.7 260.3 color 0 width 2;
+   end;
+   group
+    line 423.5 208.7 423.5 221 color 0 width 2;
+    line 420.3 208.7 426.7 208.7 color 0 width 2;
+    line 420.3 223 426.7 223 color 0 width 2;
+   end;
+   group
+    line 439.5 203.3 439.5 231.3 color 0 width 2;
+    line 436.3 203.3 442.7 203.3 color 0 width 2;
+    line 436.3 231.3 442.7 231.3 color 0 width 2;
+   end;
+   group
+    line 439.5 237.6 439.5 251.8 color 0 width 2;
+    line 436.3 237.6 442.7 237.6 color 0 width 2;
+    line 436.3 251.8 442.7 251.8 color 0 width 2;
+   end;
+   line 420.3 268.9 426.7 268.9 color -1;
+   text '1' 414.9 205.9 color 0;
+   text 'i' 449.1 205.9 color 16711680;
+   group
+    line 453.7 212.2 457.9 206.2 color 0;
+    line 453.7 206.2 457.9 212.2 color 0;
+    line 460.1 206.2 464.3 212.2 color 0;
+    line 460.1 212.2 464.3 206.2 color 0;
+   end;
+   group
+    line 453.7 224.3 457.9 218.5 color 0;
+    line 453.7 218.5 457.9 224.3 color 0;
+    line 460.1 218.5 464.3 224.3 color 0;
+    line 460.1 224.3 464.3 218.5 color 0;
+   end;
+  terminals
+   p_in 408 216 fixed;
+   p_out 472 216 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 60.0 {};				// gearbox ratio
+	real eff = 0.9 {};			// gearbox efficiency (0 < eff <= 1)
+variables
+	real dyn_eff;
+initialequations
+	dyn_eff = eff;
+equations
+	p_out.T = p_in.T*i*dyn_eff;
+	p_out.omega = p_in.omega/i;
+	dyn_eff = if (sign(dly(p_in.T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
+	
+                     implementation_end;
+specification_end;
+				specification 'Ideal'
+description '<Information>
+ <Description>
+    <Version>4.5</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2014-9-26 12:20:30</TimeStamp>
+<AllowLibraryUpdate>True</AllowLibraryUpdate>
+  <Configuration>
+   <struct>
+    <member>
+     <name>DocumentationMask</name>
+     <value>
+      <struct></struct>
+     </value>
+    </member>
+   </struct>
+  </Configuration>
+ </Description>
+</Information>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality constraint not_equal p_in p_out;
+ end;
+ icon ipm bottom
+  figures
+   group
+    line 116 507.1 131.5 507.1;
+    line 131.5 531.9 147.5 531.9;
+    line 147.5 507.1 164 507.1;
+    group
+     line 131.5 517.7 131.5 546.3 width 2;
+     line 128.3 517.7 134.7 517.7 width 2;
+     line 128.3 546.3 134.7 546.3 width 2;
+    end;
+    group
+     line 131.5 500.8 131.5 511.4 width 2;
+     line 128.3 500.8 134.7 500.8 width 2;
+     line 128.3 513.2 134.7 513.2 width 2;
+    end;
+    group
+     line 147.5 495.8 147.5 520.6 width 2;
+     line 144.3 495.8 150.7 495.8 width 2;
+     line 144.3 520.6 150.7 520.6 width 2;
+    end;
+    group
+     line 147.5 526.2 147.5 538.6 width 2;
+     line 144.3 526.2 150.7 526.2 width 2;
+     line 144.3 538.6 150.7 538.6 width 2;
+    end;
+    line 128.3 553.8 134.7 553.8 color -1;
+    text '1' 122.9 498.1;
+    text 'i' 157.1 498.1 color 16711680;
+   end;
+  terminals
+   p_in 116 507.1 fixed;
+   p_out 164 507.1 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 10.0 {};				// gearbox ratio
+equations
+	p_out.T = p_in.T*i;
+	p_out.omega = p_in.omega/i;
+                     implementation_end;
+specification_end;
+				specification 'Lossy'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality preferred in p_out;
+   causality preferred in p_in;
+ end;
+ icon ipm bottom
+  figures
+   group
+    group
+     line 171.7 510.3 175.9 505.3;
+     line 171.7 505.3 175.9 510.3;
+     line 178.1 505.3 182.3 510.3;
+     line 178.1 510.3 182.3 505.3;
+    end;
+    group
+     line 171.7 520 175.9 515.1;
+     line 171.7 515.1 175.9 520;
+     line 178.1 515.1 182.3 520;
+     line 178.1 520 182.3 515.1;
+    end;
+   end;
+   line 88 512.8 148.8 512.8;
+   line 164.8 512.4 192 512.8;
+   rectangle 103.5 493.4 135.5 530 fill 13421772;
+   text 'J' 119.2 511.9 15 italic;
+   line 149 534.4 165 534.4;
+   group
+    line 149 522.4 149 547.9 width 2;
+    line 145.8 522.4 152.2 522.4 width 2;
+    line 145.8 547.9 152.2 547.9 width 2;
+   end;
+   group
+    line 149 507.1 149 517 width 2;
+    line 145.8 507.1 152.2 507.1 width 2;
+    line 145.8 518.2 152.2 518.2 width 2;
+   end;
+   group
+    line 165 502.7 165 524.7 width 2;
+    line 161.8 502.7 168.2 502.7 width 2;
+    line 161.8 524.7 168.2 524.7 width 2;
+   end;
+   group
+    line 165 529.5 165 540.6 width 2;
+    line 161.8 529.5 168.2 529.5 width 2;
+    line 161.8 540.6 168.2 540.6 width 2;
+   end;
+   line 145.8 554.1 152.2 554.1 color -1;
+   text '1' 141.4 504.9;
+   text 'i' 172.3 497.7 color 16711680;
+  terminals
+   p_in 88 512.8 fixed;
+   p_out 192 512.8 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 10.0 {};					// gearbox ratio
+	real eff = 0.97 {};					// gearbox efficiency (0 < eff <= 1)
+	real J = 1.0e-5 {kg.m2/rad};		// rotational inertia
+variables
+	real p_in_T;
+	real dyn_eff;
+initialequations
+	dyn_eff = eff;
+equations
+	p_in.omega = (1/J)*int(p_in.T - p_in_T);
+	p_out.T = p_in_T*i*dyn_eff;
+	p_out.omega = p_in.omega/i;
+	dyn_eff = if (sign(dly(p_in_T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
+implementation_end;
+specification_end;
+			end;
   end;
   connections
-   Driver\p => OneJunction\p;
+   Constant1\output -> PlusMinus1\plus;
    k_m\p2 => OneJunction1\p;
-   n\p2 => OneJunction2\p;
+   MSe1\p => OneJunction\p;
    OneJunction\p => k_m\p1;
    OneJunction\p => L\p;
-   OneJunction\p => R\p;
    OneJunction1\p => J_motor\p;
-   OneJunction1\p => n\p1;
+   OneJunction1\p => Transmission1\p_in;
    OneJunction2\p => b_load\p;
    OneJunction2\p => J_load\p;
+   PID1\output -> MSe1\effort 120 56 120 216;
+   PlusMinus1\minus <- OneJunction2\flow 560 56 560 216;
+   PlusMinus1\output -> PID1\error;
+   R3\p <= OneJunction\p;
+   Transmission1\p_out => OneJunction2\p;
   end;
  implementation_end;
 ]]></Sidops>
@@ -275,11 +599,46 @@ implementation_end;
  <VersionNumber>5.1</VersionNumber>
  <ModelProperties>
  </ModelProperties>
+ <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
+  <Parameters>
+   <Variable>
+    <Name>Constant1\C</Name>
+    <Description><![CDATA[output value (RPM to rad/s)]]></Description>
+    <Value>8.377573333333332</Value>
+   </Variable>
+  </Parameters>
+  <Initials>
+   <Variable>
+    <Name>J_motor\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>L\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID1\pdstate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID1\pistate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>J_load\p.e_in_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+  </Initials>
  </Variables>
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
+   <VarName>J_load\p.f</VarName>
+   <VarName>MSe1\effort</VarName>
+   <VarName>MSe1\flow</VarName>
+   <VarName>Transmission1\p_in.omega</VarName>
+   <VarName>Transmission1\p_out.omega</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -362,11 +721,39 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Minimum>-15.0</Minimum>
+      <Maximum>35.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label></Label>
+      <Label>p.f</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>effort</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>flow</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>p_in.omega</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>p_out.omega</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -386,10 +773,94 @@ implementation_end;
        <ShowUnit>true</ShowUnit>
        <VarName>time</VarName>
       </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>J_load\p.f</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MSe1\effort</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MSe1\flow</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transmission1\p_in.omega</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Transmission1\p_out.omega</VarName>
+      </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
      <ShowLegenda>true</ShowLegenda>
+     <Position>
+      <X>0.9453262786596119</X>
+      <Y>0.07575757575757576</Y>
+     </Position>
      <BorderPenColor>0</BorderPenColor>
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
@@ -407,6 +878,11 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+0.352214 0.178125 0.866536 0.79375
+   </WindowRectangle>
+  </WindowRectangles>
  </PlotSpecs>
  <RunSpecs>
   <SimulatorSettings>
@@ -456,9 +932,9 @@ implementation_end;
    <IntegrationMethod>
     <Name>RungeKutta8</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <SafetyFactor>0.9</SafetyFactor>
@@ -473,18 +949,18 @@ implementation_end;
    <IntegrationMethod>
     <Name>RungeKuttaFehlberg</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>VodeAdams</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <VodeUseBDF>true</VodeUseBDF>
@@ -497,9 +973,9 @@ implementation_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>MeBDFiMethod</Name>
@@ -508,18 +984,18 @@ implementation_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <SelectedIntegrationMethod>8</SelectedIntegrationMethod>
   </IntegrationMethods>
  </RunSpecs>
  <MultipleRun>
-  <NrSteps>10</NrSteps>
+  <NrSteps>3</NrSteps>
   <CopyFromStates>false</CopyFromStates>
   <JoinParameterVariation>true</JoinParameterVariation>
-  <ClearAfterRun>true</ClearAfterRun>
+  <ClearAfterRun>false</ClearAfterRun>
   <RedrawAfterRun>false</RedrawAfterRun>
   <DrawDuringSimulation>true</DrawDuringSimulation>
   <ActionBeforeOptimization>0</ActionBeforeOptimization>
@@ -532,6 +1008,17 @@ implementation_end;
   <Tolerance>0.001</Tolerance>
   <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
   <MultipleRunVariables>
+   <MultipleRunVariable>
+    <Name>Transmission1\eff</Name>
+    <Minimum>0.8</Minimum>
+    <Maximum>0.99</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>0.9</Mean>
+    <Deviation>0.225</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>0.9</Nominal>
+   </MultipleRunVariable>
   </MultipleRunVariables>
  </MultipleRun>
  <ExportData>
@@ -543,9 +1030,6 @@ implementation_end;
   <WriteFilename></WriteFilename>
   <DoWrite>false</DoWrite>
   <ExportVariables>
-   <ExportVariable>
-    <VariableName>time</VariableName>
-   </ExportVariable>
   </ExportVariables>
   <ImportVariables>
   </ImportVariables>
