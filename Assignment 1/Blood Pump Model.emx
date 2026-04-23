@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Downloads\Blood Pump Model.emx</LibraryPath>
-    <TimeStamp>2026-4-22 11:48:02</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 1\Blood Pump Model.emx</LibraryPath>
+    <TimeStamp>2026-4-23 09:02:21</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -19,17 +19,45 @@
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
-      rotation in p;
+      power in p;
     end;
     icon bg ellipse bottom
      figures
-      text 'RS' 504 280 color 0 18 bold;
+      text 'R' 504 280 color 0 18 bold;
     end;
     implementation eq
 parameters
 	real r = 0.78;
 equations
 	p.e = r * p.f;
+implementation_end;
+   C 232 328
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+    type C
+     ports
+      power in p;
+      signal out state;
+     restrictions
+      causality preferred out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'C' 232 328 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real c = 130;
+equations
+	state = int(p.f);
+	p.e = state / c;
 implementation_end;
    Constant1 416 -8
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
@@ -53,6 +81,27 @@ parameters
 equations
 	output = C;
      implementation_end;
+   Environment1 432 328
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Se
+     ports
+      power out p;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'Se' 432 328 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real effort = 298.5;
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
    J_load 504 152
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
@@ -296,16 +345,8 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   R3 232 280
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\R.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
-</Description>
-</Information>';
+   R 232 268
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
       power in p;
@@ -315,17 +356,37 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'RS' 232 280 color 0 18 bold;
+      text 'RS' 232 268 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real r = 1.0;
+	real r = 1;
 equations
 	p.e = r * p.f;
 	// Pin = p.e * p.f; 
 	// Pout = Pin;
 	// Pout = dQ.T * dQ.dS; // Thermal and power laws
-	dQ.dS = p.e * p.f / dq.T;
+	dQ.dS = p.e * p.f / (dQ.T+1);implementation_end;
+   R2 320 328
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type R
+     ports
+      thermal in Q_system;
+      thermal out Q_env;
+     restrictions
+      causality fixed in Q_env;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'RS' 320 328 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real r = 1.0;
+	real k = 0.6;
+equations
+	Q_system.dS = k*((Q_system.T-Q_env.T)/(Q_system.T+1));
+	Q_env.dS 	= k*((Q_system.T-Q_env.T)/(Q_env.T+1));
 	
 implementation_end;
    Transmission1 440 235.6
@@ -355,6 +416,7 @@ implementation_end;
   ports
    rotation psi in p_in;
    rotation psi out p_out;
+   thermal in dQ;
   restrictions
    orientation constraint not_equal p_in p_out;
    causality constraint not_equal p_in p_out;
@@ -414,6 +476,7 @@ initialequations
 equations
 	p_out.T = p_in.T*i*dyn_eff;
 	p_out.omega = p_in.omega/i;
+	dQ.dS = p_out.T*p_out.omega / (dQ.T+1);
 	dyn_eff = if (sign(dly(p_in.T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
 	
                      implementation_end;
@@ -569,9 +632,65 @@ equations
 implementation_end;
 specification_end;
 			end;
+   ZeroJunction 320 268
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+    knot ZeroJunction
+     ports
+      thermal knot duplicatable none p [1];
+      signal knot out effort [1];
+     restrictions
+      causality constraint one_in p;
+    end;
+    icon bg ellipse
+     figures
+      text '0' 320 268 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+   ZeroJunction3 376 328
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+    knot ZeroJunction
+     ports
+      thermal knot duplicatable none p [1];
+      signal knot out effort [1];
+     restrictions
+      causality constraint one_in p;
+    end;
+    icon bg ellipse
+     figures
+      text '0' 376 328 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
   end;
   connections
+   C\p <= ZeroJunction\p;
    Constant1\output -> PlusMinus1\plus;
+   Environment1\p => ZeroJunction3\p;
    k_m\p2 => OneJunction1\p;
    MSe1\p => OneJunction\p;
    OneJunction\p => k_m\p1;
@@ -583,8 +702,12 @@ specification_end;
    PID1\output -> MSe1\effort 120 56 120 216;
    PlusMinus1\minus <- OneJunction2\flow 560 56 560 216;
    PlusMinus1\output -> PID1\error;
-   R3\p <= OneJunction\p;
+   R\dQ => ZeroJunction\p;
+   R\p <= OneJunction\p;
+   Transmission1\dQ <= ZeroJunction\p;
    Transmission1\p_out => OneJunction2\p;
+   ZeroJunction\p => R2\Q_system;
+   ZeroJunction3\p <= R2\Q_env;
   end;
  implementation_end;
 ]]></Sidops>
@@ -609,6 +732,10 @@ specification_end;
    </Variable>
   </Parameters>
   <Initials>
+   <Variable>
+    <Name>C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
    <Variable>
     <Name>J_motor\state_initial</Name>
     <Value>0.0</Value>
@@ -637,14 +764,12 @@ specification_end;
    <VarName>J_load\p.f</VarName>
    <VarName>MSe1\effort</VarName>
    <VarName>MSe1\flow</VarName>
-   <VarName>Transmission1\p_in.omega</VarName>
-   <VarName>Transmission1\p_out.omega</VarName>
   </VarNames>
   <Plots>
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -663,7 +788,7 @@ specification_end;
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>model</PlotTitle>
+    <PlotTitle>Window 1</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -728,32 +853,18 @@ specification_end;
       <Label>p.f</Label>
      </Axis>
      <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>18.0</Maximum>
+      <Minimum>-15.0</Minimum>
+      <Maximum>35.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>effort</Label>
      </Axis>
      <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>18.0</Maximum>
+      <Minimum>-15.0</Minimum>
+      <Maximum>35.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>flow</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>18.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>p_in.omega</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>18.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>p_out.omega</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -816,51 +927,9 @@ specification_end;
        <VarName>MSe1\flow</VarName>
       </YCurveData>
      </Curve>
-     <Curve>
-      <LineColor>15086320</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>false</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transmission1\p_in.omega</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15790150</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>false</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Transmission1\p_out.omega</VarName>
-      </YCurveData>
-     </Curve>
     </Curves>
     <Legenda>
      <ShowLegenda>true</ShowLegenda>
-     <Position>
-      <X>0.9453262786596119</X>
-      <Y>0.07575757575757576</Y>
-     </Position>
      <BorderPenColor>0</BorderPenColor>
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
@@ -871,16 +940,16 @@ specification_end;
     <PlotPanelId>1</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
     <Name>Window 1</Name>
-    <Tiling>0</Tiling>
+    <Tiling>2</Tiling>
     <PlotIds>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
-   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
-0.352214 0.178125 0.866536 0.79375
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.108854 0.178704 0.923438 0.85
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1015,7 +1084,7 @@ specification_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>0.9</Mean>
-    <Deviation>0.225</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>0.9</Nominal>
    </MultipleRunVariable>
@@ -1036,6 +1105,9 @@ specification_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
