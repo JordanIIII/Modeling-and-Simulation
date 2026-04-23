@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 1\Blood Pump Model.emx</LibraryPath>
-    <TimeStamp>2026-4-23 11:28:13</TimeStamp>
+    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 1\Blood Pump Model.emx</LibraryPath>
+    <TimeStamp>2026-4-23 12:12:57</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -60,28 +60,6 @@ equations
 	state = int(p.f);
 	p.e = T0 * exp( (state) / c);
 implementation_end;
-   Constant1 416 -8
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
-  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
-</Description>';
-    type Constant
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 400.1 -24 431.9 8 color 0 fill 15132390;
-      line 404.9 -12.4 426.9 -12.4 color 16711680 width 2;
-      line 402.2 -1.3 427.9 -1.3 color 0;
-      line 404.5 -17.3 404.5 1 color 0;
-    end;
-    implementation eq
-parameters
-	real C = 80.0/60*2*3.14159;		// output value (RPM to rad/s)
-equations
-	output = C;
-     implementation_end;
    Environment1 444 384
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Se
@@ -103,7 +81,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   J_load 504 152
+   J_load 504 88
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -114,7 +92,7 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 504 152 color 0 18 bold;
+      text 'I' 504 88 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -123,7 +101,7 @@ equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   J_motor 376 152
+   J_motor 376 88
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -134,7 +112,7 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 376 152 color 0 18 bold;
+      text 'I' 376 88 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -143,7 +121,7 @@ equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   k_m 304 216
+   k_m 304 152
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\GY.emx</LibraryPath><TimeStamp>2011-11-29 15:53:45</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type GY
      ports
@@ -154,7 +132,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'GY' 304 216 color 0 18 bold;
+      text 'GY' 304 152 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -163,7 +141,7 @@ equations
 	p1.e = r * p2.f;
 	p2.e = r * p1.f;
 implementation_end;
-   L 232 152
+   L 232 88
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -174,7 +152,7 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 232 152 color 0 18 bold;
+      text 'I' 232 88 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -183,7 +161,7 @@ equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   MSe1 176 216
+   MSe1 112 152
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -202,16 +180,16 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 176 216 color 0 18 bold;
+      text 'MSe' 112 152 color 0 18 bold;
     end;
     implementation eq
 variables
 	real flow;
 equations
 	p.e = effort;
-	flow = p.f;
+	p.f = flow;
 implementation_end;
-   OneJunction 232 216
+   OneJunction 232 152
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -230,7 +208,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 232 216 color 0 18 bold;
+      text '1' 232 152 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -238,7 +216,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   OneJunction1 376 216
+   OneJunction1 376 152
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -257,7 +235,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 376 216 color 0 18 bold;
+      text '1' 376 152 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -265,7 +243,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   OneJunction2 504 216
+   OneJunction2 504 152
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -284,7 +262,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 504 216 color 0 18 bold;
+      text '1' 504 152 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -319,7 +297,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   PID1 344 56
+   PID1 344 -8
     description '<Description>
  <Version>4.0</Version>
  <IsMainModel>1</IsMainModel>
@@ -334,8 +312,8 @@ implementation_end;
     end;
     icon bg bottom
      figures
-      rectangle 328 40 360 72 color 0 fill 15132390;
-      text 'PID' 344 55.5 color 16711680 18 bold;
+      rectangle 328 -24 360 8 color 0 fill 15132390;
+      text 'PID' 344 -8.5 color 16711680 18 bold;
     end;
     implementation eq
 parameters
@@ -354,7 +332,7 @@ equations
 	pistate = int (pirate);
 	output = pistate + pdout;
       implementation_end;
-   PlusMinus1 416 56
+   PlusMinus1 416 -8
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -367,12 +345,99 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      ellipse 408 48 424 64 color 0 fill 16777215;
+      ellipse 408 -16 424 0 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+   PowerSensor1 176 152
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\PowerSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:29:42</TimeStamp>
+</Description>
+</Information>';
+    knot PowerSensor
+     ports
+      power knot in p1 [1];
+      power knot out p2 [1];
+      signal knot out P [1] {W} ;
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 169.1 144.8 182.9 159.2 color 0 fill 16777215;
+      text 'P' 176.5 151.8 color 0;
+    end;
+    implementation eq
+equations
+	p2.e = p1.e;
+	p1.f = p2.f;
+	P = p1.e .* p1.f;
+implementation_end;
+   PowerSensor2 232 208
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\PowerSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:29:42</TimeStamp>
+</Description>
+</Information>';
+    knot PowerSensor
+     ports
+      power knot in p1 [1];
+      power knot out p2 [1];
+      signal knot out P [1] {W} ;
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 225.1 200.8 238.9 215.2 color 0 fill 16777215;
+      text 'P' 232.5 207.8 color 0;
+    end;
+    implementation eq
+equations
+	p2.e = p1.e;
+	p1.f = p2.f;
+	P = p1.e .* p1.f;
+implementation_end;
+   PowerSensor3 368 232
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\PowerSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:29:42</TimeStamp>
+</Description>
+</Information>';
+    knot PowerSensor
+     ports
+      thermal knot in p1 [1];
+      thermal knot out p2 [1];
+      signal knot out P [1] {W} ;
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 361.1 224.8 374.9 239.2 color 0 fill 16777215;
+      text 'P' 368.5 231.8 color 0;
+    end;
+    implementation eq
+equations
+	p2.e = p1.e;
+	p1.f = p2.f;
+	P = p1.e .* p1.f;
+implementation_end;
    R 232 268
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
@@ -411,7 +476,7 @@ parameters
 equations
 	dQ_in.T = 1/k * dQ_in.dS;
 	dQ_out.dS = dQ_in.T * dQ_in.dS / dQ_out.T;implementation_end;
-   Transmission1 440 235.6
+   Transmission1 440 171.6
 			specifications active 'Efficiency'
 				specification 'Efficiency'
  description '<Information>
@@ -445,47 +510,47 @@ equations
  end;
  icon ipm bottom
   figures
-   line 408 216 423.5 216 color 0;
-   line 423.5 244.2 439.5 244.2 color 0;
-   line 439.5 216 472 216 color 0;
+   line 408 152 423.5 152 color 0;
+   line 423.5 180.2 439.5 180.2 color 0;
+   line 439.5 152 472 152 color 0;
    group
-    line 423.5 228 423.5 260.3 color 0 width 2;
-    line 420.3 228 426.7 228 color 0 width 2;
-    line 420.3 260.3 426.7 260.3 color 0 width 2;
+    line 423.5 164 423.5 196.3 color 0 width 2;
+    line 420.3 164 426.7 164 color 0 width 2;
+    line 420.3 196.3 426.7 196.3 color 0 width 2;
    end;
    group
-    line 423.5 208.7 423.5 221 color 0 width 2;
-    line 420.3 208.7 426.7 208.7 color 0 width 2;
-    line 420.3 223 426.7 223 color 0 width 2;
+    line 423.5 144.7 423.5 157 color 0 width 2;
+    line 420.3 144.7 426.7 144.7 color 0 width 2;
+    line 420.3 159 426.7 159 color 0 width 2;
    end;
    group
-    line 439.5 203.3 439.5 231.3 color 0 width 2;
-    line 436.3 203.3 442.7 203.3 color 0 width 2;
-    line 436.3 231.3 442.7 231.3 color 0 width 2;
+    line 439.5 139.3 439.5 167.3 color 0 width 2;
+    line 436.3 139.3 442.7 139.3 color 0 width 2;
+    line 436.3 167.3 442.7 167.3 color 0 width 2;
    end;
    group
-    line 439.5 237.6 439.5 251.8 color 0 width 2;
-    line 436.3 237.6 442.7 237.6 color 0 width 2;
-    line 436.3 251.8 442.7 251.8 color 0 width 2;
+    line 439.5 173.6 439.5 187.8 color 0 width 2;
+    line 436.3 173.6 442.7 173.6 color 0 width 2;
+    line 436.3 187.8 442.7 187.8 color 0 width 2;
    end;
-   line 420.3 268.9 426.7 268.9 color -1;
-   text '1' 414.9 205.9 color 0;
-   text 'i' 449.1 205.9 color 16711680;
+   line 420.3 204.9 426.7 204.9 color -1;
+   text '1' 414.9 141.9 color 0;
+   text 'i' 449.1 141.9 color 16711680;
    group
-    line 453.7 212.2 457.9 206.2 color 0;
-    line 453.7 206.2 457.9 212.2 color 0;
-    line 460.1 206.2 464.3 212.2 color 0;
-    line 460.1 212.2 464.3 206.2 color 0;
+    line 453.7 148.2 457.9 142.2 color 0;
+    line 453.7 142.2 457.9 148.2 color 0;
+    line 460.1 142.2 464.3 148.2 color 0;
+    line 460.1 148.2 464.3 142.2 color 0;
    end;
    group
-    line 453.7 224.3 457.9 218.5 color 0;
-    line 453.7 218.5 457.9 224.3 color 0;
-    line 460.1 218.5 464.3 224.3 color 0;
-    line 460.1 224.3 464.3 218.5 color 0;
+    line 453.7 160.3 457.9 154.5 color 0;
+    line 453.7 154.5 457.9 160.3 color 0;
+    line 460.1 154.5 464.3 160.3 color 0;
+    line 460.1 160.3 464.3 154.5 color 0;
    end;
   terminals
-   p_in 408 216 fixed;
-   p_out 472 216 fixed;
+   p_in 408 152 fixed;
+   p_out 472 152 fixed;
  end;
  implementation eq
 parameters
@@ -498,7 +563,7 @@ initialequations
 equations
 	p_out.T = p_in.T*i*dyn_eff;
 	p_out.omega = p_in.omega/i;
-	dQ.dS = p_out.T*p_out.omega / dly(dQ.T,298.5);
+	dQ.dS = p_out.T*p_out.omega * (1 - dyn_eff) / dly(dQ.T,298.5);
 	dyn_eff = if (sign(dly(p_in.T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
 	
                      implementation_end;
@@ -654,6 +719,40 @@ equations
 implementation_end;
 specification_end;
 			end;
+   WaveGenerator1 416 -72
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
+  <TimeStamp>2007-9-27 16:12:6</TimeStamp>
+</Description>';
+    type 'WaveGenerator-Sine'
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      group
+       rectangle 400 -88 432 -56 color 0 fill 15132390;
+       line 404.5 -81.6 404.5 -62.4 color 0;
+       line 430.1 -72 401.3 -72 color 0;
+       spline 404.9 -72.1 408.1 -80.2 411.3 -72.1 414.6 -64 417.7 -72.1 420.8 -80.2 424.1 -72.1 427.6 -63.8 430.8 -71.8 color 16711680;
+      end;
+    end;
+    implementation eq
+parameters
+	real amplitude = 40.0;			// amplitude of the wave
+	real omega = 1.0 {rad/s} *2*pi /1.0;		// angular frequency of the wave
+	real a0 = 80;  			// a0 
+variables
+	boolean hidden change;
+	real hidden half;
+equations
+	"calculate at least 2 points per cycle to get a triangle"
+	half = pi / omega;
+	change = frequencyevent (half, half / 2);
+
+	"calculate the sine wave"
+	output = (a0 + amplitude * sin ( omega * time)) /60*2*pi;
+implementation_end;
    ZeroJunction 324 268
     description '<Information>
  <Description>
@@ -711,26 +810,29 @@ implementation_end;
   end;
   connections
    C\p <= ZeroJunction\p;
-   Constant1\output -> PlusMinus1\plus;
    Environment1\p => ZeroJunction3\p;
    k_m\p2 => OneJunction1\p;
-   MSe1\p => OneJunction\p;
    OneJunction\p => k_m\p1;
    OneJunction\p => L\p;
+   OneJunction\p => PowerSensor2\p1;
    OneJunction1\p => J_motor\p;
    OneJunction1\p => Transmission1\p_in;
    OneJunction2\p => b_load\p;
    OneJunction2\p => J_load\p;
    OneJunction3\p => R1\dQ_in;
    OneJunction3\p => ZeroJunction3\p 388 328;
-   PID1\output -> MSe1\effort 120 56 120 216;
-   PlusMinus1\minus <- OneJunction2\flow 560 56 560 216;
+   PID1\output -> MSe1\effort 64 -8 64 152;
+   PlusMinus1\minus <- OneJunction2\flow 560 -8 560 152;
    PlusMinus1\output -> PID1\error;
+   PowerSensor1\p1 <= MSe1\p;
+   PowerSensor1\p2 => OneJunction\p;
+   PowerSensor2\p2 => R\p;
+   PowerSensor3\p2 => ZeroJunction\p;
    R\dQ => ZeroJunction\p;
-   R\p <= OneJunction\p;
    R1\dQ_out => ZeroJunction3\p;
+   Transmission1\dQ => PowerSensor3\p1;
    Transmission1\p_out => OneJunction2\p;
-   ZeroJunction\p <= Transmission1\dQ;
+   WaveGenerator1\output -> PlusMinus1\plus;
    ZeroJunction\p => OneJunction3\p;
   end;
  implementation_end;
@@ -748,38 +850,7 @@ implementation_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
-  <Parameters>
-   <Variable>
-    <Name>Constant1\C</Name>
-    <Description><![CDATA[output value (RPM to rad/s)]]></Description>
-    <Value>8.377573333333332</Value>
-   </Variable>
-  </Parameters>
   <Initials>
-   <Variable>
-    <Name>C\state_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>J_motor\state_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>L\state_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>PID1\pdstate_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>PID1\pistate_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>J_load\p.e_in_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
   </Initials>
  </Variables>
  <PlotSpecs>
@@ -795,7 +866,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>2</PlotId>
+     <PlotId>1</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -864,7 +935,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -872,8 +943,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>298.40000000000003</Minimum>
-      <Maximum>298.90000000000003</Maximum>
+      <Minimum>298.48999999999995</Minimum>
+      <Maximum>298.59</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>dQ_in.T</Label>
@@ -963,7 +1034,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -1032,7 +1103,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1078,7 +1149,7 @@ implementation_end;
      <PlotId>3</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>false</PlotIsVisible>
+     <PlotIsVisible>true</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -1144,7 +1215,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1152,8 +1223,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-200.0</Minimum>
-      <Maximum>800.0</Maximum>
+      <Minimum>-100.0</Minimum>
+      <Maximum>900.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Flow - input transmission</Label>
@@ -1222,7 +1293,7 @@ implementation_end;
     <Name>Window 1</Name>
     <Tiling>2</Tiling>
     <PlotIds>
-     <PlotId>2</PlotId>
+     <PlotId>1</PlotId>
      <PlotId>3</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -1233,17 +1304,17 @@ implementation_end;
     <Name>Window 2</Name>
     <Tiling>0</Tiling>
     <PlotIds>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00208333 0.0037037 0.997917 0.956481
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+0.00455729 0.00416667 0.995443 0.854167
    </WindowRectangle>
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
-0.372396 0.337037 0.627604 0.618519
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="2">
+0.372396 0.303125 0.627604 0.55625
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1399,9 +1470,6 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
