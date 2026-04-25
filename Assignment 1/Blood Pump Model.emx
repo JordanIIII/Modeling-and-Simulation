@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 1\Blood Pump Model.emx</LibraryPath>
-    <TimeStamp>2026-4-24 14:46:54</TimeStamp>
+    <TimeStamp>2026-4-25 16:33:53</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -294,7 +294,8 @@ implementation_end;
 variables
 	real flow;
 equations
-	p.e = if effort >=0 then effort else 0 end;
+	//p.e = effort;  // regenerative braking
+	p.e = if effort >=0 then effort else 0 end;  // no regenerative braking
 	p.f = flow;
 implementation_end;
    OneJunction 232 152
@@ -398,10 +399,17 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real kp = 2.5 {};			// Proportional gain
-	real tauD = 0.025 {s};		// Derivative time constant: tauD > 0
+	// regenerative braking
+	//real kp =18 {};			// Proportional gain
+	//real tauD = 0.025 {s};		// Derivative time constant: tauD > 0
+	//real beta = 0.9 {};		// Tameness constant: 0 < beta << 1
+	//real tauI = 0.08 {s};		// Integral time constant: tauI > 0
+	
+	// no regenerative braking
+	real kp = 30 {};			// Proportional gain
+	real tauD = 0.85 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.9 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 0.08 {s};		// Integral time constant: tauI > 0
+	real tauI = 0.2 {s};		// Integral time constant: tauI > 0
 variables
 	real pdout, pdrate, pdstate;
 	real pirate, pistate;
@@ -655,7 +663,8 @@ implementation_end;
 parameters
 	real r = 0.6;
 equations
-	p.e = if p.f >= 0 then r * p.f else r * p.f * 100000 end;
+	//p.e = r * p.f; // regenerative braking
+	p.e = if p.f >= 0 then r * p.f else r * p.f * 100000 end; // no regenerative braking
 	dQ.dS = p.e * p.f / dQ.T;implementation_end;
    R1 324 384
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
@@ -1106,6 +1115,9 @@ implementation_end;
    <VarName>MSe1\flow</VarName>
    <VarName>MSe1\effort</VarName>
    <VarName>PowerSensorSource\P</VarName>
+   <VarName>J_motor\state</VarName>
+   <VarName>L\state</VarName>
+   <VarName>PID1\error</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1188,8 +1200,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>298.3</Minimum>
-      <Maximum>299.3</Maximum>
+      <Minimum>298.40000000000003</Minimum>
+      <Maximum>299.40000000000003</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>dQ_in.T</Label>
@@ -1459,8 +1471,8 @@ implementation_end;
     <SharedZAxis>false</SharedZAxis>
     <XAxes>
      <Axis>
-      <Minimum>1.8334606569900689</Minimum>
-      <Maximum>2.047364400305577</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>5.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1468,18 +1480,25 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>18.0</Maximum>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Flow - input transmission</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>9.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Flow - output transmission</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>18.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>error</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -1521,6 +1540,25 @@ implementation_end;
       <YCurveData>
        <ShowUnit>true</ShowUnit>
        <VarName>Transmission1\p_out.omega</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PID1\error</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -1605,8 +1643,8 @@ implementation_end;
     <SharedZAxis>false</SharedZAxis>
     <XAxes>
      <Axis>
-      <Minimum>1.8334606569900689</Minimum>
-      <Maximum>2.047364400305577</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>5.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1614,8 +1652,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-50.0</Minimum>
-      <Maximum>450.0</Maximum>
+      <Minimum>-100.0</Minimum>
+      <Maximum>900.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>flow</Label>
@@ -1706,6 +1744,148 @@ implementation_end;
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>5</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>model(1)</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.1999999999999999</Minimum>
+      <Maximum>1.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>state</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.00263828069859693</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>state</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>J_motor\state</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>L\state</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -1717,6 +1897,7 @@ implementation_end;
      <PlotId>1</PlotId>
      <PlotId>3</PlotId>
      <PlotId>4</PlotId>
+     <PlotId>5</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
