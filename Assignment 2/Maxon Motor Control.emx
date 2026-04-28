@@ -8,13 +8,90 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-28 14:33:49</TimeStamp>
+    <TimeStamp>2026-4-28 14:57:26</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   AD 104 64
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
+  <TimeStamp>2017-09-08 16:16:00</TimeStamp>
+</Description>';
+    type AD
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 88 48 120 80 color 0 fill 15132390;
+      spline 94.4 73.3 112 55.7 color 16711680;
+      text 'A' 97.1 58.1 color 16711680 14;
+      text 'D' 110.4 69.3 color 16711680 14;
+    end;
+    implementation eq
+parameters
+	real bits = 12;         // Quantization levels (bits)
+	real minimum = -10;     // Minimum output value
+	real maximum = 10;      // Maximum output value
+	real initial = 0;       // Initial output
+variables
+	real hold_signal, windowed_signal, quantisized_signal;
+	real lsb, half_lsb;
+equations
+	lsb = (maximum - minimum) / (exp2 (bits) - 1);
+	half_lsb = lsb / 2;
+	hold_signal = sample (input,initial);
+	windowed_signal = if hold_signal <= minimum then
+		 minimum + half_lsb
+	else
+		if hold_signal >= maximum then 
+			maximum -half_lsb
+		else 
+			hold_signal
+		end
+	end;
+	quantisized_signal = if windowed_signal < 0.0 then
+		windowed_signal - half_lsb
+	else
+		 windowed_signal + half_lsb
+	end;
+
+	output =  quantisized_signal - (quantisized_signal mod lsb);
+    implementation_end;
+   DiscreteIntegral 568 144
+    description '<Information>
+ <Description>
+    <Version>4.3</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Signal\Discrete\DiscreteIntegral.emx</LibraryPath>
+  <TimeStamp>2013-3-8 15:40:30</TimeStamp>
+</Description>
+</Information>';
+    type DiscreteIntegral
+     ports
+      signal in input {rad/s} ;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 552 128 584 160 color 0 fill 15132390;
+      text '-1' 577.3 147.7 color 16711680 10;
+      text 'z' 568.5 151.5 color 16711680 13;
+      text '∫' 563.2 144.3 color 16711680 'Lucida Sans' 21 italic;
+    end;
+    implementation eq
+parameters
+	real initial = 0.0;  	// initial output value
+variables
+	real total;
+equations
+	next (total) = total + input*sampletime;
+	output = total + initial;     implementation_end;
    GY 328 264
     description '<Information>
  <Description>
@@ -27,7 +104,7 @@
 </Information>';
     type GY
      ports
-      power in p1;
+      electric in p1;
       power out p2;
      restrictions
       causality constraint equal p1 p2;
@@ -94,37 +171,11 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real i = 34.7e-7;
+	real i = 34.7e-7 + 0.8/33^2;
 equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   Integrate 512 144
-    description '<Information>
- <Description>
-    <Version>4.3</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Signal\Block Diagram\Integrate.emx</LibraryPath>
-  <TimeStamp>2013-3-8 14:47:42</TimeStamp>
-</Description>
-</Information>';
-    type Integrate
-     ports
-      signal in input;
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 496 128 528 160 color 0 fill 15132390;
-      text '∫' 512 144.3 color 16711680 'Lucida Sans' 21 italic;
-    end;
-    implementation eq
-parameters
-	real initial = 0;		// initial value
-equations
-	output = int (input, initial);
-     implementation_end;
    OneJunction 264 264
     description '<Information>
  <Description>
@@ -137,7 +188,7 @@ equations
 </Information>';
     knot OneJunction
      ports
-      power knot duplicatable none p [1];
+      electric knot duplicatable none p [1];
       signal knot out flow [1];
      restrictions
       causality constraint one_out p;
@@ -206,6 +257,62 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+   PID 344 144
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
+  <TimeStamp>2007-9-27 14:49:14</TimeStamp>
+</Description>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 328 128 360 160 color 0 fill 15132390;
+      text 'PID' 344 143.5 color 1336868 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 1.0 {};			// Proportional gain
+	real tauD = 1.0 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
+variables
+	real hidden factor,uD,uI;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	uI = previous( uI ) +  sampletime * uD / tauI;
+	output = uI + uD;implementation_end;
+   PID1 192 144
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
+  <TimeStamp>2007-9-27 14:49:14</TimeStamp>
+</Description>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 176 128 208 160 color 0 fill 15132390;
+      text 'PID' 192 143.5 color 1336868 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 1.0 {};			// Proportional gain
+	real tauD = 1.0 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
+variables
+	real hidden factor,uD,uI;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	uI = previous( uI ) +  sampletime * uD / tauI;
+	output = uI + uD;implementation_end;
    PlusMinus 464 144
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
@@ -220,6 +327,25 @@ implementation_end;
     icon bg ellipse
      figures
       ellipse 456 136 472 152 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+   PlusMinus1 272 144
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 264 136 280 152 color 0 fill 16777215;
     end;
     implementation eq
 equations
@@ -249,168 +375,59 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Sweep 464 80
-			specifications active 'default'
-				specification 'default'
- description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
-  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+   Sample 48 168
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
 </Description>';
- type 'SignalGenerator-Sweep'
-  ports
-   signal out output;
- end;
- icon bg top
-  figures
-   rectangle 448 64 480 96 color 0 fill 15132390;
-   line 452.5 70.4 452.5 89.6 color 0;
-   line 478.1 80 449.3 80 color 0;
-   spline 452.5 80 456.2 75.9 460.5 72.2 465.3 90.1 468.3 70.6 470.9 90.3 473.3 70.4 475.2 90.3 476.5 70.4 477.5 90.3 color 16711680;
- end;
- implementation eq
-parameters
-	real amplitude = 1.0 {};
-	real start_time = 0.0 {s};
-	real stop_time = 10.0 {s};
-	real omega_start = 0.0 {frequency, rad/s};
-	real omega_stop = 62.8318530718 {frequency, rad/s};
-variables
-	real omega {frequency, rad/s};		// current frequency {rad/s}
-	real hidden t;
-	real hidden dw;
-	real hidden dt;
-	real hidden dwdt;
-	real hidden dwdt2;
-	boolean hidden change;
-initialequations
-	dw = omega_stop - omega_start;
-	dt = stop_time - start_time;
-	dwdt = dw/dt;
-	dwdt2 = dwdt/2;
+    type Sample
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 32 152 64 184 color 0 fill 15132390;
+      line 34.3 158.8 37.2 158.8 37.2 154.9 41.3 154.9 41.3 158.8 45.2 158.8 45.2 154.9 47.1 154.9 color 16711680 fill 15132390;
+      line 47.5 160.4 49.7 160.4 49.7 166.4 50.6 164.9 color 0 fill 15132390;
+      line 49 165.1 49.7 166.4 color 0 fill 15132390;
+      line 35.9 171.9 43.9 171.9 56 168 color 0 fill 15132390 width 2;
+    end;
+    implementation eq
 equations
-	"calculate at least at the start and stop time"
-	change = timeevent (start_time) or timeevent (stop_time);
-	t = if time < start_time then 
-		0  
-	else
-		if time > stop_time then
-			0
-		else
-			time - start_time
-		end	
-	end; 
-	omega = omega_start + t * dwdt;
-	output = amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
-specification_end;
-				specification 'Logarithmic'
-description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
-  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+	output = sample (input);
+      implementation_end;
+   Step 464 64
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Step.emx</LibraryPath>
+  <TimeStamp>2007-9-27 16:2:44</TimeStamp>
 </Description>';
- type 'SignalGenerator-Sweep'
-  ports
-   signal out output;
- end;
- icon bg bottom
-  figures
-   rectangle 120 294.9 152 327.4 fill 15132390;
-   line 124.5 297.7 124.5 317.2;
-   line 150.1 308.5 121.3 308.5;
-   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.7 140.3 297.8 142.9 317.8 145.3 297.7 147.2 317.8 148.5 297.7 149.5 317.8 color 16711680;
-   text 'log' 137.6 322 color 16711680;
- end;
- implementation eq
+    type 'SignalGenerator-Step'
+     ports
+      signal out output;
+    end;
+    icon bg top
+     figures
+      group
+       rectangle 448 48 480 80 color 0 fill 15132390;
+       line 457.6 60.8 474.6 60.8 color 16711680 width 2;
+       line 450.9 72 477.1 72 color 0;
+       line 453.1 72.1 457.7 72.1 457.7 60.7 color 16711680 width 2;
+       line 453.1 56 453.1 74.2 color 0;
+      end;
+    end;
+    implementation eq
 parameters
-	real amplitude = 1.0 {};
-	real start_time = 0.0 {s};
-	real stop_time = 10.0 {s};
-	real omega_start = 0.0 {frequency, rad/s};
-	real omega_stop = 62.8318530718 {frequency, rad/s};
+	real amplitude = 1;
+	real start_time = 1.0 {s};
 variables
-	real omega {frequency, rad/s};		// current frequency (rad /s)
-	real hidden t;
-	real hidden dw;
-	real hidden dt;
-	real hidden dwdt;
-	real hidden base;
 	boolean hidden change;
-initialequations
-	dw = omega_stop - omega_start;
-	dt = stop_time - start_time;
-	base = exp(log(dw)/dt);
-	dwdt = dw/dt;
 equations
-	"calculate at least at the start and stop time"
-	change = timeevent (start_time) or timeevent (stop_time);
-	t = if time < start_time then 
-		0  
-	else
-		if time > stop_time then
-			0
-		else
-			time - start_time
-		end	
-	end; 
-	omega = omega_start + dw*base^t / (base^dt*(1 + dt*log(base)))+ t*dw*base^t*log(base) / (base^dt*(1 + dt*log(base)));
-	output = amplitude*sin( t * ( omega_start +  (dw*base^t)/( base^dt*(1+dt*log(base)))   )  ); implementation_end;
-specification_end;
-				specification 'ZeroMean'
-description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
-  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
-</Description>';
- type 'SignalGenerator-Sweep'
-  ports
-   signal out output;
- end;
- icon bg bottom
-  figures
-   rectangle 120 294.9 152 327.4 fill 15132390;
-   line 124.5 297.6 124.5 317.1;
-   line 150.1 308.5 121.3 308.5;
-   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.6 140.3 297.8 142.9 317.8 145.3 297.6 147.2 317.8 148.5 297.6 149.5 317.8 color 16711680;
-   text 'zero' 134.4 322 color 16711680;
- end;
- implementation eq
-parameters
-	real amplitude = 1.0 {};
-	real start_time = 0.0 {s};
-	real stop_time = 10.0 {s};
-	real omega_start = 0.0 {frequency, rad/s};
-	real omega_stop = 62.8318530718 {frequency, rad/s};
-variables
-	real omega {frequency, rad/s};		// current frequency (rad /s)
-	real hidden t;
-	real hidden dw;
-	real hidden dt;
-	real hidden dwdt;
-	real hidden dwdt2;
-	real hidden tc;
-	real hidden correction;
-	boolean hidden change;
-initialequations
-	dw = omega_stop - omega_start;
-	dt = stop_time - start_time;
-	dwdt = dw/dt;
-	dwdt2 = dwdt/2;
-	tc = start_time + ( -omega_start + sqrt(omega_start^2 + 8*pi*dwdt2) ) / dwdt ;
-equations
-	"calculate at least at the start and stop time"
-	change = timeevent (start_time) or timeevent (stop_time);
-	t = if time < start_time then 
-		0  
-	else
-		if time > stop_time then
-			0
-		else
-			time - start_time
-		end	
-	end;
-	omega = omega_start + t * dwdt;
-	correction = ((ramp(start_time) - ramp(tc))/(tc-start_time))^2.8715;
-	output = correction*amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
-specification_end;
-			end;
+	"calculate at least at the start time"
+	change = timeevent (start_time);
+	
+	"calculate the step signal"
+	output = amplitude * step (start_time);     implementation_end;
    Transmission 480 283.6
 			specifications active 'Efficiency'
 				specification 'Efficiency'
@@ -654,15 +671,19 @@ specification_end;
 			end;
   end;
   connections
+   DiscreteIntegral\output -> PlusMinus\minus;
    GY\p2 => OneJunction1\p;
-   Integrate\output -> PlusMinus\minus;
    OneJunction\p => GY\p1;
    OneJunction\p => I\p;
    OneJunction\p => R\p;
+   OneJunction1\flow -> PlusMinus1\minus;
    OneJunction1\p => I1\p;
    OneJunction1\p => Transmission\p_in;
-   OneJunction2\flow -> Integrate\input 568 144;
-   Sweep\output -> PlusMinus\plus;
+   OneJunction2\flow -> DiscreteIntegral\input 640 264 640 144;
+   PID\output -> PlusMinus1\plus;
+   PlusMinus\output -> PID\error;
+   PlusMinus1\output -> PID1\error;
+   Step\output -> PlusMinus\plus;
    Transmission\p_out => OneJunction2\p;
   end;
  implementation_end;
@@ -680,6 +701,8 @@ specification_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
+  <Parameters>
+  </Parameters>
  </Variables>
  <PlotSpecs>
   <VarNames>
