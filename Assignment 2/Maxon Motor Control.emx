@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-28 14:16:55</TimeStamp>
+    <TimeStamp>2026-4-28 14:33:49</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -66,7 +66,7 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real i = 1;
+	real i = 0.513;
 equations
     state = int(p.e);
     p.f = state / i;
@@ -99,34 +99,32 @@ equations
     state = int(p.e);
     p.f = state / i;
 implementation_end;
-   MSe 192 264
+   Integrate 512 144
     description '<Information>
  <Description>
-    <Version>4.2</Version>
+    <Version>4.3</Version>
 <IsMainModel>1</IsMainModel>
   <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+    <LibraryPath>Signal\Block Diagram\Integrate.emx</LibraryPath>
+  <TimeStamp>2013-3-8 14:47:42</TimeStamp>
 </Description>
 </Information>';
-    type MSe
+    type Integrate
      ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
+      signal in input;
+      signal out output;
     end;
-    icon bg ellipse bottom
+    icon bg bottom
      figures
-      text 'MSe' 192 264 color 0 18 bold;
+      rectangle 496 128 528 160 color 0 fill 15132390;
+      text '∫' 512 144.3 color 16711680 'Lucida Sans' 21 italic;
     end;
     implementation eq
-variables
-	real flow;
+parameters
+	real initial = 0;		// initial value
 equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
+	output = int (input, initial);
+     implementation_end;
    OneJunction 264 264
     description '<Information>
  <Description>
@@ -181,6 +179,52 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+   OneJunction2 568 264
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      rotation knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 568 264 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   PlusMinus 464 144
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+    knot PlusMinus
+     ports
+      signal knot duplicatable in plus [1];
+      signal knot duplicatable in minus [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 456 136 472 152 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
    R 264 328
     description '<Information>
  <Description>
@@ -201,10 +245,172 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real r = 1.0;
+	real r = 2.48;
 equations
 	p.e = r * p.f;
 implementation_end;
+   Sweep 464 80
+			specifications active 'default'
+				specification 'default'
+ description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg top
+  figures
+   rectangle 448 64 480 96 color 0 fill 15132390;
+   line 452.5 70.4 452.5 89.6 color 0;
+   line 478.1 80 449.3 80 color 0;
+   spline 452.5 80 456.2 75.9 460.5 72.2 465.3 90.1 468.3 70.6 470.9 90.3 473.3 70.4 475.2 90.3 476.5 70.4 477.5 90.3 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency {rad/s}
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + t * dwdt;
+	output = amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+				specification 'Logarithmic'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.7 124.5 317.2;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.7 140.3 297.8 142.9 317.8 145.3 297.7 147.2 317.8 148.5 297.7 149.5 317.8 color 16711680;
+   text 'log' 137.6 322 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden base;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	base = exp(log(dw)/dt);
+	dwdt = dw/dt;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + dw*base^t / (base^dt*(1 + dt*log(base)))+ t*dw*base^t*log(base) / (base^dt*(1 + dt*log(base)));
+	output = amplitude*sin( t * ( omega_start +  (dw*base^t)/( base^dt*(1+dt*log(base)))   )  ); implementation_end;
+specification_end;
+				specification 'ZeroMean'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.6 124.5 317.1;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.6 140.3 297.8 142.9 317.8 145.3 297.6 147.2 317.8 148.5 297.6 149.5 317.8 color 16711680;
+   text 'zero' 134.4 322 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
+	real hidden tc;
+	real hidden correction;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
+	tc = start_time + ( -omega_start + sqrt(omega_start^2 + 8*pi*dwdt2) ) / dwdt ;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end;
+	omega = omega_start + t * dwdt;
+	correction = ((ramp(start_time) - ramp(tc))/(tc-start_time))^2.8715;
+	output = correction*amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+			end;
    Transmission 480 283.6
 			specifications active 'Efficiency'
 				specification 'Efficiency'
@@ -449,12 +655,15 @@ specification_end;
   end;
   connections
    GY\p2 => OneJunction1\p;
-   OneJunction\p <= MSe\p;
+   Integrate\output -> PlusMinus\minus;
    OneJunction\p => GY\p1;
    OneJunction\p => I\p;
    OneJunction\p => R\p;
    OneJunction1\p => I1\p;
    OneJunction1\p => Transmission\p_in;
+   OneJunction2\flow -> Integrate\input 568 144;
+   Sweep\output -> PlusMinus\plus;
+   Transmission\p_out => OneJunction2\p;
   end;
  implementation_end;
 ]]></Sidops>
