@@ -7,16 +7,454 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-28 11:25:47</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
+    <TimeStamp>2026-4-28 14:16:55</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   GY 328 264
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\GY.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:53:45</TimeStamp>
+</Description>
+</Information>';
+    type GY
+     ports
+      power in p1;
+      power out p2;
+     restrictions
+      causality constraint equal p1 p2;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'GY' 328 264 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real r = 53.8e-3;
+equations
+	p1.e = r * p2.f;
+	p2.e = r * p1.f;
+implementation_end;
+   I 264 200
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+    type I
+     ports
+      power in p;
+      signal out state;
+     restrictions
+      causality preferred in p;
+    end;
+    icon bg ellipse right
+     figures
+      text 'I' 264 200 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real i = 1;
+equations
+    state = int(p.e);
+    p.f = state / i;
+implementation_end;
+   I1 392 200
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+    type I
+     ports
+      power in p;
+      signal out state;
+     restrictions
+      causality preferred in p;
+    end;
+    icon bg ellipse right
+     figures
+      text 'I' 392 200 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real i = 34.7e-7;
+equations
+    state = int(p.e);
+    p.f = state / i;
+implementation_end;
+   MSe 192 264
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 192 264 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   OneJunction 264 264
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      power knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 264 264 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   OneJunction1 392 264
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      rotation knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 392 264 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   R 264 328
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+    type R
+     ports
+      power in p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'R' 264 328 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real r = 1.0;
+equations
+	p.e = r * p.f;
+implementation_end;
+   Transmission 480 283.6
+			specifications active 'Efficiency'
+				specification 'Efficiency'
+ description '<Information>
+ <Description>
+    <Version>4.5</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2014-11-4 20:07:47</TimeStamp>
+<AllowLibraryUpdate>True</AllowLibraryUpdate>
+  <Configuration>
+   <struct>
+    <member>
+     <name>DocumentationMask</name>
+     <value>
+      <struct></struct>
+     </value>
+    </member>
+   </struct>
+  </Configuration>
+ </Description>
+</Information>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality constraint not_equal p_in p_out;
+ end;
+ icon ipm bottom
+  figures
+   line 448 264 463.5 264 color 0;
+   line 463.5 292.2 479.5 292.2 color 0;
+   line 479.5 264 512 264 color 0;
+   group
+    line 463.5 276 463.5 308.3 color 0 width 2;
+    line 460.3 276 466.7 276 color 0 width 2;
+    line 460.3 308.3 466.7 308.3 color 0 width 2;
+   end;
+   group
+    line 463.5 256.7 463.5 269 color 0 width 2;
+    line 460.3 256.7 466.7 256.7 color 0 width 2;
+    line 460.3 271 466.7 271 color 0 width 2;
+   end;
+   group
+    line 479.5 251.3 479.5 279.3 color 0 width 2;
+    line 476.3 251.3 482.7 251.3 color 0 width 2;
+    line 476.3 279.3 482.7 279.3 color 0 width 2;
+   end;
+   group
+    line 479.5 285.6 479.5 299.8 color 0 width 2;
+    line 476.3 285.6 482.7 285.6 color 0 width 2;
+    line 476.3 299.8 482.7 299.8 color 0 width 2;
+   end;
+   line 460.3 316.9 466.7 316.9 color -1;
+   text '1' 454.9 253.9 color 0;
+   text 'i' 489.1 253.9 color 16711680;
+   group
+    line 493.7 260.2 497.9 254.2 color 0;
+    line 493.7 254.2 497.9 260.2 color 0;
+    line 500.1 254.2 504.3 260.2 color 0;
+    line 500.1 260.2 504.3 254.2 color 0;
+   end;
+   group
+    line 493.7 272.3 497.9 266.5 color 0;
+    line 493.7 266.5 497.9 272.3 color 0;
+    line 500.1 266.5 504.3 272.3 color 0;
+    line 500.1 272.3 504.3 266.5 color 0;
+   end;
+  terminals
+   p_in 448 264 fixed;
+   p_out 512 264 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 33.0 {};				// gearbox ratio
+	real eff = 0.75 {};			// gearbox efficiency (0 < eff <= 1)
+variables
+	real dyn_eff;
+initialequations
+	dyn_eff = eff;
+equations
+	p_out.T = p_in.T*i*dyn_eff;
+	p_out.omega = p_in.omega/i;
+	dyn_eff = if (sign(dly(p_in.T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
+	
+                     implementation_end;
+specification_end;
+				specification 'Ideal'
+description '<Information>
+ <Description>
+    <Version>4.5</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2014-9-26 12:20:30</TimeStamp>
+<AllowLibraryUpdate>True</AllowLibraryUpdate>
+  <Configuration>
+   <struct>
+    <member>
+     <name>DocumentationMask</name>
+     <value>
+      <struct></struct>
+     </value>
+    </member>
+   </struct>
+  </Configuration>
+ </Description>
+</Information>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality constraint not_equal p_in p_out;
+ end;
+ icon ipm bottom
+  figures
+   group
+    line 116 507.1 131.5 507.1;
+    line 131.5 531.9 147.5 531.9;
+    line 147.5 507.1 164 507.1;
+    group
+     line 131.5 517.7 131.5 546.3 width 2;
+     line 128.3 517.7 134.7 517.7 width 2;
+     line 128.3 546.3 134.7 546.3 width 2;
+    end;
+    group
+     line 131.5 500.8 131.5 511.4 width 2;
+     line 128.3 500.8 134.7 500.8 width 2;
+     line 128.3 513.2 134.7 513.2 width 2;
+    end;
+    group
+     line 147.5 495.8 147.5 520.6 width 2;
+     line 144.3 495.8 150.7 495.8 width 2;
+     line 144.3 520.6 150.7 520.6 width 2;
+    end;
+    group
+     line 147.5 526.2 147.5 538.6 width 2;
+     line 144.3 526.2 150.7 526.2 width 2;
+     line 144.3 538.6 150.7 538.6 width 2;
+    end;
+    line 128.3 553.8 134.7 553.8 color -1;
+    text '1' 122.9 498.1;
+    text 'i' 157.1 498.1 color 16711680;
+   end;
+  terminals
+   p_in 116 507.1 fixed;
+   p_out 164 507.1 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 10.0 {};				// gearbox ratio
+equations
+	p_out.T = p_in.T*i;
+	p_out.omega = p_in.omega/i;
+                     implementation_end;
+specification_end;
+				specification 'Lossy'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Iconic Diagrams\Mechanical\Rotation\Gears\Transmission.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type Transmission
+  ports
+   rotation psi in p_in;
+   rotation psi out p_out;
+  restrictions
+   orientation constraint not_equal p_in p_out;
+   causality preferred in p_out;
+   causality preferred in p_in;
+ end;
+ icon ipm bottom
+  figures
+   group
+    group
+     line 171.7 510.3 175.9 505.3;
+     line 171.7 505.3 175.9 510.3;
+     line 178.1 505.3 182.3 510.3;
+     line 178.1 510.3 182.3 505.3;
+    end;
+    group
+     line 171.7 520 175.9 515.1;
+     line 171.7 515.1 175.9 520;
+     line 178.1 515.1 182.3 520;
+     line 178.1 520 182.3 515.1;
+    end;
+   end;
+   line 88 512.8 148.8 512.8;
+   line 164.8 512.4 192 512.8;
+   rectangle 103.5 493.4 135.5 530 fill 13421772;
+   text 'J' 119.2 511.9 15 italic;
+   line 149 534.4 165 534.4;
+   group
+    line 149 522.4 149 547.9 width 2;
+    line 145.8 522.4 152.2 522.4 width 2;
+    line 145.8 547.9 152.2 547.9 width 2;
+   end;
+   group
+    line 149 507.1 149 517 width 2;
+    line 145.8 507.1 152.2 507.1 width 2;
+    line 145.8 518.2 152.2 518.2 width 2;
+   end;
+   group
+    line 165 502.7 165 524.7 width 2;
+    line 161.8 502.7 168.2 502.7 width 2;
+    line 161.8 524.7 168.2 524.7 width 2;
+   end;
+   group
+    line 165 529.5 165 540.6 width 2;
+    line 161.8 529.5 168.2 529.5 width 2;
+    line 161.8 540.6 168.2 540.6 width 2;
+   end;
+   line 145.8 554.1 152.2 554.1 color -1;
+   text '1' 141.4 504.9;
+   text 'i' 172.3 497.7 color 16711680;
+  terminals
+   p_in 88 512.8 fixed;
+   p_out 192 512.8 fixed;
+ end;
+ implementation eq
+parameters
+	real i = 10.0 {};					// gearbox ratio
+	real eff = 0.97 {};					// gearbox efficiency (0 < eff <= 1)
+	real J = 1.0e-5 {kg.m2/rad};		// rotational inertia
+variables
+	real p_in_T;
+	real dyn_eff;
+initialequations
+	dyn_eff = eff;
+equations
+	p_in.omega = (1/J)*int(p_in.T - p_in_T);
+	p_out.T = p_in_T*i*dyn_eff;
+	p_out.omega = p_in.omega/i;
+	dyn_eff = if (sign(dly(p_in_T,0.0))*sign(dly(p_in.omega,0.0))) >= 0 then eff else 1/eff end;
+implementation_end;
+specification_end;
+			end;
   end;
   connections
+   GY\p2 => OneJunction1\p;
+   OneJunction\p <= MSe\p;
+   OneJunction\p => GY\p1;
+   OneJunction\p => I\p;
+   OneJunction\p => R\p;
+   OneJunction1\p => I1\p;
+   OneJunction1\p => Transmission\p_in;
   end;
  implementation_end;
 ]]></Sidops>
@@ -300,9 +738,6 @@
   <WriteFilename></WriteFilename>
   <DoWrite>false</DoWrite>
   <ExportVariables>
-   <ExportVariable>
-    <VariableName>time</VariableName>
-   </ExportVariable>
   </ExportVariables>
   <ImportVariables>
   </ImportVariables>
