@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Document>
+ <Icons>
+  <Icon size="128" bpp="32" format="png"><![CDATA[89504e470d0a1a0a0000000d4948445200000080000000800806000000c33e61cb00000006624b474400ff00ff00ffa0bda793000000097048597300000ec400000ec401952b0e1b0000041249444154789ced9c4192da301045dba96ca13066c7825436708de42239532e341760931310965960c30d94c58c28e148b284db76f0ffafca55604b2dd37a6e0b2743618c1182cba7a94f804c0b05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e050007028003814009ccf5a818aa2f821225fb4e2914e6ec6989f7d83145abf105214c59b887c53094652f86d8cf9da37885a05b01c8f47592c16da6189c3e170508ba52ec076bb95e572a91d960c041781e0500070280038ea6b00638cf0b7075f0756007028003814001cae01c06105008702804301c0e11a001c560070280038bc0580c30a000e050047f316f05fd5fdd56af5f0fe76bba9c7f6c58c1debd3d6834abe67b70628cbd2bbdf26fb7abdaac58f7dced56a953cd694f99aed2de07abd3e6c96902029e4f6ed33d658cc4a009b70df95d7f7ca9f2b49b780a2288c888831a670dfbbfb2cbbddeefe3a9674dfd5d16eefb609c572277dc84976c749b9b26dbbb22cb3ceab2d712c07b1794825bb02b883fadebb9465795f13d8cd2625a57dd334f763ed3836968848d334dee3ed2d162bb685eefb5d63d8f3f7e52114c7ddd7ce938df3c1c31f85c4e6214696006e25708dfbd8ff5d44e47c3e3f4cdc7abdf6be6e9ae661f3b5b1ed7cfbed7bb76f8cdcf63efaf4cdc53ddf507e02f39045760570078c959d58b27cc75292db9620a5bddd52c7088df9ece48704cee91b18ff645f3c5bfe453205e818e8adab7fdb668b3b49a17eedf6befd5d3c33099ae48c3f56b5517f0e90c2b35743eed5ec1367bd5e8f7adbb0fda7962fc4e85f037d890855066d72cab1f684f5b9150cc9a815a0bd087c154293a65521a644bd02c4bee658eabacefe9a66935dd7b588bc27dfd7c6b7ff99af825a9fd9dddae79edb7f08265903f8a8aa2afb585555f7a4a6eccf21d6df9ecf3363d4752d5555453fef984cf228b8fde1539361131e4a7cd784f499b8b9326a05b0f68ba44f7a68d2dc2bc93dd67585852a46e8d810b879989a51d700c618b95c2efff4b95c2ef74de47d428c310f498add136dfbd818761c8d47c429e7d415c33dc729d700ea3f12753a9df8133103b3d96c44947e246a56ff1c4cf2a100e0cceebf84913c5801c0a100e0500070067910c435c0ebc00a000e0500870280c3e700e0b002804301c0e12d001c56007028003814001cae01c06105008702804301c0e11a001c7501f6fbbd764832209a02fc528c45baf9a31144ed0f43c86bc245203814001c0a000e05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e050007028003814001c0a000e05008702804301c0a100e0fc05e51569060d4233f20000000049454e44ae426082]]></Icon>
+ </Icons>
  <Model version="5.1" build="5.1.6.14106">
   <Sidops><![CDATA[model 128 184
  description '<Information>
@@ -7,15 +10,20 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-29 16:27:12</TimeStamp>
+    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
+    <TimeStamp>2026-4-29 17:35:51</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
+ icon bg
+  figures
+   rectangle 104 168 152 200 color 0 fill 15132390;
+   text 'max3.4Nm' 128 184 color 0 16;
+ end;
  implementation bg
   submodels
-   AD 184 200
+   AD 176 200
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
   <TimeStamp>2017-09-08 16:16:00</TimeStamp>
@@ -27,16 +35,16 @@
     end;
     icon bg bottom
      figures
-      rectangle 168 184 200 216 color 0 fill 15132390;
-      spline 174.4 209.3 192 191.7 color 16711680;
-      text 'A' 177.1 194.1 color 16711680 14;
-      text 'D' 190.4 205.3 color 16711680 14;
+      rectangle 160 184 192 216 color 0 fill 15132390;
+      spline 166.4 209.3 184 191.7 color 16711680;
+      text 'A' 169.1 194.1 color 16711680 14;
+      text 'D' 182.4 205.3 color 16711680 14;
     end;
     implementation eq
 parameters
 	real bits = 12;         // Quantization levels (bits)
-	real minimum = -10;     // Minimum output value
-	real maximum = 10;      // Maximum output value
+	real minimum = -20;     // Minimum output value
+	real maximum = 20;      // Maximum output value
 	real initial = 0;       // Initial output
 variables
 	real hold_signal, windowed_signal, quantisized_signal;
@@ -62,7 +70,7 @@ equations
 
 	output =  quantisized_signal - (quantisized_signal mod lsb);
     implementation_end;
-   AD1 600 200
+   AD1 680 200
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
   <TimeStamp>2017-09-08 16:16:00</TimeStamp>
@@ -74,16 +82,16 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 584 184 616 216 color 0 fill 15132390;
-      spline 590.4 209.3 608 191.7 color 16711680;
-      text 'A' 593.1 194.1 color 16711680 14;
-      text 'D' 606.4 205.3 color 16711680 14;
+      rectangle 664 184 696 216 color 0 fill 15132390;
+      spline 670.4 209.3 688 191.7 color 16711680;
+      text 'A' 673.1 194.1 color 16711680 14;
+      text 'D' 686.4 205.3 color 16711680 14;
     end;
     implementation eq
 parameters
 	real bits = 12;         // Quantization levels (bits)
-	real minimum = -10;     // Minimum output value
-	real maximum = 10;      // Maximum output value
+	real minimum = -20;     // Minimum output value
+	real maximum = 20;      // Maximum output value
 	real initial = 0;       // Initial output
 variables
 	real hold_signal, windowed_signal, quantisized_signal;
@@ -109,7 +117,7 @@ equations
 
 	output =  quantisized_signal - (quantisized_signal mod lsb);
     implementation_end;
-   Current 112 136
+   Current 64 136
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PI.emx</LibraryPath><TimeStamp>2007-9-27 14:49:39</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type PI
      ports
@@ -118,13 +126,13 @@ equations
     end;
     icon bg top
      figures
-      rectangle 96 120 128 152 color 0 fill 15132390;
-      text 'PI' 112 136 color 1336868 18 bold;
+      rectangle 48 120 80 152 color 0 fill 15132390;
+      text 'PI' 64 136 color 1336868 18 bold;
     end;
     implementation eq
 parameters
-	real kp = 2 {};			// Proportional gain
-	real tauI = 0.15 {s};		// Integral time constant: tauI > 0
+	real kp = 1.9756 {};			// Proportional gain
+	real tauI = 8.03 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -135,7 +143,7 @@ equations
 	uI = previous(uI) + bi*error;
 	output = uP+uI;
               implementation_end;
-   DA 112 200
+   DA 64 200
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
   <LibraryPath>Signal\Discrete\DA.emx</LibraryPath>
   <TimeStamp>2017-09-08 16:16:00</TimeStamp>
@@ -148,16 +156,17 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 96 184 128 216 color 0 fill 15132390;
-      spline 102.4 209.3 120 191.7 color 16711680;
-      text 'A' 118.2 205.5 color 16711680 14;
-      text 'D' 105.2 194.8 color 16711680 14;
+      rectangle 48 184 80 216 color 0 fill 15132390;
+      spline 54.4 209.3 72 191.7 color 16711680;
+      text 'A' 70.2 205.5 color 16711680 14;
+      text 'D' 57.2 194.8 color 16711680 14;
+      text '_max' 96 200 color 0 16;
     end;
     implementation eq
 parameters
 	real bits = 12;         // Quantization levels (bits)
-	real minimum = -10;     // Minimum output value
-	real maximum = 10;      // Maximum output value
+	real minimum = -48;     // Minimum output value
+	real maximum = 48;      // Maximum output value
 variables
 	real windowed_signal, quantisized_signal, rounded_signal;
 	real lsb, half_lsb;
@@ -182,7 +191,7 @@ equations
 	rounded_signal =  quantisized_signal - (quantisized_signal mod lsb);
 	output = hold (rounded_signal);
       implementation_end;
-   DiscreteIntegral 544 136
+   DiscreteIntegral 624 136
     description '<Information>
  <Description>
     <Version>4.3</Version>
@@ -199,10 +208,10 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 528 120 560 152 color 0 fill 15132390;
-      text '-1' 553.3 139.7 color 16711680 10;
-      text 'z' 544.5 143.5 color 16711680 13;
-      text '∫' 539.2 136.3 color 16711680 'Lucida Sans' 21 italic;
+      rectangle 608 120 640 152 color 0 fill 15132390;
+      text '-1' 633.3 139.7 color 16711680 10;
+      text 'z' 624.5 143.5 color 16711680 13;
+      text '∫' 619.2 136.3 color 16711680 'Lucida Sans' 21 italic;
     end;
     implementation eq
 parameters
@@ -212,7 +221,7 @@ variables
 equations
 	next (total) = total + input*sampletime;
 	output = total + initial;     implementation_end;
-   Freq2Sampler 344 136
+   Freq2Sampler 368 136
     description '<Description><Version>4.0</Version>
    <LibraryPath>Template\Submodel-Equation.emx</LibraryPath>
 <IsMainModel>1</IsMainModel>
@@ -241,7 +250,7 @@ equations
 				end
 			end;
 	next (count) = if count < 9 then count + 1 else 0 end; implementation_end;
-   GY 248 264
+   GY 288 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -260,16 +269,22 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'GY' 248 264 color 0 18 bold;
+      text 'GY_eff' 288 264 color 0 18 bold;
     end;
     implementation eq
 parameters
 	real r = 53.8e-3;
+	real eff = 0.88; 
+variables
+	real dyn_eff;
+initialequations
+	dyn_eff = eff;
 equations
-	p1.e = r * p2.f;
-	p2.e = r * p1.f;
+	p1.e * dyn_eff = r * p2.f;
+	p2.e = r * p1.f; //ideal based on torque constant
+	dyn_eff = if (sign(p1.e)*sign(p1.f)) >= 0 then eff else 1/eff end;
 implementation_end;
-   HBridge 112 328
+   HBridge 104 328
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
@@ -277,7 +292,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 112 328 color 0 18 bold;
+      text 'R' 104 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -285,7 +300,7 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Inductance 248 328
+   Inductance 240 328
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -296,7 +311,7 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 248 328 color 0 18 bold;
+      text 'I' 240 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -306,7 +321,7 @@ equations
 	 state = int(p.e);
     p.f = state / i;
 implementation_end;
-   load 544 312
+   load 624 320
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
@@ -314,7 +329,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 544 312 color 0 18 bold;
+      text 'R' 624 320 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -322,7 +337,28 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   MotorLoadInertia 368 200
+   max3_4Nm 568 264
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\EffortSensor.emx</LibraryPath><TimeStamp>2011-11-29 15:44:34</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    knot EffortSensor
+     ports
+      rotation knot in p1 [1];
+      rotation knot out p2 [1];
+      signal knot out effort [1];
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 561.1 256.9 574.9 271 color 0 fill 16777215;
+      text 'e' 568 262.9 color 0;
+    end;
+    implementation eq
+equations
+	p2.e = p1.e;
+	p1.f = p2.f;
+	effort = p1.e;
+implementation_end;
+   MotorLoadInertia 392 200
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -333,17 +369,18 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 368 200 color 0 18 bold;
+      text 'I_max' 392 200 color 0 18 bold;
     end;
     implementation eq
 parameters
-	real i = 34.7e-7 + 0.8/33^2;
+	real i = 34.7e-7 + 0.8e-7 + 0.8/33^2; //motor, gearbox, load
+	real lim = 120000/60*2*pi; 	// max rpm
 equations
     //state = state + p.e*sampletime;
 	 state = int(p.e);
-    p.f = state / i;
+    p.f = if abs(state / i) >= lim then sign(state/i)*lim else state/i end; //max rpm
 implementation_end;
-   MSe 112 264
+   MSe 64 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -362,7 +399,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 112 264 color 0 18 bold;
+      text 'MSe' 64 264 color 0 18 bold;
     end;
     implementation eq
 variables
@@ -371,7 +408,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   OneJunction 184 264
+   OneJunction 176 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -390,7 +427,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 184 264 color 0 18 bold;
+      text '1' 176 264 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -398,7 +435,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   OneJunction1 368 264
+   OneJunction1 392 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -417,7 +454,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 368 264 color 0 18 bold;
+      text '1' 392 264 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -425,7 +462,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   OneJunction2 544 264
+   OneJunction2 624 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -444,7 +481,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 544 264 color 0 18 bold;
+      text '1' 624 264 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -452,7 +489,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   PlusMinus 440 136
+   PlusMinus 464 136
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -465,13 +502,13 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 432 128 448 144 color 0 fill 16777215;
+      ellipse 456 128 472 144 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   PlusMinus1 184 136
+   PlusMinus1 176 136
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -484,36 +521,38 @@ equations
     end;
     icon bg ellipse
      figures
-      ellipse 176 128 192 144 color 0 fill 16777215;
+      ellipse 168 128 184 144 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   Position 248 136
-    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath><TimeStamp>2007-9-27 14:50:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type PD
+   Position 256 136
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath><TimeStamp>2007-9-27 14:49:14</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type PID
      ports
       signal in error;
       signal out output;
     end;
     icon bg bottom
      figures
-      rectangle 232 120 264 152 color 0 fill 15132390;
-      text 'PD' 248 135.5 color 1336868 18 bold;
+      rectangle 240 120 272 152 color 0 fill 15132390;
+      text 'PID' 256 135.5 color 1336868 18 bold;
     end;
     implementation eq
 parameters
-	real kp = 1 {};			// Proportional gain
-	real tauD = 2 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.01 {};		// Tameness constant: 0 < beta << 1
+	real kp = 5.0 {};			// Proportional gain
+	real tauD = 1.023 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 150.71 {s};		// Integral time constant: tauI > 0
 variables
-	real hidden factor,uD;
+	real hidden factor,uD,uI;
 equations
 	factor = 1 / ( sampletime + tauD * beta );
 	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
-	output = uD;implementation_end;
-   R 184 328
+	uI = previous( uI ) +  sampletime * uD / tauI;
+	output = uI + uD;implementation_end;
+   R 176 328
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -529,7 +568,7 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 184 328 color 0 18 bold;
+      text 'R' 176 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -537,7 +576,7 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Step 440 56
+   Step 464 56
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\SignalGenerator-Step.emx</LibraryPath>
   <TimeStamp>2007-9-27 16:2:44</TimeStamp>
@@ -549,11 +588,11 @@ implementation_end;
     icon bg top
      figures
       group
-       rectangle 424 40 456 72 color 0 fill 15132390;
-       line 433.6 52.8 450.6 52.8 color 16711680 width 2;
-       line 426.9 64 453.1 64 color 0;
-       line 429.1 64.1 433.7 64.1 433.7 52.7 color 16711680 width 2;
-       line 429.1 48 429.1 66.2 color 0;
+       rectangle 448 40 480 72 color 0 fill 15132390;
+       line 457.6 52.8 474.6 52.8 color 16711680 width 2;
+       line 450.9 64 477.1 64 color 0;
+       line 453.1 64.1 457.7 64.1 457.7 52.7 color 16711680 width 2;
+       line 453.1 48 453.1 66.2 color 0;
       end;
     end;
     implementation eq
@@ -568,7 +607,7 @@ equations
 	
 	"calculate the step signal"
 	output = amplitude * step (start_time);     implementation_end;
-   Transmission 456 283.6
+   Transmission 480 283.6
 			specifications active 'Efficiency'
 				specification 'Efficiency'
  description '<Information>
@@ -601,47 +640,47 @@ equations
  end;
  icon ipm bottom
   figures
-   line 424 264 439.5 264 color 0;
-   line 439.5 292.2 455.5 292.2 color 0;
-   line 455.5 264 488 264 color 0;
+   line 448 264 463.5 264 color 0;
+   line 463.5 292.2 479.5 292.2 color 0;
+   line 479.5 264 512 264 color 0;
    group
-    line 439.5 276 439.5 308.3 color 0 width 2;
-    line 436.3 276 442.7 276 color 0 width 2;
-    line 436.3 308.3 442.7 308.3 color 0 width 2;
+    line 463.5 276 463.5 308.3 color 0 width 2;
+    line 460.3 276 466.7 276 color 0 width 2;
+    line 460.3 308.3 466.7 308.3 color 0 width 2;
    end;
    group
-    line 439.5 256.7 439.5 269 color 0 width 2;
-    line 436.3 256.7 442.7 256.7 color 0 width 2;
-    line 436.3 271 442.7 271 color 0 width 2;
+    line 463.5 256.7 463.5 269 color 0 width 2;
+    line 460.3 256.7 466.7 256.7 color 0 width 2;
+    line 460.3 271 466.7 271 color 0 width 2;
    end;
    group
-    line 455.5 251.3 455.5 279.3 color 0 width 2;
-    line 452.3 251.3 458.7 251.3 color 0 width 2;
-    line 452.3 279.3 458.7 279.3 color 0 width 2;
+    line 479.5 251.3 479.5 279.3 color 0 width 2;
+    line 476.3 251.3 482.7 251.3 color 0 width 2;
+    line 476.3 279.3 482.7 279.3 color 0 width 2;
    end;
    group
-    line 455.5 285.6 455.5 299.8 color 0 width 2;
-    line 452.3 285.6 458.7 285.6 color 0 width 2;
-    line 452.3 299.8 458.7 299.8 color 0 width 2;
+    line 479.5 285.6 479.5 299.8 color 0 width 2;
+    line 476.3 285.6 482.7 285.6 color 0 width 2;
+    line 476.3 299.8 482.7 299.8 color 0 width 2;
    end;
-   line 436.3 316.9 442.7 316.9 color -1;
-   text '1' 430.9 253.9 color 0;
-   text 'i' 465.1 253.9 color 16711680;
+   line 460.3 316.9 466.7 316.9 color -1;
+   text '1' 454.9 253.9 color 0;
+   text 'i' 489.1 253.9 color 16711680;
    group
-    line 469.7 260.2 473.9 254.2 color 0;
-    line 469.7 254.2 473.9 260.2 color 0;
-    line 476.1 254.2 480.3 260.2 color 0;
-    line 476.1 260.2 480.3 254.2 color 0;
+    line 493.7 260.2 497.9 254.2 color 0;
+    line 493.7 254.2 497.9 260.2 color 0;
+    line 500.1 254.2 504.3 260.2 color 0;
+    line 500.1 260.2 504.3 254.2 color 0;
    end;
    group
-    line 469.7 272.3 473.9 266.5 color 0;
-    line 469.7 266.5 473.9 272.3 color 0;
-    line 476.1 266.5 480.3 272.3 color 0;
-    line 476.1 272.3 480.3 266.5 color 0;
+    line 493.7 272.3 497.9 266.5 color 0;
+    line 493.7 266.5 497.9 272.3 color 0;
+    line 500.1 266.5 504.3 272.3 color 0;
+    line 500.1 272.3 504.3 266.5 color 0;
    end;
   terminals
-   p_in 424 264 fixed;
-   p_out 488 264 fixed;
+   p_in 448 264 fixed;
+   p_out 512 264 fixed;
  end;
  implementation eq
 parameters
@@ -812,12 +851,13 @@ specification_end;
   end;
   connections
    AD\output -> PlusMinus1\minus;
-   AD1\output -> DiscreteIntegral\input 600 136;
+   AD1\output -> DiscreteIntegral\input 680 136;
    Current\output -> DA\input;
    DA\output -> MSe\effort;
    DiscreteIntegral\output -> PlusMinus\minus;
    Freq2Sampler\output -> Position\error;
    GY\p2 => OneJunction1\p;
+   max3_4Nm\p2 => OneJunction2\p;
    MSe\p => OneJunction\p;
    OneJunction\flow -> AD\input;
    OneJunction\p => GY\p1;
@@ -826,13 +866,13 @@ specification_end;
    OneJunction\p => R\p;
    OneJunction1\p => MotorLoadInertia\p;
    OneJunction1\p => Transmission\p_in;
-   OneJunction2\flow -> AD1\input 600 264;
+   OneJunction2\flow -> AD1\input 680 264;
    OneJunction2\p => load\p;
    PlusMinus\output -> Freq2Sampler\input;
    PlusMinus1\output -> Current\error;
    Position\output -> PlusMinus1\plus;
    Step\output -> PlusMinus\plus;
-   Transmission\p_out => OneJunction2\p;
+   Transmission\p_out => max3_4Nm\p1;
   end;
  implementation_end;
 ]]></Sidops>
@@ -849,10 +889,18 @@ specification_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
+  <Constants>
+  </Constants>
   <Parameters>
    <Variable>
     <Name>MotorLoadInertia\i</Name>
-    <Value>7.380889164370983e-4</Value>
+    <Description><![CDATA[motor, gearbox, load]]></Description>
+    <Value>7.381689164370983e-4</Value>
+   </Variable>
+   <Variable>
+    <Name>MotorLoadInertia\lim</Name>
+    <Description><![CDATA[max rpm]]></Description>
+    <Value>12566.370614359172</Value>
    </Variable>
   </Parameters>
   <Initials>
@@ -900,48 +948,31 @@ specification_end;
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
+   <Variable>
+    <Name>Position\uI_previous_initial</Name>
+    <VarType>B</VarType>
+    <DiscreteIndex>1</DiscreteIndex>
+    <Value>0.0</Value>
+   </Variable>
   </Initials>
-  <InputProbes>
-   <Variable>
-    <Name>DA\output</Name>
-   </Variable>
-  </InputProbes>
-  <OutputProbes>
-   <Variable>
-    <Name>AD1\output</Name>
-   </Variable>
-  </OutputProbes>
  </Variables>
- <FrequencyResponses>
- <FrequencyResponse>
-  <Input>DA\output</Input>
-  <Output>AD1\output</Output>
-  <Numeric>false</Numeric>
-  <AbsTolerance>1.0e-6</AbsTolerance>
-  <RelTolerance>0.001</RelTolerance>
-  <LinSysTolerance>0.0</LinSysTolerance>
-  <AtStartOfSimulation>true</AtStartOfSimulation>
-  <UseAbsTolIfNecessary>true</UseAbsTolIfNecessary>
-  <OutputAsLinearSystem>true</OutputAsLinearSystem>
-  <AutoFreqRange>true</AutoFreqRange>
-  <FreqInHz>true</FreqInHz>
-  <FreqRangeMin>0.1</FreqRangeMin>
-  <FreqRangeMax>100000.0</FreqRangeMax>
-  <ClosedLoop>false</ClosedLoop>
- </FrequencyResponse>
- </FrequencyResponses>
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
    <VarName>Step\output</VarName>
    <VarName>OneJunction2\flow</VarName>
    <VarName>DiscreteIntegral\output</VarName>
+   <VarName>max3_4Nm\effort</VarName>
+   <VarName>AD\input</VarName>
+   <VarName>AD\output</VarName>
+   <VarName>DA\output</VarName>
+   <VarName>MotorLoadInertia\p.f</VarName>
   </VarNames>
   <Plots>
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -958,9 +989,9 @@ specification_end;
      <Use3DLook>false</Use3DLook>
     </Grid>
     <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
+    <ShowPlotTitle>false</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>model</PlotTitle>
+    <PlotTitle>output</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -1018,22 +1049,22 @@ specification_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.0</Minimum>
-      <Maximum>3.0</Maximum>
+      <Minimum>-1.5</Minimum>
+      <Maximum>3.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
      </Axis>
      <Axis>
-      <Minimum>-6.0</Minimum>
-      <Maximum>14.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>flow</Label>
      </Axis>
      <Axis>
-      <Minimum>-6.0</Minimum>
-      <Maximum>14.0</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
@@ -1106,6 +1137,226 @@ specification_end;
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>3</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>false</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>false</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>maximums</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.19999999999999996</Minimum>
+      <Maximum>0.8</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>max3_4</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-30.0</Minimum>
+      <Maximum>70.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>max20</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-30.0</Minimum>
+      <Maximum>70.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-30.0</Minimum>
+      <Maximum>70.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>max48</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-30.0</Minimum>
+      <Maximum>70.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>max12000</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>max3_4Nm\effort</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>AD\input</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>AD\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>DA\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MotorLoadInertia\p.f</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -1114,14 +1365,15 @@ specification_end;
     <Name>Window 1</Name>
     <Tiling>2</Tiling>
     <PlotIds>
-     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
+     <PlotId>3</PlotId>
     </PlotIds>
-    <ToggleState>OnePlot</ToggleState>
+    <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
-   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
-0.500391 0.00277778 0.998437 0.963889
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+0.00911458 0.00416667 0.99349 0.882292
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1134,7 +1386,7 @@ specification_end;
    <SimulationMode>0</SimulationMode>
    <FPGonio>false</FPGonio>
    <UseOutputAfterEach>true</UseOutputAfterEach>
-   <OutputAfterEach>0.1</OutputAfterEach>
+   <OutputAfterEach>1.0e-4</OutputAfterEach>
    <EventEpsilon>1.0e-6</EventEpsilon>
    <AlgebraicTolerance>1.0e-7</AlgebraicTolerance>
    <SteadyStateAnalysis>false</SteadyStateAnalysis>
@@ -1250,7 +1502,7 @@ specification_end;
   </IntegrationMethods>
  </RunSpecs>
  <MultipleRun>
-  <NrSteps>10</NrSteps>
+  <NrSteps>100</NrSteps>
   <CopyFromStates>false</CopyFromStates>
   <JoinParameterVariation>true</JoinParameterVariation>
   <ClearAfterRun>true</ClearAfterRun>
@@ -1258,14 +1510,81 @@ specification_end;
   <DrawDuringSimulation>true</DrawDuringSimulation>
   <ActionBeforeOptimization>0</ActionBeforeOptimization>
   <CompareValue>0.0</CompareValue>
-  <UseCompareValue>true</UseCompareValue>
-  <MultipleRunType>MultipleRun</MultipleRunType>
+  <UseCompareValue>false</UseCompareValue>
+  <MultipleRunType>Optimization</MultipleRunType>
   <Minimize>true</Minimize>
-  <OptimizationVariable></OptimizationVariable>
-  <ResulVarUsage>UseEndValue</ResulVarUsage>
+  <OptimizationVariable>DiscreteIntegral\output</OptimizationVariable>
+  <CompareVariable>Step\output</CompareVariable>
+  <ResulVarUsage>UseIntegralAbsolute</ResulVarUsage>
   <Tolerance>0.001</Tolerance>
   <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
   <MultipleRunVariables>
+   <MultipleRunVariable>
+    <Name>Current\kp</Name>
+    <Minimum>0.1</Minimum>
+    <Maximum>10000.0</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>2.0</Mean>
+    <Deviation>0.5</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>2.0</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>Current\tauI</Name>
+    <Minimum>0.1</Minimum>
+    <Maximum>10000.0</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>8.0</Mean>
+    <Deviation>2.0</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>8.0</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>Position\beta</Name>
+    <Minimum>0.05</Minimum>
+    <Maximum>0.99</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>0.1</Mean>
+    <Deviation>0.025</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>0.1</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>Position\kp</Name>
+    <Minimum>0.1</Minimum>
+    <Maximum>10000.0</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>5.0</Mean>
+    <Deviation>1.25</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>5.0</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>Position\tauD</Name>
+    <Minimum>0.05</Minimum>
+    <Maximum>10000.0</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>0.1</Mean>
+    <Deviation>0.025</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>0.1</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>Position\tauI</Name>
+    <Minimum>0.1</Minimum>
+    <Maximum>100000.0</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>100000.0</Mean>
+    <Deviation>25000.0</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>1.0</Nominal>
+   </MultipleRunVariable>
   </MultipleRunVariables>
  </MultipleRun>
  <ExportData>
@@ -1283,6 +1602,9 @@ specification_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
