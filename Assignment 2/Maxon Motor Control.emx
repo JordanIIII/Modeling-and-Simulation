@@ -7,15 +7,15 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-29 14:40:48</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
+    <TimeStamp>2026-4-29 14:55:12</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
-   AD 264 200
+   AD 184 200
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
   <TimeStamp>2017-09-08 16:16:00</TimeStamp>
@@ -27,10 +27,10 @@
     end;
     icon bg bottom
      figures
-      rectangle 248 184 280 216 color 0 fill 15132390;
-      spline 254.4 209.3 272 191.7 color 16711680;
-      text 'A' 257.1 194.1 color 16711680 14;
-      text 'D' 270.4 205.3 color 16711680 14;
+      rectangle 168 184 200 216 color 0 fill 15132390;
+      spline 174.4 209.3 192 191.7 color 16711680;
+      text 'A' 177.1 194.1 color 16711680 14;
+      text 'D' 190.4 205.3 color 16711680 14;
     end;
     implementation eq
 parameters
@@ -109,7 +109,7 @@ equations
 
 	output =  quantisized_signal - (quantisized_signal mod lsb);
     implementation_end;
-   Current 192 136
+   Current 112 136
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PI.emx</LibraryPath><TimeStamp>2007-9-27 14:49:39</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type PI
      ports
@@ -118,8 +118,8 @@ equations
     end;
     icon bg top
      figures
-      rectangle 176 120 208 152 color 0 fill 15132390;
-      text 'PI' 192 136 color 1336868 18 bold;
+      rectangle 96 120 128 152 color 0 fill 15132390;
+      text 'PI' 112 136 color 1336868 18 bold;
     end;
     implementation eq
 parameters
@@ -135,7 +135,7 @@ equations
 	uI = previous(uI) + bi*error;
 	output = uP+uI;
               implementation_end;
-   DA 192 200
+   DA 112 200
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
   <LibraryPath>Signal\Discrete\DA.emx</LibraryPath>
   <TimeStamp>2017-09-08 16:16:00</TimeStamp>
@@ -148,10 +148,10 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 176 184 208 216 color 0 fill 15132390;
-      spline 182.4 209.3 200 191.7 color 16711680;
-      text 'A' 198.2 205.5 color 16711680 14;
-      text 'D' 185.2 194.8 color 16711680 14;
+      rectangle 96 184 128 216 color 0 fill 15132390;
+      spline 102.4 209.3 120 191.7 color 16711680;
+      text 'A' 118.2 205.5 color 16711680 14;
+      text 'D' 105.2 194.8 color 16711680 14;
     end;
     implementation eq
 parameters
@@ -212,7 +212,36 @@ variables
 equations
 	next (total) = total + input*sampletime;
 	output = total + initial;     implementation_end;
-   GY 328 264
+   Freq2Sampler 368 136
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Template\Submodel-Equation.emx</LibraryPath>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <TimeStamp>2007-11-1 22:32:1</TimeStamp>
+   <AllowLibraryUpdate>False</AllowLibraryUpdate>
+</Description>';
+    type 'Submodel-Equation'
+     ports
+      signal in input;
+      signal out output;
+    end;
+    implementation eq
+parameters
+	real initial = 0.0;  	// initial output value
+variables
+	real count;
+equations
+		output = if time == 0 then 
+			initialvalue(input) 
+		else
+			if count <> 9 then
+				previous(output)
+			else
+				input
+				end
+			end;
+	next (count) = if count < 9 then count + 1 else 0 end; implementation_end;
+   GY 248 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -231,7 +260,7 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'GY' 328 264 color 0 18 bold;
+      text 'GY' 248 264 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -240,7 +269,7 @@ equations
 	p1.e = r * p2.f;
 	p2.e = r * p1.f;
 implementation_end;
-   HBridge 192 328
+   HBridge 112 328
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
@@ -248,7 +277,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 192 328 color 0 18 bold;
+      text 'R' 112 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -256,7 +285,7 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Inductance 328 328
+   Inductance 248 328
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
      ports
@@ -267,7 +296,7 @@ implementation_end;
     end;
     icon bg ellipse right
      figures
-      text 'I' 328 328 color 0 18 bold;
+      text 'I' 248 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -276,6 +305,22 @@ equations
     //state = state + p.e*sampletime;
 	 state = int(p.e);
     p.f = state / i;
+implementation_end;
+   load 568 312
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type R
+     ports
+      power in p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'R' 568 312 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real r = 0.3;
+equations
+	p.e = r * p.f;
 implementation_end;
    MotorLoadInertia 392 200
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
@@ -298,7 +343,7 @@ equations
 	 state = int(p.e);
     p.f = state / i;
 implementation_end;
-   MSe 192 264
+   MSe 112 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -317,7 +362,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 192 264 color 0 18 bold;
+      text 'MSe' 112 264 color 0 18 bold;
     end;
     implementation eq
 variables
@@ -326,7 +371,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   OneJunction 264 264
+   OneJunction 184 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -345,7 +390,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 264 264 color 0 18 bold;
+      text '1' 184 264 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -426,7 +471,7 @@ implementation_end;
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   PlusMinus1 264 136
+   PlusMinus1 184 136
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -439,13 +484,13 @@ equations
     end;
     icon bg ellipse
      figures
-      ellipse 256 128 272 144 color 0 fill 16777215;
+      ellipse 176 128 192 144 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   Position 344 136
+   Position 264 136
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath><TimeStamp>2007-9-27 14:49:14</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type PID
      ports
@@ -454,8 +499,8 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 328 120 360 152 color 0 fill 15132390;
-      text 'PID' 344 135.5 color 1336868 18 bold;
+      rectangle 248 120 280 152 color 0 fill 15132390;
+      text 'PID' 264 135.5 color 1336868 18 bold;
     end;
     implementation eq
 parameters
@@ -470,7 +515,7 @@ equations
 	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
 	uI = previous( uI ) +  sampletime * uD / tauI;
 	output = uI + uD;implementation_end;
-   R 264 328
+   R 184 328
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -486,7 +531,7 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 264 328 color 0 18 bold;
+      text 'R' 184 328 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -773,6 +818,7 @@ specification_end;
    Current\output -> DA\input;
    DA\output -> MSe\effort;
    DiscreteIntegral\output -> PlusMinus\minus;
+   Freq2Sampler\output -> Position\error;
    GY\p2 => OneJunction1\p;
    MSe\p => OneJunction\p;
    OneJunction\flow -> AD\input;
@@ -783,7 +829,8 @@ specification_end;
    OneJunction1\p => MotorLoadInertia\p;
    OneJunction1\p => Transmission\p_in;
    OneJunction2\flow -> AD1\input 624 264;
-   PlusMinus\output -> Position\error;
+   OneJunction2\p => load\p;
+   PlusMinus\output -> Freq2Sampler\input;
    PlusMinus1\output -> Current\error;
    Position\output -> PlusMinus1\plus;
    Step\output -> PlusMinus\plus;
@@ -827,6 +874,18 @@ specification_end;
    </Variable>
    <Variable>
     <Name>DiscreteIntegral\total_initial</Name>
+    <VarType>B</VarType>
+    <DiscreteIndex>1</DiscreteIndex>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>Freq2Sampler\count_initial</Name>
+    <VarType>B</VarType>
+    <DiscreteIndex>1</DiscreteIndex>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>Freq2Sampler\output_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
@@ -931,7 +990,7 @@ specification_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -939,8 +998,8 @@ specification_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-20.0</Minimum>
-      <Maximum>30.0</Maximum>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
@@ -1040,9 +1099,9 @@ specification_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00625 0.0037037 0.995833 0.987037
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+0.00651042 0.003125 0.996094 0.888542
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1204,9 +1263,6 @@ specification_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
