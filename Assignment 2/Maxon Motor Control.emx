@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-29 15:35:59</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
+    <TimeStamp>2026-4-29 16:27:12</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -452,32 +452,6 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   PD 248 136
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath>
-  <TimeStamp>2007-9-27 14:50:12</TimeStamp>
-</Description>';
-    type PD
-     ports
-      signal in error;
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 232 120 264 152 color 0 fill 15132390;
-      text 'PD' 248 135.5 color 1336868 18 bold;
-    end;
-    implementation eq
-parameters
-	real kp = 1 {};			// Proportional gain
-	real tauD = 2 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.01 {};		// Tameness constant: 0 < beta << 1
-variables
-	real hidden factor,uD;
-equations
-	factor = 1 / ( sampletime + tauD * beta );
-	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
-	output = uD;implementation_end;
    PlusMinus 440 136
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
@@ -516,6 +490,29 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+   Position 248 136
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath><TimeStamp>2007-9-27 14:50:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type PD
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 232 120 264 152 color 0 fill 15132390;
+      text 'PD' 248 135.5 color 1336868 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 1 {};			// Proportional gain
+	real tauD = 2 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.01 {};		// Tameness constant: 0 < beta << 1
+variables
+	real hidden factor,uD;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	output = uD;implementation_end;
    R 184 328
     description '<Information>
  <Description>
@@ -819,7 +816,7 @@ specification_end;
    Current\output -> DA\input;
    DA\output -> MSe\effort;
    DiscreteIntegral\output -> PlusMinus\minus;
-   Freq2Sampler\output -> PD\error;
+   Freq2Sampler\output -> Position\error;
    GY\p2 => OneJunction1\p;
    MSe\p => OneJunction\p;
    OneJunction\flow -> AD\input;
@@ -831,9 +828,9 @@ specification_end;
    OneJunction1\p => Transmission\p_in;
    OneJunction2\flow -> AD1\input 600 264;
    OneJunction2\p => load\p;
-   PD\output -> PlusMinus1\plus;
    PlusMinus\output -> Freq2Sampler\input;
    PlusMinus1\output -> Current\error;
+   Position\output -> PlusMinus1\plus;
    Step\output -> PlusMinus\plus;
    Transmission\p_out => OneJunction2\p;
   end;
@@ -892,19 +889,47 @@ specification_end;
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>PD\error_previous_initial</Name>
+    <Name>Position\error_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>PD\uD_previous_initial</Name>
+    <Name>Position\uD_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
   </Initials>
+  <InputProbes>
+   <Variable>
+    <Name>DA\output</Name>
+   </Variable>
+  </InputProbes>
+  <OutputProbes>
+   <Variable>
+    <Name>AD1\output</Name>
+   </Variable>
+  </OutputProbes>
  </Variables>
+ <FrequencyResponses>
+ <FrequencyResponse>
+  <Input>DA\output</Input>
+  <Output>AD1\output</Output>
+  <Numeric>false</Numeric>
+  <AbsTolerance>1.0e-6</AbsTolerance>
+  <RelTolerance>0.001</RelTolerance>
+  <LinSysTolerance>0.0</LinSysTolerance>
+  <AtStartOfSimulation>true</AtStartOfSimulation>
+  <UseAbsTolIfNecessary>true</UseAbsTolIfNecessary>
+  <OutputAsLinearSystem>true</OutputAsLinearSystem>
+  <AutoFreqRange>true</AutoFreqRange>
+  <FreqInHz>true</FreqInHz>
+  <FreqRangeMin>0.1</FreqRangeMin>
+  <FreqRangeMax>100000.0</FreqRangeMax>
+  <ClosedLoop>false</ClosedLoop>
+ </FrequencyResponse>
+ </FrequencyResponses>
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
@@ -1094,9 +1119,9 @@ specification_end;
     <ToggleState>OnePlot</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00885417 0.0037037 0.994271 0.980556
+  <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
+   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
+0.500391 0.00277778 0.998437 0.963889
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1258,9 +1283,6 @@ specification_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
