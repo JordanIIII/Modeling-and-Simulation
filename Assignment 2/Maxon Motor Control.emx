@@ -8,13 +8,180 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-28 15:28:33</TimeStamp>
+    <TimeStamp>2026-4-29 14:40:48</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
+   AD 264 200
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
+  <TimeStamp>2017-09-08 16:16:00</TimeStamp>
+</Description>';
+    type AD
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 248 184 280 216 color 0 fill 15132390;
+      spline 254.4 209.3 272 191.7 color 16711680;
+      text 'A' 257.1 194.1 color 16711680 14;
+      text 'D' 270.4 205.3 color 16711680 14;
+    end;
+    implementation eq
+parameters
+	real bits = 12;         // Quantization levels (bits)
+	real minimum = -20;     // Minimum output value
+	real maximum = 20;      // Maximum output value
+	real initial = 0;       // Initial output
+variables
+	real hold_signal, windowed_signal, quantisized_signal;
+	real lsb, half_lsb;
+equations
+	lsb = (maximum - minimum) / (exp2 (bits) - 1);
+	half_lsb = lsb / 2;
+	hold_signal = sample (input,initial);
+	windowed_signal = if hold_signal <= minimum then
+		 minimum + half_lsb
+	else
+		if hold_signal >= maximum then 
+			maximum -half_lsb
+		else 
+			hold_signal
+		end
+	end;
+	quantisized_signal = if windowed_signal < 0.0 then
+		windowed_signal - half_lsb
+	else
+		 windowed_signal + half_lsb
+	end;
+
+	output =  quantisized_signal - (quantisized_signal mod lsb);
+    implementation_end;
+   AD1 624 200
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\AD.emx</LibraryPath>
+  <TimeStamp>2017-09-08 16:16:00</TimeStamp>
+</Description>';
+    type AD
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 608 184 640 216 color 0 fill 15132390;
+      spline 614.4 209.3 632 191.7 color 16711680;
+      text 'A' 617.1 194.1 color 16711680 14;
+      text 'D' 630.4 205.3 color 16711680 14;
+    end;
+    implementation eq
+parameters
+	real bits = 12;         // Quantization levels (bits)
+	real minimum = -20;     // Minimum output value
+	real maximum = 20;      // Maximum output value
+	real initial = 0;       // Initial output
+variables
+	real hold_signal, windowed_signal, quantisized_signal;
+	real lsb, half_lsb;
+equations
+	lsb = (maximum - minimum) / (exp2 (bits) - 1);
+	half_lsb = lsb / 2;
+	hold_signal = sample (input,initial);
+	windowed_signal = if hold_signal <= minimum then
+		 minimum + half_lsb
+	else
+		if hold_signal >= maximum then 
+			maximum -half_lsb
+		else 
+			hold_signal
+		end
+	end;
+	quantisized_signal = if windowed_signal < 0.0 then
+		windowed_signal - half_lsb
+	else
+		 windowed_signal + half_lsb
+	end;
+
+	output =  quantisized_signal - (quantisized_signal mod lsb);
+    implementation_end;
+   Current 192 136
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PI.emx</LibraryPath><TimeStamp>2007-9-27 14:49:39</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type PI
+     ports
+      signal out output;
+      signal in error;
+    end;
+    icon bg top
+     figures
+      rectangle 176 120 208 152 color 0 fill 15132390;
+      text 'PI' 192 136 color 1336868 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 2 {};			// Proportional gain
+	real tauI = 8 {s};		// Integral time constant: tauI > 0
+variables
+	real bi;
+	real uP;
+	real uI;
+equations
+	bi = kp*sampletime / tauI;
+	uP = kp * error;
+	uI = previous(uI) + bi*error;
+	output = uP+uI;
+              implementation_end;
+   DA 192 200
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+  <LibraryPath>Signal\Discrete\DA.emx</LibraryPath>
+  <TimeStamp>2017-09-08 16:16:00</TimeStamp>
+</Description>
+';
+    type DA
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 176 184 208 216 color 0 fill 15132390;
+      spline 182.4 209.3 200 191.7 color 16711680;
+      text 'A' 198.2 205.5 color 16711680 14;
+      text 'D' 185.2 194.8 color 16711680 14;
+    end;
+    implementation eq
+parameters
+	real bits = 12;         // Quantization levels (bits)
+	real minimum = -20;     // Minimum output value
+	real maximum = 20;      // Maximum output value
+variables
+	real windowed_signal, quantisized_signal, rounded_signal;
+	real lsb, half_lsb;
+equations
+	lsb = (maximum - minimum) / (exp2 (bits) -1);
+	half_lsb = lsb / 2;
+	windowed_signal = if input <= minimum then
+		minimum+ half_lsb
+	else
+		if input >= maximum then 
+			maximum - half_lsb
+		else 
+			input
+		end
+	end;
+	quantisized_signal = if windowed_signal < 0.0 then
+		windowed_signal - half_lsb
+	else
+		 windowed_signal + half_lsb
+	end;
+
+	rounded_signal =  quantisized_signal - (quantisized_signal mod lsb);
+	output = hold (rounded_signal);
+      implementation_end;
    DiscreteIntegral 568 136
     description '<Information>
  <Description>
@@ -106,7 +273,8 @@ implementation_end;
 parameters
 	real i = 0.513;
 equations
-    state = state + p.e*sampletime;
+    //state = state + p.e*sampletime;
+	 state = int(p.e);
     p.f = state / i;
 implementation_end;
    MotorLoadInertia 392 200
@@ -126,7 +294,8 @@ implementation_end;
 parameters
 	real i = 34.7e-7 + 0.8/33^2;
 equations
-    state = state + p.e*sampletime;
+    //state = state + p.e*sampletime;
+	 state = int(p.e);
     p.f = state / i;
 implementation_end;
    MSe 192 264
@@ -238,62 +407,6 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   PID 344 136
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
-  <TimeStamp>2007-9-27 14:49:14</TimeStamp>
-</Description>';
-    type PID
-     ports
-      signal in error;
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 328 120 360 152 color 0 fill 15132390;
-      text 'PID' 344 135.5 color 1336868 18 bold;
-    end;
-    implementation eq
-parameters
-	real kp = 1.0 {};			// Proportional gain
-	real tauD = 1.0 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-variables
-	real hidden factor,uD,uI;
-equations
-	factor = 1 / ( sampletime + tauD * beta );
-	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
-	uI = previous( uI ) +  sampletime * uD / tauI;
-	output = uI + uD;implementation_end;
-   PID1 192 136
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
-  <TimeStamp>2007-9-27 14:49:14</TimeStamp>
-</Description>';
-    type PID
-     ports
-      signal in error;
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 176 120 208 152 color 0 fill 15132390;
-      text 'PID' 192 135.5 color 1336868 18 bold;
-    end;
-    implementation eq
-parameters
-	real kp = 1.0 {};			// Proportional gain
-	real tauD = 1.0 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-variables
-	real hidden factor,uD,uI;
-equations
-	factor = 1 / ( sampletime + tauD * beta );
-	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
-	uI = previous( uI ) +  sampletime * uD / tauI;
-	output = uI + uD;implementation_end;
    PlusMinus 464 136
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
@@ -332,6 +445,31 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+   Position 344 136
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath><TimeStamp>2007-9-27 14:49:14</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 328 120 360 152 color 0 fill 15132390;
+      text 'PID' 344 135.5 color 1336868 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 5 {};			// Proportional gain
+	real tauD = 0.1 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 100000 {s};		// Integral time constant: tauI > 0
+variables
+	real hidden factor,uD,uI;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	uI = previous( uI ) +  sampletime * uD / tauI;
+	output = uI + uD;implementation_end;
    R 264 328
     description '<Information>
  <Description>
@@ -377,7 +515,7 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real amplitude = 1;
+	real amplitude = 10;
 	real start_time = 1.0 {s};
 variables
 	boolean hidden change;
@@ -630,21 +768,24 @@ specification_end;
 			end;
   end;
   connections
+   AD\output -> PlusMinus1\minus;
+   AD1\output -> DiscreteIntegral\input 624 136;
+   Current\output -> DA\input;
+   DA\output -> MSe\effort;
    DiscreteIntegral\output -> PlusMinus\minus;
    GY\p2 => OneJunction1\p;
    MSe\p => OneJunction\p;
-   OneJunction\flow -> PlusMinus1\minus;
+   OneJunction\flow -> AD\input;
    OneJunction\p => GY\p1;
    OneJunction\p => HBridge\p;
    OneJunction\p => Inductance\p;
    OneJunction\p => R\p;
    OneJunction1\p => MotorLoadInertia\p;
    OneJunction1\p => Transmission\p_in;
-   OneJunction2\flow -> DiscreteIntegral\input 640 264 640 136;
-   PID\output -> PlusMinus1\plus;
-   PID1\output -> MSe\effort;
-   PlusMinus\output -> PID\error;
-   PlusMinus1\output -> PID1\error;
+   OneJunction2\flow -> AD1\input 624 264;
+   PlusMinus\output -> Position\error;
+   PlusMinus1\output -> Current\error;
+   Position\output -> PlusMinus1\plus;
    Step\output -> PlusMinus\plus;
    Transmission\p_out => OneJunction2\p;
   end;
@@ -666,10 +807,24 @@ specification_end;
   <Parameters>
    <Variable>
     <Name>MotorLoadInertia\i</Name>
-    <Value>0.0</Value>
+    <Value>7.380889164370983e-4</Value>
    </Variable>
   </Parameters>
   <Initials>
+   <Variable>
+    <Name>Inductance\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>MotorLoadInertia\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>Current\uI_previous_initial</Name>
+    <VarType>B</VarType>
+    <DiscreteIndex>1</DiscreteIndex>
+    <Value>0.0</Value>
+   </Variable>
    <Variable>
     <Name>DiscreteIntegral\total_initial</Name>
     <VarType>B</VarType>
@@ -677,37 +832,19 @@ specification_end;
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>PID\error_previous_initial</Name>
+    <Name>Position\error_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>PID\uD_previous_initial</Name>
+    <Name>Position\uD_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>PID\uI_previous_initial</Name>
-    <VarType>B</VarType>
-    <DiscreteIndex>1</DiscreteIndex>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>PID1\error_previous_initial</Name>
-    <VarType>B</VarType>
-    <DiscreteIndex>1</DiscreteIndex>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>PID1\uD_previous_initial</Name>
-    <VarType>B</VarType>
-    <DiscreteIndex>1</DiscreteIndex>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>PID1\uI_previous_initial</Name>
+    <Name>Position\uI_previous_initial</Name>
     <VarType>B</VarType>
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
@@ -717,6 +854,9 @@ specification_end;
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
+   <VarName>Step\output</VarName>
+   <VarName>OneJunction2\flow</VarName>
+   <VarName>DiscreteIntegral\output</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -791,7 +931,7 @@ specification_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -799,11 +939,25 @@ specification_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Minimum>-20.0</Minimum>
+      <Maximum>30.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label></Label>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>14.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>flow</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>14.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>output</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -823,6 +977,48 @@ specification_end;
        <ShowUnit>true</ShowUnit>
        <VarName>time</VarName>
       </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Step\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>OneJunction2\flow</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>DiscreteIntegral\output</VarName>
+      </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
@@ -844,6 +1040,11 @@ specification_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.00625 0.0037037 0.995833 0.987037
+   </WindowRectangle>
+  </WindowRectangles>
  </PlotSpecs>
  <RunSpecs>
   <SimulatorSettings>
@@ -853,7 +1054,7 @@ specification_end;
    <Warp>false</Warp>
    <SimulationMode>0</SimulationMode>
    <FPGonio>false</FPGonio>
-   <UseOutputAfterEach>false</UseOutputAfterEach>
+   <UseOutputAfterEach>true</UseOutputAfterEach>
    <OutputAfterEach>0.1</OutputAfterEach>
    <EventEpsilon>1.0e-6</EventEpsilon>
    <AlgebraicTolerance>1.0e-7</AlgebraicTolerance>
@@ -861,8 +1062,8 @@ specification_end;
    <UpdateHoldInstructions>true</UpdateHoldInstructions>
    <DiscreteSystems>
     <DiscreteSystem>
-     <DiscreteID>DiscreteIntegral\total_next</DiscreteID>
-     <TimeInterval>1.0</TimeInterval>
+     <DiscreteID>AD\hold_signal</DiscreteID>
+     <TimeInterval>1.0e-4</TimeInterval>
      <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
      <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
      <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
@@ -910,9 +1111,9 @@ specification_end;
    <IntegrationMethod>
     <Name>RungeKutta8</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <SafetyFactor>0.9</SafetyFactor>
@@ -927,18 +1128,18 @@ specification_end;
    <IntegrationMethod>
     <Name>RungeKuttaFehlberg</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>VodeAdams</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <VodeUseBDF>true</VodeUseBDF>
@@ -951,9 +1152,9 @@ specification_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>MeBDFiMethod</Name>
@@ -962,9 +1163,9 @@ specification_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <SelectedIntegrationMethod>8</SelectedIntegrationMethod>
   </IntegrationMethods>
@@ -1003,6 +1204,9 @@ specification_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
