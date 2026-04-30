@@ -11,7 +11,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-30 10:17:20</TimeStamp>
+    <TimeStamp>2026-4-30 10:36:19</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -321,7 +321,7 @@ equations
 	 state = int(p.e);
     p.f = state / i;
 implementation_end;
-   load 624 320
+   load 632 320
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type R
      ports
@@ -329,7 +329,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'R' 624 320 color 0 18 bold;
+      text 'R' 632 320 color 0 18 bold;
     end;
     implementation eq
 parameters
@@ -358,7 +358,7 @@ equations
 	p.e = true_fric * p.f;
 	
 implementation_end;
-   max3_4Nm 568 263.9
+   max3_4Nm 584 263.9
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\EffortSensor.emx</LibraryPath><TimeStamp>2011-11-29 15:44:34</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     knot EffortSensor
      ports
@@ -370,8 +370,8 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 561.1 256.9 574.9 271 color 0 fill 16777215;
-      text 'e' 568 262.9 color 0;
+      ellipse 577.1 256.9 590.9 271 color 0 fill 16777215;
+      text 'e' 584 262.9 color 0;
     end;
     implementation eq
 equations
@@ -483,7 +483,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   OneJunction2 624 264
+   OneJunction2 632 264
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -502,7 +502,7 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      text '1' 624 264 color 0 18 bold;
+      text '1' 632 264 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -628,7 +628,7 @@ equations
 	
 	"calculate the step signal"
 	output = amplitude * step (start_time);     implementation_end;
-   Transmission 480 283.6
+   Transmission 504 283.6
 			specifications active 'Efficiency'
 				specification 'Efficiency'
  description '<Information>
@@ -661,47 +661,47 @@ equations
  end;
  icon ipm bottom
   figures
-   line 448 264 463.5 264 color 0;
-   line 463.5 292.2 479.5 292.2 color 0;
-   line 479.5 264 512 264 color 0;
+   line 472 264 487.5 264 color 0;
+   line 487.5 292.2 503.5 292.2 color 0;
+   line 503.5 264 536 264 color 0;
    group
-    line 463.5 276 463.5 308.3 color 0 width 2;
-    line 460.3 276 466.7 276 color 0 width 2;
-    line 460.3 308.3 466.7 308.3 color 0 width 2;
+    line 487.5 276 487.5 308.3 color 0 width 2;
+    line 484.3 276 490.7 276 color 0 width 2;
+    line 484.3 308.3 490.7 308.3 color 0 width 2;
    end;
    group
-    line 463.5 256.7 463.5 269 color 0 width 2;
-    line 460.3 256.7 466.7 256.7 color 0 width 2;
-    line 460.3 271 466.7 271 color 0 width 2;
+    line 487.5 256.7 487.5 269 color 0 width 2;
+    line 484.3 256.7 490.7 256.7 color 0 width 2;
+    line 484.3 271 490.7 271 color 0 width 2;
    end;
    group
-    line 479.5 251.3 479.5 279.3 color 0 width 2;
-    line 476.3 251.3 482.7 251.3 color 0 width 2;
-    line 476.3 279.3 482.7 279.3 color 0 width 2;
+    line 503.5 251.3 503.5 279.3 color 0 width 2;
+    line 500.3 251.3 506.7 251.3 color 0 width 2;
+    line 500.3 279.3 506.7 279.3 color 0 width 2;
    end;
    group
-    line 479.5 285.6 479.5 299.8 color 0 width 2;
-    line 476.3 285.6 482.7 285.6 color 0 width 2;
-    line 476.3 299.8 482.7 299.8 color 0 width 2;
+    line 503.5 285.6 503.5 299.8 color 0 width 2;
+    line 500.3 285.6 506.7 285.6 color 0 width 2;
+    line 500.3 299.8 506.7 299.8 color 0 width 2;
    end;
-   line 460.3 316.9 466.7 316.9 color -1;
-   text '1' 454.9 253.9 color 0;
-   text 'i' 489.1 253.9 color 16711680;
+   line 484.3 316.9 490.7 316.9 color -1;
+   text '1' 478.9 253.9 color 0;
+   text 'i' 513.1 253.9 color 16711680;
    group
-    line 493.7 260.2 497.9 254.2 color 0;
-    line 493.7 254.2 497.9 260.2 color 0;
-    line 500.1 254.2 504.3 260.2 color 0;
-    line 500.1 260.2 504.3 254.2 color 0;
+    line 517.7 260.2 521.9 254.2 color 0;
+    line 517.7 254.2 521.9 260.2 color 0;
+    line 524.1 254.2 528.3 260.2 color 0;
+    line 524.1 260.2 528.3 254.2 color 0;
    end;
    group
-    line 493.7 272.3 497.9 266.5 color 0;
-    line 493.7 266.5 497.9 272.3 color 0;
-    line 500.1 266.5 504.3 272.3 color 0;
-    line 500.1 272.3 504.3 266.5 color 0;
+    line 517.7 272.3 521.9 266.5 color 0;
+    line 517.7 266.5 521.9 272.3 color 0;
+    line 524.1 266.5 528.3 272.3 color 0;
+    line 524.1 272.3 528.3 266.5 color 0;
    end;
   terminals
-   p_in 448 264 fixed;
-   p_out 512 264 fixed;
+   p_in 472 264 fixed;
+   p_out 536 264 fixed;
  end;
  implementation eq
 parameters
