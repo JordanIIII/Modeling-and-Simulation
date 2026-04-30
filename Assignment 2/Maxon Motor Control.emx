@@ -11,7 +11,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-4-30 10:14:47</TimeStamp>
+    <TimeStamp>2026-4-30 10:17:20</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -341,7 +341,7 @@ initialequations
 	sticktion_switch = 0;
 equations
 		
-	if abs(p.f) > 0.01 then
+	if abs(p.f) > 0.1 then
 		sticktion_switch = 1;
 	elsif sticktion_switch == 0 then
 		sticktion_switch = 0;
