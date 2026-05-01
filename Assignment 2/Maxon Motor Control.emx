@@ -10,8 +10,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-5-1 12:13:21</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
+    <TimeStamp>2026-5-1 16:23:58</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-EE42'
@@ -354,7 +354,10 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real r = 0.3;
+	real stick = 2;       // friction coefficient for sticktion
+	real tau_c = 0.1;     // Coulomb friction torque [Nm]
+   real b = 0.3;        // viscous friction coefficient
+   real k = 12;          // smoothing factor
 variables
 	real true_fric;
 	real sticktion_switch;
@@ -369,11 +372,11 @@ equations
 	end;
 	
 	true_fric = if time == 0 then 
-		1
+		stick
 	else
 		if sticktion_switch == 0 then
-			1
-		else r * abs(tanh(12*p.f))
+			stick
+		else tau_c * tanh(k * p.f)/p.f + b
 		end
 	end;
 	p.e = true_fric * p.f;
@@ -996,9 +999,9 @@ implementation_end;
    <VarName>PowerSensorIn\P</VarName>
    <VarName>PowerSensorOut\P</VarName>
    <VarName>TF\eff</VarName>
-   <VarName>GearFric\true_fric</VarName>
    <VarName>GearFric\p.e</VarName>
    <VarName>T_settling1\output</VarName>
+   <VarName>GearFric\true_fric</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1275,8 +1278,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-60.0</Minimum>
-      <Maximum>140.0</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>90.0</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>max3_4</Label>
@@ -1586,200 +1589,6 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>4</PlotId>
-     <UseWindowsBGColor>false</UseWindowsBGColor>
-     <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
-     <Solo>false</Solo>
-    </BasePlot>
-    <Grid>
-     <DrawGrid>true</DrawGrid>
-     <GridColor>15780518</GridColor>
-     <GridBorderLineColor>12624260</GridBorderLineColor>
-     <GridZeroLineColor>0</GridZeroLineColor>
-     <XTicks>10</XTicks>
-     <YTicks>10</YTicks>
-     <ZTicks>10</ZTicks>
-     <Use3DLook>false</Use3DLook>
-    </Grid>
-    <PlotBGColor>16777215</PlotBGColor>
-    <ShowPlotTitle>true</ShowPlotTitle>
-    <TitlePosition>1</TitlePosition>
-    <PlotTitle>model(1)</PlotTitle>
-    <ShowXValues>true</ShowXValues>
-    <Fonts>
-     <TitleFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </TitleFont>
-     <LabelFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LabelFont>
-     <ValuesFont>
-      <Name>Arial</Name>
-      <Height>10</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </ValuesFont>
-     <LegendFont>
-      <Name>Arial</Name>
-      <Height>12</Height>
-      <PitchFamily>34</PitchFamily>
-      <Weight>400</Weight>
-      <Italic>0</Italic>
-      <UnderLine>0</UnderLine>
-      <StrikeOut>0</StrikeOut>
-      <Color>0</Color>
-     </LegendFont>
-    </Fonts>
-    <SharedXAxis>true</SharedXAxis>
-    <SharedYAxis>true</SharedYAxis>
-    <SharedZAxis>false</SharedZAxis>
-    <XAxes>
-     <Axis>
-      <Minimum>0.999</Minimum>
-      <Maximum>3.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>3</Scaling>
-      <Label>time</Label>
-     </Axis>
-    </XAxes>
-    <YAxes>
-     <Axis>
-      <Minimum>0.0</Minimum>
-      <Maximum>1.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>P</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>9.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>P</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>9.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>true_fric</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>9.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>eff</Label>
-     </Axis>
-    </YAxes>
-    <ZAxes>
-    </ZAxes>
-    <Curves>
-     <Curve>
-      <LineColor>3355111</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>3355111</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>false</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PowerSensorIn\P</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>6076255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>6076255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>false</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>PowerSensorOut\P</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>12553035</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>12553035</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>GearFric\true_fric</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15086320</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>TF\eff</VarName>
-      </YCurveData>
-     </Curve>
-    </Curves>
-    <Legenda>
-     <ShowLegenda>true</ShowLegenda>
-     <BorderPenColor>0</BorderPenColor>
-     <BackgroundColor>16777215</BackgroundColor>
-    </Legenda>
-   </Plot>
-   <Plot>
-    <PlotType>GraphPlot</PlotType>
-    <BasePlot>
      <PlotId>5</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
@@ -1893,6 +1702,200 @@ implementation_end;
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>6</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>model(1)</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.999</Minimum>
+      <Maximum>3.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>0.2</Minimum>
+      <Maximum>1.2000000000000002</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>P</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>9.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>P</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>9.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>true_fric</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>9.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>eff</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PowerSensorIn\P</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>PowerSensorOut\P</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>GearFric\true_fric</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>TF\eff</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -1904,7 +1907,7 @@ implementation_end;
      <PlotId>1</PlotId>
      <PlotId>2</PlotId>
      <PlotId>3</PlotId>
-     <PlotId>4</PlotId>
+     <PlotId>6</PlotId>
      <PlotId>5</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -1912,7 +1915,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
    <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
--0.00260417 -0.00416667 1.0026 0.954167
+0.00260417 0.00416667 0.997396 0.951042
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -2064,7 +2067,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>1.9756</Mean>
-    <Deviation>0.4939</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>1.9756</Nominal>
    </MultipleRunVariable>
@@ -2075,7 +2078,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>8.03</Mean>
-    <Deviation>2.0075</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>8.03</Nominal>
    </MultipleRunVariable>
@@ -2086,7 +2089,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>0.1</Mean>
-    <Deviation>0.025</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>0.1</Nominal>
    </MultipleRunVariable>
@@ -2097,7 +2100,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>5.0</Mean>
-    <Deviation>1.25</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>5.0</Nominal>
    </MultipleRunVariable>
@@ -2108,7 +2111,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>1.023</Mean>
-    <Deviation>0.25575</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>1.023</Nominal>
    </MultipleRunVariable>
@@ -2119,7 +2122,7 @@ implementation_end;
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
     <Mean>150.71</Mean>
-    <Deviation>37.6775</Deviation>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
     <Nominal>150.71</Nominal>
    </MultipleRunVariable>
@@ -2140,9 +2143,6 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
