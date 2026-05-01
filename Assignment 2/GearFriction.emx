@@ -10,8 +10,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 2\Maxon Motor Control.emx</LibraryPath>
-    <TimeStamp>2026-5-1 12:13:21</TimeStamp>
+    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 2\GearFriction.emx</LibraryPath>
+    <TimeStamp>2026-5-1 12:01:27</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-EE42'
@@ -131,8 +131,8 @@ equations
     end;
     implementation eq
 parameters
-	real kp = 2.655 {};			// Proportional gain
-	real tauI = 7.19 {s};		// Integral time constant: tauI > 0
+	real kp = 1.9756 {};			// Proportional gain
+	real tauI = 8.03 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -610,10 +610,10 @@ equations
     end;
     implementation eq
 parameters
-	real kp = 5.19 {};			// Proportional gain
-	real tauD = 0.717 {s};		// Derivative time constant: tauD > 0
+	real kp = 5.0 {};			// Proportional gain
+	real tauD = 1.023 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 150.74 {s};		// Integral time constant: tauI > 0
+	real tauI = 150.71 {s};		// Integral time constant: tauI > 0
 variables
 	real hidden factor,uD,uI;
 equations
@@ -703,29 +703,6 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   Splitter1 440 136
-    description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [1];
-      signal knot in input [1];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 436.8 132.8 443.2 139.2 color -1 fill 0;
-      ellipse 435.7 131.7 444.3 140.3 color -1;
-     terminals
-      input 440 136 fixed;
-    end;
-    implementation eq
-equations
-    collect (output) = input;
-implementation_end;
    Step 464 56
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\SignalGenerator-Step.emx</LibraryPath>
@@ -799,56 +776,6 @@ equations
 	else 
 		eff = 1.0;
 	end;implementation_end;
-   T_settling1 408 64
-    description '<Information>
-  <Description>
-    <Version>5.1</Version>
-    <IsMainModel>1</IsMainModel>
-    <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\T_settling.emx</LibraryPath>
-    <TimeStamp>2026-5-1 10:18:55</TimeStamp>
-    <AllowLibraryUpdate>True</AllowLibraryUpdate>
-  </Description>
-</Information>';
-    type T_settling
-     ports
-      signal in input;
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 388 48 428 80 color 0 fill 14013909;
-      text 'T_sett' 408 64 color 16711680 'Symbol' 14 bold;
-    end;
-    implementation eq
-parameters
-	real tol = 0.05; //tolerance for error (band style _+tol)
-variables
-	real last_set;
-	real set;
-initialequations
-	set = false;
-equations
-	last_set = if (abs(input)<=tol) then
-		if previous(set)==0.0 then
-			time-1.0
-		else 
-			previous(last_set)
-		end
-	else 
-		3.0
-	end;	
-	set = if abs(input) >= tol then
-		0.0
-	else 
-		1.0
-	end;
-	output = if time == 0.0 then
-					3.0
-				 else 
-					last_set
-				 end;
-implementation_end;
   end;
   connections
    AD\output -> PlusMinus1\minus;
@@ -872,14 +799,12 @@ implementation_end;
    OneJunction2\p => load\p;
    OneJunction3\p <= PowerSensorIn\p2;
    OneJunction3\p => TF\p1;
-   PlusMinus\output -> Splitter1\input;
+   PlusMinus\output -> Freq2Sampler\input;
    PlusMinus1\output -> Current\error;
    Position\output -> PlusMinus1\plus;
    PowerSensorIn\P -> TF\Pin 416 224 520 224;
    PowerSensorIn\p1 <= OneJunction1\p;
    PowerSensorOut\p1 <= TF\p2;
-   Splitter1\output -> Freq2Sampler\input;
-   Splitter1\output -> T_settling1\input;
    Step\output -> PlusMinus\plus;
   end;
  implementation_end;
@@ -966,18 +891,6 @@ implementation_end;
     <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
-   <Variable>
-    <Name>T_settling1\last_set_previous_initial</Name>
-    <VarType>B</VarType>
-    <DiscreteIndex>1</DiscreteIndex>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>T_settling1\set_previous_initial</Name>
-    <VarType>B</VarType>
-    <DiscreteIndex>1</DiscreteIndex>
-    <Value>0.0</Value>
-   </Variable>
   </Initials>
  </Variables>
  <PlotSpecs>
@@ -998,7 +911,6 @@ implementation_end;
    <VarName>TF\eff</VarName>
    <VarName>GearFric\true_fric</VarName>
    <VarName>GearFric\p.e</VarName>
-   <VarName>T_settling1\output</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1081,29 +993,22 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
+      <Minimum>-1.5</Minimum>
+      <Maximum>3.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>flow</Label>
      </Axis>
      <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>output</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
@@ -1167,25 +1072,6 @@ implementation_end;
       <YCurveData>
        <ShowUnit>true</ShowUnit>
        <VarName>DiscreteIntegral\output</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15086320</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>T_settling1\output</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -2048,80 +1934,47 @@ implementation_end;
   <RedrawAfterRun>false</RedrawAfterRun>
   <DrawDuringSimulation>true</DrawDuringSimulation>
   <ActionBeforeOptimization>0</ActionBeforeOptimization>
-  <CompareValue>0.0</CompareValue>
+  <CompareValue>0.75</CompareValue>
   <UseCompareValue>true</UseCompareValue>
   <MultipleRunType>Optimization</MultipleRunType>
   <Minimize>true</Minimize>
-  <OptimizationVariable>T_settling1\output</OptimizationVariable>
+  <OptimizationVariable>TF\eff</OptimizationVariable>
   <ResulVarUsage>UseIntegralAbsolute</ResulVarUsage>
   <Tolerance>0.001</Tolerance>
   <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
   <MultipleRunVariables>
    <MultipleRunVariable>
-    <Name>Current\kp</Name>
+    <Name>GearFric\b</Name>
     <Minimum>0.0</Minimum>
+    <Maximum>0.01</Maximum>
+    <SweepMethod>Linear</SweepMethod>
+    <Distribution>Uniform</Distribution>
+    <Mean>0.002</Mean>
+    <Deviation>1.0</Deviation>
+    <TolerancePercentage>1.0</TolerancePercentage>
+    <Nominal>0.01</Nominal>
+   </MultipleRunVariable>
+   <MultipleRunVariable>
+    <Name>GearFric\k</Name>
+    <Minimum>50.0</Minimum>
     <Maximum>1000.0</Maximum>
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
-    <Mean>1.9756</Mean>
-    <Deviation>0.4939</Deviation>
+    <Mean>100.0</Mean>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>1.9756</Nominal>
+    <Nominal>50.0</Nominal>
    </MultipleRunVariable>
    <MultipleRunVariable>
-    <Name>Current\tauI</Name>
-    <Minimum>0.0</Minimum>
-    <Maximum>1000.0</Maximum>
+    <Name>GearFric\tau_c</Name>
+    <Minimum>1.0e-4</Minimum>
+    <Maximum>0.01</Maximum>
     <SweepMethod>Linear</SweepMethod>
     <Distribution>Uniform</Distribution>
-    <Mean>8.03</Mean>
-    <Deviation>2.0075</Deviation>
+    <Mean>0.01</Mean>
+    <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>8.03</Nominal>
-   </MultipleRunVariable>
-   <MultipleRunVariable>
-    <Name>Position\beta</Name>
-    <Minimum>1.0e-5</Minimum>
-    <Maximum>1.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>0.1</Mean>
-    <Deviation>0.025</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>0.1</Nominal>
-   </MultipleRunVariable>
-   <MultipleRunVariable>
-    <Name>Position\kp</Name>
-    <Minimum>0.0</Minimum>
-    <Maximum>1000.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>5.0</Mean>
-    <Deviation>1.25</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>5.0</Nominal>
-   </MultipleRunVariable>
-   <MultipleRunVariable>
-    <Name>Position\tauD</Name>
-    <Minimum>0.0</Minimum>
-    <Maximum>1000.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>1.023</Mean>
-    <Deviation>0.25575</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>1.023</Nominal>
-   </MultipleRunVariable>
-   <MultipleRunVariable>
-    <Name>Position\tauI</Name>
-    <Minimum>0.0</Minimum>
-    <Maximum>1000.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>150.71</Mean>
-    <Deviation>37.6775</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>150.71</Nominal>
+    <Nominal>1.0e-4</Nominal>
    </MultipleRunVariable>
   </MultipleRunVariables>
  </MultipleRun>
