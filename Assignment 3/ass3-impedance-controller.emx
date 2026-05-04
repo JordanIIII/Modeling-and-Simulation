@@ -1,0 +1,2736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+ <Model version="5.1" build="5.1.6.14106">
+  <Sidops><![CDATA[model 128 184
+ description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <IsMainModel>0</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 3\ass3-impedance-controller.emx</LibraryPath>
+    <TimeStamp>2026-5-4 12:31:15</TimeStamp>
+  </Description>
+</Information>';
+ type 'Mainmodel-controller'
+ end;
+ implementation bg
+  submodels
+   Disturbance 744 120
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\MotionProfileWizard.emx</LibraryPath><TimeStamp>2007-12-19 14:33:18</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'MotionProfile-Wizard'
+     ports
+      signal out position;
+    end;
+    icon bg bottom
+     figures
+      group
+       rectangle 728 104 760 136 color 0 fill 15132390;
+       group
+        group
+         rectangle 739.3 113.1 752.8 130.5 color -1 fill 8454143;
+         line 739.1 113.2 739.1 130.6 color 0;
+         line 752.2 113.1 752.2 130.5 color 0;
+         spline 739.5 129.7 742.4 127.5 746.2 120.5 748.7 116.3 752.2 114.7 color 16711680;
+         line 752 114.7 758.1 114.7 color 16711680;
+         line 733.2 129.8 740.1 129.8 color 16711680;
+        end;
+       end;
+       line 733.1 109.8 733.1 134 color 0;
+       line 729.7 130.5 758.6 130.5 color 0;
+      end;
+    end;
+    implementation eq
+// 20-sim User Editor
+// MotionProfileWizard.dll
+parameters
+	real hidden period = 60;	// the total period of all regions
+	real hidden totalStroke = 0;
+	integer nrTimes = 1;
+
+variables
+	real hidden fu;
+	real hidden offsetTime, modTime, divTime;
+	real hidden stroke;
+	real hidden duration;
+	real hidden normalizedRegionTime;
+	real hidden runningTime;
+	integer hidden localProfileCounter;
+	integer hidden region;
+	integer hidden ProfileCounter;
+
+	real hidden globalStrokeOffset;
+	real hidden localStrokeOffset;
+
+	// dll-variables
+	real hidden dllInput;
+
+	real hidden dllOutput[3];
+
+	boolean change1;
+	boolean change2;
+	boolean change3;
+	boolean change4;
+	boolean change5;
+	boolean change6;
+	boolean change7;
+	boolean change8;
+	boolean change9;
+	boolean change10;
+	boolean change11;
+	boolean change12;
+
+initialequations
+
+	fu = 0.0;
+	offsetTime = 0.0;
+	modTime = 0.0;
+	region = 0;
+	stroke = 1.0;
+	duration = 1.0;
+
+	dllInput = 0.0;
+
+	dllOutput = 0.0;
+
+			change1 = false;
+			change2 = false;
+			change3 = false;
+			change4 = false;
+			change5 = false;
+			change6 = false;
+			change7 = false;
+			change8 = false;
+			change9 = false;
+			change10 = false;
+			change11 = false;
+			change12 = false;
+
+	modTime = 0.0;
+	divTime = 0.0;
+	offsetTime = 0.0;	
+
+	globalStrokeOffset = 0.0;
+	position = 0;
+	localStrokeOffset = 0;
+	normalizedRegionTime = 1.0;
+
+	runningTime = 0.0;
+	ProfileCounter = 1;
+	localProfileCounter = 1;
+	
+code
+
+		runningTime = time - offsetTime;
+		modTime = runningTime mod period;
+		divTime = runningTime div period;
+		localProfileCounter = 1 + round(divTime);
+
+		if localProfileCounter <= nrTimes then
+			ProfileCounter = localProfileCounter;
+			change1 = frequencyevent(period, 0);
+			change2 = frequencyevent(period, 30);
+			change3 = frequencyevent(period, 31);
+			change4 = frequencyevent(period, 33);
+			change5 = frequencyevent(period, 34);
+			change6 = frequencyevent(period, 36);
+			change7 = frequencyevent(period, 37);
+			change8 = frequencyevent(period, 38);
+			change9 = frequencyevent(period, 39);
+			change10 = frequencyevent(period, 40);
+			change11 = frequencyevent(period, 41);
+			change12 = frequencyevent(period, 42);
+
+			globalStrokeOffset = divTime * totalStroke;
+			// determine in which region we are
+			if modTime < 30 then
+				region = 1;
+				normalizedRegionTime = modTime / 30;
+			else
+				if modTime < 31 then
+					region = 2;
+					normalizedRegionTime = modTime - 30;
+				else
+					if modTime < 33 then
+						region = 3;
+						normalizedRegionTime = ( modTime - 31) / 2;
+					else
+						if modTime < 34 then
+							region = 4;
+							normalizedRegionTime = modTime - 33;
+						else
+							if modTime < 36 then
+								region = 5;
+								normalizedRegionTime = ( modTime - 34) / 2;
+							else
+								if modTime < 37 then
+									region = 6;
+									normalizedRegionTime = modTime - 36;
+								else
+									if modTime < 38 then
+										region = 7;
+										normalizedRegionTime = modTime - 37;
+									else
+										if modTime < 39 then
+											region = 8;
+											normalizedRegionTime = modTime - 38;
+										else
+											if modTime < 40 then
+												region = 9;
+												normalizedRegionTime = modTime - 39;
+											else
+												if modTime < 41 then
+													region = 10;
+													normalizedRegionTime = modTime - 40;
+												else
+													if modTime < 42 then
+														region = 11;
+														normalizedRegionTime = modTime - 41;
+													else
+														region = 12;
+														normalizedRegionTime = ( modTime - 42) / 18;
+													end;
+												end;
+											end;
+										end;
+									end;
+								end;
+							end;
+						end;
+					end;
+				end;
+			end;
+
+			switch(region)
+
+				case 1 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 30;
+
+				case 2 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 1;
+					duration = 1;
+
+				case 3 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 1;
+					stroke = 0;
+					duration = 2;
+
+				case 4 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 1;
+					stroke = 0;
+					duration = 1;
+
+				case 5 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 1;
+					stroke = -1;
+					duration = 2;
+
+				case 6 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 1;
+
+				case 7 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = -1;
+					duration = 1;
+
+				case 8 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = -1;
+					stroke = 1;
+					duration = 1;
+
+				case 9 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 1;
+
+				case 10 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 2;
+					duration = 1;
+
+				case 11 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 2;
+					stroke = -2;
+					duration = 1;
+
+				case 12 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 18;
+
+			end;
+
+			fu = dllOutput[1];
+
+			position = (globalStrokeOffset + localStrokeOffset) + stroke * fu;
+		end; //nrTimes
+implementation_end;
+   DisturbanceAmplitude 656 176
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\Constant.emx</LibraryPath><TimeStamp>2007-10-19 14:48:44</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 640.1 160 671.9 192 color 0 fill 15132390;
+      line 644.9 171.6 666.9 171.6 color 16711680 width 2;
+      line 642.2 182.7 667.9 182.7 color 0;
+      line 644.5 166.7 644.5 185 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 2.0;		// output value
+equations
+	output = C;
+     implementation_end;
+   expected_stiffness_dq 696 56
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\SignalMonitor.emx</LibraryPath><TimeStamp>2007-9-26 12:14:4</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type SignalMonitor
+     ports
+      signal in input;
+    end;
+    icon bg top
+     figures
+      rectangle 680 40 712 72 color 0 fill 15132390;
+      rectangle 685.7 45.8 706.3 66.6 color 16711680 fill 11776947 width 2;
+      rectangle 687.8 48.4 703.9 64 color -1 fill 16777215;
+      line 689.9 50.7 689.9 62 color 0 fill 16777215;
+      line 688 60.4 700.5 60.4 color 0 fill 16777215;
+      line 689.5 60.1 702.4 53.7 color 255 fill 16777215;
+    end;
+    implementation eq
+variables
+	real interesting plot;
+equations
+	plot = input;
+   implementation_end;
+   I 472 72
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+    type I
+     ports
+      rotation in p;
+      signal out state;
+     restrictions
+      causality preferred in p;
+    end;
+    icon bg ellipse
+     figures
+      text 'I' 472 72 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real i = 1;
+equations
+    state = int(p.e);
+    p.f = state / i;
+implementation_end;
+   I1 472 192
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+    type I
+     ports
+      rotation in p;
+      signal out state;
+     restrictions
+      causality preferred in p;
+    end;
+    icon bg ellipse
+     figures
+      text 'I' 472 192 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real i = 1;
+equations
+    state = int(p.e);
+    p.f = state / i;
+implementation_end;
+   I2 472 296
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\I.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:55:55</TimeStamp>
+</Description>
+</Information>';
+    type I
+     ports
+      rotation in p;
+      signal out state;
+     restrictions
+      causality preferred in p;
+    end;
+    icon bg ellipse
+     figures
+      text 'I' 472 296 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real i = 1;
+equations
+    state = int(p.e);
+    p.f = state / i;
+implementation_end;
+   impedance_control_perfect 320 240
+    description '<Information><Description><Version>5.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Submodel
+     ports
+      power out p2;
+      signal in q_set;
+    end;
+    implementation bg
+     submodels
+      damping 120 144
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 104.1 128 135.9 160 color 0 fill 15132390;
+         text 'K' 120 144 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_damping;
+equations
+	output = impedance_damping * input;
+    implementation_end;
+      Differentiate 64 144
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath>
+  <TimeStamp>2007-9-26 12:9:46</TimeStamp>
+</Description>';
+       type 'Differentiate-Default'
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         group
+          rectangle 48 128 80 160 color 0 fill 15132390;
+          text 'd/dt' 64 144 color 16711680 13 bold;
+         end;
+       end;
+       implementation eq
+parameters
+	real initial = 0;		// initial value
+equations
+	output = ddt (input, initial);
+    implementation_end;
+      dq 480 200
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\SignalMonitor.emx</LibraryPath><TimeStamp>2007-9-26 12:14:4</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type SignalMonitor
+        ports
+         signal in input;
+       end;
+       icon bg bottom
+        figures
+         rectangle 464 184 496 216 color 0 fill 15132390;
+         rectangle 469.7 189.8 490.3 210.6 color 16711680 fill 11776947 width 2;
+         rectangle 471.8 192.4 487.9 208 color -1 fill 16777215;
+         line 473.9 194.7 473.9 206 color 0 fill 16777215;
+         line 472 204.4 484.5 204.4 color 0 fill 16777215;
+         line 473.5 204.1 486.4 197.7 color 255 fill 16777215;
+       end;
+       implementation eq
+variables
+	real interesting plot;
+equations
+	plot = input;
+   implementation_end;
+      MSe 248 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 248 120 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      plug q_set 248 200;
+      plug p2 462.9 120;
+      PlusMinus1 416 200
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 408 192 424 208 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus2 192 120
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 184 112 200 128 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      QSensor1 416 119.9
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+       knot QSensor
+        ports
+         power knot in p1 [1];
+         power knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 409.1 112.9 422.9 127 color 0 fill 16777215;
+         text 'q' 415.5 117.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      Splitter1 440 200
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 436.8 196.8 443.2 203.2 color -1 fill 0;
+         ellipse 435.7 195.7 444.3 204.3 color -1;
+        terminals
+         input 440 200 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      Splitter2 -8 144
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -11.2 140.8 -4.8 147.2 color -1 fill 0;
+         ellipse -12.3 139.7 -3.7 148.3 color -1;
+        terminals
+         input -8 144 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      stiffness 120 80
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 104.1 64 135.9 96 color 0 fill 15132390;
+         text 'K' 120 80 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_stiffness;
+equations
+	output = impedance_stiffness * input;
+    implementation_end;
+     end;
+     connections
+      damping\output -> PlusMinus2\plus 192 144;
+      Differentiate\output -> damping\input;
+      MSe\p => QSensor1\p1;
+      PlusMinus1\output -> Splitter1\input;
+      PlusMinus2\output -> MSe\effort;
+      q_set -> PlusMinus1\plus;
+      QSensor1\p2 => p2;
+      QSensor1\q -> PlusMinus1\minus;
+      Splitter1\output -> dq\input;
+      Splitter1\output -> Splitter2\input 440 240 -8 240;
+      Splitter2\output -> Differentiate\input;
+      Splitter2\output -> stiffness\input -8 80;
+      stiffness\output -> PlusMinus2\plus 192 80;
+     end;
+    implementation_end;
+   imp_stiffness 592 56
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Gain
+     ports
+      signal in input;
+      signal out output;
+    end;
+    icon bg top
+     figures
+      rectangle 576.1 40 607.9 72 color 0 fill 15132390;
+      text 'K' 592 56 color 16711680 16 bold;
+    end;
+    implementation eq
+parameters
+	real global impedance_stiffness;
+equations
+	output = -input / impedance_stiffness;
+    implementation_end;
+   MSe 544 120
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse
+     figures
+      text 'MSe' 544 120 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   MSe1 544 240
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse
+     figures
+      text 'MSe' 544 240 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   MSe2 544 344
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse
+     figures
+      text 'MSe' 544 344 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   MultiplyDivide 656 120
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\MultiplyDivide.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:14:59</TimeStamp>
+</Description>';
+    knot MultiplyDivide
+     ports
+      signal knot duplicatable in multiply [1];
+      signal knot duplicatable in divide [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 648 112 664 128 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+	output = mul (collect (multiply)) ./ mul (collect (divide));
+     implementation_end;
+   MultiplyDivide2 104 120
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\MultiplyDivide.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:14:59</TimeStamp>
+</Description>';
+    knot MultiplyDivide
+     ports
+      signal knot duplicatable in multiply [1];
+      signal knot duplicatable in divide [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 96 112 112 128 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+	output = mul (collect (multiply)) ./ mul (collect (divide));
+     implementation_end;
+   MultiplyDivide3 128 144
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\MultiplyDivide.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:14:59</TimeStamp>
+</Description>';
+    knot MultiplyDivide
+     ports
+      signal knot duplicatable in multiply [1];
+      signal knot duplicatable in divide [1];
+      signal knot out output [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 120 136 136 152 color 0 fill 16777215;
+    end;
+    implementation eq
+equations
+	output = mul (collect (multiply)) ./ mul (collect (divide));
+     implementation_end;
+   OneJunction 472 120
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      rotation knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 472 120 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   OneJunction1 472 240
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      rotation knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 472 240 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   OneJunction2 472 344
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+    knot OneJunction
+     ports
+      rotation knot duplicatable none p [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint one_out p;
+    end;
+    icon bg ellipse
+     figures
+      text '1' 472 344 color 0 18 bold;
+    end;
+    implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+   physical 320 120
+    description '<Information><Description><Version>5.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Submodel
+     ports
+      signal in v_set;
+      rotation out p2;
+      signal in q_set;
+    end;
+    implementation bg
+     submodels
+      C 376 48
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 376 48 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_stiffness = 5;
+equations
+	state = int(p.f);
+	p.e = state * impedance_stiffness;
+implementation_end;
+      dq 480 200
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\SignalMonitor.emx</LibraryPath><TimeStamp>2007-9-26 12:14:4</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type SignalMonitor
+        ports
+         signal in input;
+       end;
+       icon bg bottom
+        figures
+         rectangle 464 184 496 216 color 0 fill 15132390;
+         rectangle 469.7 189.8 490.3 210.6 color 16711680 fill 11776947 width 2;
+         rectangle 471.8 192.4 487.9 208 color -1 fill 16777215;
+         line 473.9 194.7 473.9 206 color 0 fill 16777215;
+         line 472 204.4 484.5 204.4 color 0 fill 16777215;
+         line 473.5 204.1 486.4 197.7 color 255 fill 16777215;
+       end;
+       implementation eq
+variables
+	real interesting plot;
+equations
+	plot = input;
+   implementation_end;
+      MSf 208 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSf.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:14:18</TimeStamp>
+</Description>
+</Information>';
+       type MSf
+        ports
+         power out p;
+         signal in flow;
+        restrictions
+         causality fixed in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSf' 208 120 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real effort;
+equations
+	p.f = flow; 
+	effort = p.e;
+implementation_end;
+      plug p2 462.9 120;
+      plug q_set 248 200;
+      plug v_set 81 120;
+      OneJunction1 288 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 288 120 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction2 360 80
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 360 80 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      PlusMinus1 416 200
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 408 192 424 208 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      QSensor1 416 119.9
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+       knot QSensor
+        ports
+         power knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 409.1 112.9 422.9 127 color 0 fill 16777215;
+         text 'q' 415.5 117.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      R 336 48
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 336 48 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_damping = 2.0;
+equations
+	p.e = impedance_damping * p.f;
+implementation_end;
+      ZeroJunction 360 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 360 120 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      MSf\p => OneJunction1\p;
+      OneJunction1\p => ZeroJunction\p;
+      OneJunction2\p => C\p;
+      OneJunction2\p => R\p;
+      PlusMinus1\output -> dq\input;
+      q_set -> PlusMinus1\plus;
+      QSensor1\p2 => p2;
+      QSensor1\q -> PlusMinus1\minus;
+      v_set -> MSf\flow;
+      ZeroJunction\p => OneJunction2\p;
+      ZeroJunction\p => QSensor1\p1;
+     end;
+    implementation_end;
+   PositionSetpoint 8 120
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\MotionProfileWizard.emx</LibraryPath><TimeStamp>2007-12-19 14:33:18</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'MotionProfile-Wizard'
+     ports
+      signal out position;
+      signal out velocity;
+    end;
+    icon bg bottom
+     figures
+      group
+       rectangle -8 104 24 136 color 0 fill 15132390;
+       group
+        group
+         rectangle 3.3 113.1 16.8 130.5 color -1 fill 8454143;
+         line 3.1 113.2 3.1 130.6 color 0;
+         line 16.2 113.1 16.2 130.5 color 0;
+         spline 3.5 129.7 6.4 127.5 10.2 120.5 12.7 116.3 16.2 114.7 color 16711680;
+         line 16 114.7 22.1 114.7 color 16711680;
+         line -2.8 129.8 4.1 129.8 color 16711680;
+        end;
+       end;
+       line -2.9 109.8 -2.9 134 color 0;
+       line -6.3 130.5 22.6 130.5 color 0;
+      end;
+    end;
+    implementation eq
+// 20-sim User Editor
+// MotionProfileWizard.dll
+parameters
+	real hidden period = 60;	// the total period of all regions
+	real hidden totalStroke = 0;
+	integer nrTimes = 1;
+
+variables
+	real hidden fu;
+	real hidden dfu;
+	real hidden offsetTime, modTime, divTime;
+	real hidden stroke;
+	real hidden duration;
+	real hidden normalizedRegionTime;
+	real hidden runningTime;
+	integer hidden localProfileCounter;
+	integer hidden region;
+	integer hidden ProfileCounter;
+
+	real hidden globalStrokeOffset;
+	real hidden lastposition;
+	real hidden localStrokeOffset;
+
+	// dll-variables
+	real hidden dllInput;
+
+	real hidden dllOutput[3];
+
+	boolean change1;
+	boolean change2;
+	boolean change3;
+	boolean change4;
+	boolean change5;
+	boolean change6;
+	boolean change7;
+	boolean change8;
+	boolean change9;
+	boolean change10;
+	boolean change11;
+	boolean change12;
+
+initialequations
+
+	fu = 0.0;
+	dfu = 0.0;
+	offsetTime = 0.0;
+	modTime = 0.0;
+	region = 0;
+	stroke = 1.0;
+	duration = 1.0;
+
+	dllInput = 0.0;
+
+	dllOutput = 0.0;
+
+			change1 = false;
+			change2 = false;
+			change3 = false;
+			change4 = false;
+			change5 = false;
+			change6 = false;
+			change7 = false;
+			change8 = false;
+			change9 = false;
+			change10 = false;
+			change11 = false;
+			change12 = false;
+
+	modTime = 0.0;
+	divTime = 0.0;
+	offsetTime = 0.0;	
+
+	globalStrokeOffset = 0.0;
+	position = 0;
+	velocity = 0.0;
+	localStrokeOffset = 0;
+	normalizedRegionTime = 1.0;
+
+	runningTime = 0.0;
+	ProfileCounter = 1;
+	localProfileCounter = 1;
+	
+	lastposition = 0.0;
+code
+
+		runningTime = time - offsetTime;
+		modTime = runningTime mod period;
+		divTime = runningTime div period;
+		localProfileCounter = 1 + round(divTime);
+
+		if localProfileCounter <= nrTimes then
+			ProfileCounter = localProfileCounter;
+			change1 = frequencyevent(period, 0);
+			change2 = frequencyevent(period, 10);
+			change3 = frequencyevent(period, 12);
+			change4 = frequencyevent(period, 15);
+			change5 = frequencyevent(period, 17);
+			change6 = frequencyevent(period, 18);
+			change7 = frequencyevent(period, 18.5);
+			change8 = frequencyevent(period, 19);
+			change9 = frequencyevent(period, 19.5);
+			change10 = frequencyevent(period, 22);
+			change11 = frequencyevent(period, 22.5);
+			change12 = frequencyevent(period, 23);
+
+			globalStrokeOffset = divTime * totalStroke;
+			// determine in which region we are
+			if modTime < 10 then
+				region = 1;
+				normalizedRegionTime = modTime / 10;
+			else
+				if modTime < 12 then
+					region = 2;
+					normalizedRegionTime = ( modTime - 10) / 2;
+				else
+					if modTime < 15 then
+						region = 3;
+						normalizedRegionTime = ( modTime - 12) / 3;
+					else
+						if modTime < 17 then
+							region = 4;
+							normalizedRegionTime = ( modTime - 15) / 2;
+						else
+							if modTime < 18 then
+								region = 5;
+								normalizedRegionTime = modTime - 17;
+							else
+								if modTime < 18.5 then
+									region = 6;
+									normalizedRegionTime = ( modTime - 18) / 0.5;
+								else
+									if modTime < 19 then
+										region = 7;
+										normalizedRegionTime = ( modTime - 18.5) / 0.5;
+									else
+										if modTime < 19.5 then
+											region = 8;
+											normalizedRegionTime = ( modTime - 19) / 0.5;
+										else
+											if modTime < 22 then
+												region = 9;
+												normalizedRegionTime = ( modTime - 19.5) / 2.5;
+											else
+												if modTime < 22.5 then
+													region = 10;
+													normalizedRegionTime = ( modTime - 22) / 0.5;
+												else
+													if modTime < 23 then
+														region = 11;
+														normalizedRegionTime = ( modTime - 22.5) / 0.5;
+													else
+														region = 12;
+														normalizedRegionTime = ( modTime - 23) / 37;
+													end;
+												end;
+											end;
+										end;
+									end;
+								end;
+							end;
+						end;
+					end;
+				end;
+			end;
+
+			switch(region)
+
+				case 1 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 10;
+
+				case 2 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 1;
+					duration = 2;
+
+				case 3 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 1;
+					stroke = 0;
+					duration = 3;
+
+				case 4 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 1;
+					stroke = -1;
+					duration = 2;
+
+				case 5 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 1;
+
+				case 6 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = -1;
+					duration = 0.5;
+
+				case 7 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = -1;
+					stroke = 0;
+					duration = 0.5;
+
+				case 8 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = -1;
+					stroke = 1;
+					duration = 0.5;
+
+				case 9 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 2.5;
+
+				case 10 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 2;
+					duration = 0.5;
+
+				case 11 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileSine', dllInput);
+
+					localStrokeOffset = 2;
+					stroke = -2;
+					duration = 0.5;
+
+				case 12 do
+					dllInput = normalizedRegionTime;
+					dllOutput = dll('MotionProfiles.dll', 'ProfileFlat', dllInput);
+
+					localStrokeOffset = 0;
+					stroke = 0;
+					duration = 37;
+
+			end;
+
+			fu = dllOutput[1];
+			dfu = dllOutput[2];
+
+			position = (globalStrokeOffset + localStrokeOffset) + stroke * fu;
+			lastposition = position;
+			velocity = dfu * stroke / duration;
+		else
+			position = lastposition;
+			velocity = 0.0;
+		end; //nrTimes
+implementation_end;
+   SetpointAmplitude 8 184
+    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\Constant.emx</LibraryPath><TimeStamp>2007-10-19 14:48:44</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle -7.9 168 23.9 200 color 0 fill 15132390;
+      line -3.1 179.6 18.9 179.6 color 16711680 width 2;
+      line -5.8 190.7 19.9 190.7 color 0;
+      line -3.5 174.7 -3.5 193 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0.5;		// output value
+equations
+	output = C;
+     implementation_end;
+   Splitter1 64 184
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [1];
+      signal knot in input [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 60.8 180.8 67.2 187.2 color -1 fill 0;
+      ellipse 59.7 179.7 68.3 188.3 color -1;
+     terminals
+      input 64 184 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter2 592 120
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [1];
+      signal knot in input [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 588.8 116.8 595.2 123.2 color -1 fill 0;
+      ellipse 587.7 115.7 596.3 124.3 color -1;
+     terminals
+      input 592 120 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter3 160 144
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [1];
+      signal knot in input [1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 156.8 140.8 163.2 147.2 color -1 fill 0;
+      ellipse 155.7 139.7 164.3 148.3 color -1;
+     terminals
+      input 160 144 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   your_impedance_controller 320 344
+    description '<Information><Description><Version>5.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Submodel
+     ports
+      power out p2;
+      signal in q_set;
+    end;
+    implementation bg
+     submodels
+      Attenuate1 240 128
+       description '<Description>
+ <Version>4.0</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Attenuate.emx</LibraryPath>
+  <TimeStamp>2007-10-31 13:47:6</TimeStamp>
+</Description>';
+       type Attenuate
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 224 112 256 144 color 0 fill 15132390;
+         text 'K' 247.5 134.4 color 16711680 16 bold;
+         text '1' 233.6 122.7 color 16711680 16 bold;
+         line 233.6 138.7 247.5 119.5 color 16711680 width 2;
+       end;
+       implementation eq
+parameters
+	real K = 1.5;		// attenuation (divison parameter) 
+equations
+	output = input / K;
+       implementation_end;
+      damping 64 136
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 48.1 120 79.9 152 color 0 fill 15132390;
+         text 'K' 64 136 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_damping;
+equations
+	output = impedance_damping * input;
+    implementation_end;
+      Differentiate 16 136
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath>
+  <TimeStamp>2007-9-26 12:9:46</TimeStamp>
+</Description>';
+       type 'Differentiate-Default'
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg
+        figures
+         group
+          rectangle 0 120 32 152 color 0 fill 15132390;
+          text 'd/dt' 16 136 color 16711680 13 bold;
+         end;
+       end;
+       implementation eq
+parameters
+	real initial = 0;		// initial value
+equations
+	output = ddt (input, initial);
+    implementation_end;
+      dq 8 232
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\SignalMonitor.emx</LibraryPath><TimeStamp>2007-9-26 12:14:4</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type SignalMonitor
+        ports
+         signal in input;
+       end;
+       icon bg bottom
+        figures
+         rectangle -8 216 24 248 color 0 fill 15132390;
+         rectangle -2.3 221.8 18.3 242.6 color 16711680 fill 11776947 width 2;
+         rectangle -0.2 224.4 15.9 240 color -1 fill 16777215;
+         line 1.9 226.7 1.9 238 color 0 fill 16777215;
+         line 0 236.4 12.5 236.4 color 0 fill 16777215;
+         line 1.5 236.1 14.4 229.7 color 255 fill 16777215;
+       end;
+       implementation eq
+variables
+	real interesting plot;
+equations
+	plot = input;
+   implementation_end;
+      LPF 192 128
+       description '<Information><Description><Version>4.1</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Filters\LowPassFilter-FO.emx</LibraryPath><TimeStamp>2012-10-10 13:06:47</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'LowPassFilter-FO'
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 176 112 208 144 color 0 fill 15132390;
+         text 'LPF' 192.5 120.7 color 16711680 14;
+         text 'FO' 192.5 134.6 color 16711680 14;
+       end;
+       implementation eq
+parameters
+	real BW = 2 {Hz};		// Bandwidth
+	real initial = 0.0;		// initial value of the output
+variables
+   real hidden rate, w;
+	real state;
+equations
+	w = twopi*BW;
+    rate = (input - state) * w;
+    state = int (rate, initial);
+    output = state;                    implementation_end;
+      MSe 296 128
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 296 128 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      plug q_set -24 -40;
+      plug p2 1014.9 128;
+      PlusMinus1 48 -40
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 40 -48 56 -32 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus2 104 128
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 96 120 112 136 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      QSensor1 976 127.9
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+       knot QSensor
+        ports
+         power knot in p1 [1];
+         power knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 969.1 120.9 982.9 135 color 0 fill 16777215;
+         text 'q' 975.5 125.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      Splitter1 -32 136
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -35.2 132.8 -28.8 139.2 color -1 fill 0;
+         ellipse -36.3 131.7 -27.7 140.3 color -1;
+        terminals
+         input -32 136 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      Splitter3 -32 88
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -35.2 84.8 -28.8 91.2 color -1 fill 0;
+         ellipse -36.3 83.7 -27.7 92.3 color -1;
+        terminals
+         input -32 88 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      stiffness 16 88
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 0.1 72 31.9 104 color 0 fill 15132390;
+         text 'K' 16 88 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_stiffness;
+equations
+	output = impedance_stiffness * input;
+    implementation_end;
+     end;
+     connections
+      Attenuate1\output -> MSe\effort;
+      damping\output -> PlusMinus2\plus;
+      Differentiate\output -> damping\input;
+      LPF\output -> Attenuate1\input;
+      MSe\p => QSensor1\p1;
+      PlusMinus1\output -> Splitter3\input 48 0 -32 0;
+      PlusMinus2\output -> LPF\input;
+      q_set -> PlusMinus1\plus;
+      QSensor1\p2 => p2;
+      QSensor1\q -> PlusMinus1\minus 976 -40;
+      Splitter1\output -> Differentiate\input -32 136;
+      Splitter1\output -> dq\input -32 232;
+      Splitter3\output -> Splitter1\input;
+      Splitter3\output -> stiffness\input;
+      stiffness\output -> PlusMinus2\plus 104 88;
+     end;
+     figures
+      rectangle -48 64 120 200 color 0 fill 15980262;
+      rectangle 136 -16 952 424 color 255 width 5;
+      text 'work inside this area (or at least leave the things outside the box in place)' 680 408 color 255 21;
+      text 'your mission, should you choose to accept it, 
+is to replace this MSe (and the LPF & 1/K)
+with a realistic motor-series-elastics drivetrain' 416 224 color 16711935 21;
+      line 336 184 304 160 color 16711935 end;
+      text 'you may want to use the signals (q_set, q_measured, dq) in your actuator' 560 56 color 32768 21;
+      line 640 40 696 -32 color 32768 end;
+      line 552 48 504 24 160 8 -8 -32 color 32768 end;
+      line 688 72 664 88 184 72 48 8 color 32768 end;
+      text 'impedance control law' 40 184 color 8388736 16;
+    implementation_end;
+  end;
+  connections
+   Disturbance\position -> MultiplyDivide\multiply;
+   DisturbanceAmplitude\output -> MultiplyDivide\multiply;
+   imp_stiffness\output -> expected_stiffness_dq\input;
+   impedance_control_perfect\p2 => OneJunction1\p;
+   MSe\p => OneJunction\p;
+   MSe1\p => OneJunction1\p;
+   MSe2\p => OneJunction2\p;
+   MultiplyDivide\output -> Splitter2\input;
+   MultiplyDivide2\output -> physical\v_set;
+   MultiplyDivide3\output -> Splitter3\input;
+   OneJunction\p => I\p;
+   OneJunction1\p => I1\p;
+   OneJunction2\p => I2\p;
+   physical\p2 => OneJunction\p;
+   PositionSetpoint\position -> MultiplyDivide3\multiply;
+   PositionSetpoint\velocity -> MultiplyDivide2\multiply;
+   SetpointAmplitude\output -> Splitter1\input;
+   Splitter1\output -> MultiplyDivide2\multiply;
+   Splitter1\output -> MultiplyDivide3\multiply;
+   Splitter2\output -> imp_stiffness\input;
+   Splitter2\output -> MSe\effort;
+   Splitter2\output -> MSe1\effort;
+   Splitter2\output -> MSe2\effort;
+   Splitter3\output -> impedance_control_perfect\q_set;
+   Splitter3\output -> physical\q_set;
+   Splitter3\output -> your_impedance_controller\q_set;
+   your_impedance_controller\p2 => OneJunction2\p;
+  end;
+  figures
+   line 304 376 248 416 color 2763429 start;
+   text 'impedance control parameters inside "physical" block' 272 8 color 128 16;
+   line 328 88 352 24 color 2763429 start;
+   text 'put your model (series elastic impedance control) in here' 192 432 color 128 16;
+ implementation_end;
+]]></Sidops>
+ </Model>
+ <Experiments>
+  <DefaultExperiment><![CDATA[Experiment 1]]></DefaultExperiment>
+<Experiment>
+   <Name>Experiment 1</Name>
+   <CreatedBy></CreatedBy>
+   <Info></Info>
+<ExpData>
+ <VersionNumber>5.1</VersionNumber>
+ <ModelProperties>
+ </ModelProperties>
+ <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
+ <Variables>
+  <Constants>
+  </Constants>
+  <Parameters>
+  </Parameters>
+  <Initials>
+   <Variable>
+    <Name>I\state_initial</Name>
+    <Unit>N.m.s</Unit>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>I1\state_initial</Name>
+    <Unit>N.m.s</Unit>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>I2\state_initial</Name>
+    <Unit>N.m.s</Unit>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>impedance_control_perfect\QSensor1\q_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>physical\C\state_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>physical\QSensor1\q_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>your_impedance_controller\QSensor1\q_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+  </Initials>
+ </Variables>
+ <PlotSpecs>
+  <VarNames>
+   <VarName>time</VarName>
+   <VarName>expected_stiffness_dq\plot</VarName>
+   <VarName>impedance_control_perfect\dq\plot</VarName>
+   <VarName>physical\dq\plot</VarName>
+   <VarName>your_impedance_controller\dq\plot</VarName>
+   <VarName>physical\QSensor1\q</VarName>
+   <VarName>MultiplyDivide3\output</VarName>
+   <VarName>MultiplyDivide\output</VarName>
+   <VarName>impedance_control_perfect\QSensor1\q</VarName>
+   <VarName>your_impedance_controller\QSensor1\q</VarName>
+  </VarNames>
+  <Plots>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>1</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>tracking</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>60.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>output</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>position_physical {rad}</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>position_perfect</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.5</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>your_position</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide3\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>physical\QSensor1\q</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>4</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>impedance_control_perfect\QSensor1\q</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>3</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>your_impedance_controller\QSensor1\q</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>2</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>impedance</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>disturbance</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>compliance_dq {rad}</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>physical\dq {rad}</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>impedance_control_perfect\dq</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>yours\dq</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>1</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide\output</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>expected_stiffness_dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide\output</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>physical\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>4</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide\output</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>impedance_control_perfect\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>3</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide\output</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>your_impedance_controller\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>3</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>transparency</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>60.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>disturbance</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>physical\dq {rad}</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>perfect\dq</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-2.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>0</Scaling>
+      <Label>yours\dq</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>MultiplyDivide\output</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>physical\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>4</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>impedance_control_perfect\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>3</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>your_impedance_controller\dq\plot</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+  </Plots>
+  <PlotPanels>
+   <PlotPanel>
+    <PlotPanelId>1</PlotPanelId>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Window 1</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
+     <PlotId>3</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+  </PlotPanels>
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.102604 0.012037 0.897917 0.833333
+   </WindowRectangle>
+  </WindowRectangles>
+ </PlotSpecs>
+ <RunSpecs>
+  <SimulatorSettings>
+   <StartTime>0.0</StartTime>
+   <FinishTime>60.0</FinishTime>
+   <AllowPassFinishTime>false</AllowPassFinishTime>
+   <Warp>false</Warp>
+   <SimulationMode>0</SimulationMode>
+   <FPGonio>false</FPGonio>
+   <UseOutputAfterEach>false</UseOutputAfterEach>
+   <OutputAfterEach>0.1</OutputAfterEach>
+   <EventEpsilon>1.0e-6</EventEpsilon>
+   <AlgebraicTolerance>1.0e-7</AlgebraicTolerance>
+   <SteadyStateAnalysis>false</SteadyStateAnalysis>
+   <UpdateHoldInstructions>true</UpdateHoldInstructions>
+  </SimulatorSettings>
+  <IntegrationMethods>
+   <IntegrationMethod>
+    <Name>Euler</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>BackwardEuler</Name>
+    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-5</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <StepSize>0.01</StepSize>
+    <Alpha>1.0</Alpha>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>AdamsBashforth</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta2</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta4</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta8</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+    <SafetyFactor>0.9</SafetyFactor>
+    <Factor1>0.33</Factor1>
+    <Factor2>6.0</Factor2>
+    <Beta>0.0</Beta>
+    <UseMaxNrSteps>false</UseMaxNrSteps>
+    <MaxNrSteps>100000</MaxNrSteps>
+    <UseStiffDetection>false</UseStiffDetection>
+    <MaxNrStiffnessSteps>1000</MaxNrStiffnessSteps>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKuttaFehlberg</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>VodeAdams</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+    <VodeUseBDF>true</VodeUseBDF>
+    <VodeUseNewton>true</VodeUseNewton>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>BDFMethod</Name>
+    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-5</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>true</UseMaximumStepSize>
+    <MaximumStepSize>0.5</MaximumStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>MeBDFiMethod</Name>
+    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-5</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+   </IntegrationMethod>
+   <SelectedIntegrationMethod>8</SelectedIntegrationMethod>
+  </IntegrationMethods>
+ </RunSpecs>
+ <MultipleRun>
+  <NrSteps>10</NrSteps>
+  <CopyFromStates>false</CopyFromStates>
+  <JoinParameterVariation>true</JoinParameterVariation>
+  <ClearAfterRun>true</ClearAfterRun>
+  <RedrawAfterRun>false</RedrawAfterRun>
+  <DrawDuringSimulation>true</DrawDuringSimulation>
+  <ActionBeforeOptimization>0</ActionBeforeOptimization>
+  <CompareValue>0.0</CompareValue>
+  <UseCompareValue>true</UseCompareValue>
+  <MultipleRunType>MultipleRun</MultipleRunType>
+  <Minimize>true</Minimize>
+  <OptimizationVariable></OptimizationVariable>
+  <ResulVarUsage>UseEndValue</ResulVarUsage>
+  <Tolerance>0.001</Tolerance>
+  <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
+  <MultipleRunVariables>
+  </MultipleRunVariables>
+ </MultipleRun>
+ <ExportData>
+  <WriteAsText>true</WriteAsText>
+  <ReadAsText>true</ReadAsText>
+  <WriteHeader>true</WriteHeader>
+  <ReadHeader>true</ReadHeader>
+  <ReadFilename></ReadFilename>
+  <WriteFilename></WriteFilename>
+  <DoWrite>false</DoWrite>
+  <ExportVariables>
+  </ExportVariables>
+  <ImportVariables>
+  </ImportVariables>
+ </ExportData>
+ <BreakPoints>
+ </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
+</ExpData>
+  </Experiment>
+</Experiments>
+</Document>
