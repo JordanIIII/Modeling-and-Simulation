@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 3\ass3-impedance-controller.emx</LibraryPath>
-    <TimeStamp>2026-5-4 12:31:15</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 3\ass3-impedance-controller.emx</LibraryPath>
+    <TimeStamp>2026-5-6 10:02:37</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-controller'
@@ -918,7 +918,7 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   physical 320 120
+   physical 456 120
     description '<Information><Description><Version>5.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
@@ -1575,7 +1575,7 @@ implementation_end;
     end;
     implementation bg
      submodels
-      Attenuate1 240 128
+      Attenuate1 -8 464
        description '<Description>
  <Version>4.0</Version>
  <IsMainModel>1</IsMainModel>
@@ -1590,10 +1590,10 @@ implementation_end;
        end;
        icon bg bottom
         figures
-         rectangle 224 112 256 144 color 0 fill 15132390;
-         text 'K' 247.5 134.4 color 16711680 16 bold;
-         text '1' 233.6 122.7 color 16711680 16 bold;
-         line 233.6 138.7 247.5 119.5 color 16711680 width 2;
+         rectangle -24 448 8 480 color 0 fill 15132390;
+         text 'K' -0.5 470.4 color 16711680 16 bold;
+         text '1' -14.4 458.7 color 16711680 16 bold;
+         line -14.4 474.7 -0.5 455.5 color 16711680 width 2;
        end;
        implementation eq
 parameters
@@ -1601,6 +1601,34 @@ parameters
 equations
 	output = input / K;
        implementation_end;
+      C 504 184
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         power in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 504 184 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real c = 1;
+equations
+	state = int(p.f);
+	p.e = state / c;
+implementation_end;
       damping 64 136
        description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        type Gain
@@ -1612,6 +1640,24 @@ equations
         figures
          rectangle 48.1 120 79.9 152 color 0 fill 15132390;
          text 'K' 64 136 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_damping;
+equations
+	output = impedance_damping * input;
+    implementation_end;
+      damping1 488 320
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 472.1 304 503.9 336 color 0 fill 15132390;
+         text 'K' 488 320 color 16711680 16 bold;
        end;
        implementation eq
 parameters
@@ -1642,6 +1688,29 @@ parameters
 equations
 	output = ddt (input, initial);
     implementation_end;
+      Differentiate1 584 320
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath>
+  <TimeStamp>2007-9-26 12:9:46</TimeStamp>
+</Description>';
+       type 'Differentiate-Default'
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg
+        figures
+         group
+          rectangle 568 304 600 336 color 0 fill 15132390;
+          text 'd/dt' 584 320 color 16711680 13 bold;
+         end;
+       end;
+       implementation eq
+parameters
+	real initial = 0;		// initial value
+equations
+	output = ddt (input, initial);
+    implementation_end;
       dq 8 232
        description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\SignalMonitor.emx</LibraryPath><TimeStamp>2007-9-26 12:14:4</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        type SignalMonitor
@@ -1663,7 +1732,35 @@ variables
 equations
 	plot = input;
    implementation_end;
-      LPF 192 128
+      GY 440 128
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\GY.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:53:45</TimeStamp>
+</Description>
+</Information>';
+       type GY
+        ports
+         power in p1;
+         power out p2;
+        restrictions
+         causality constraint equal p1 p2;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'GY' 440 128 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real r = 1;
+equations
+	p1.e = r * p2.f;
+	p2.e = r * p1.f;
+implementation_end;
+      LPF -56 464
        description '<Information><Description><Version>4.1</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Filters\LowPassFilter-FO.emx</LibraryPath><TimeStamp>2012-10-10 13:06:47</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        type 'LowPassFilter-FO'
         ports
@@ -1672,9 +1769,9 @@ equations
        end;
        icon bg bottom
         figures
-         rectangle 176 112 208 144 color 0 fill 15132390;
-         text 'LPF' 192.5 120.7 color 16711680 14;
-         text 'FO' 192.5 134.6 color 16711680 14;
+         rectangle -72 448 -40 480 color 0 fill 15132390;
+         text 'LPF' -55.5 456.7 color 16711680 14;
+         text 'FO' -55.5 470.6 color 16711680 14;
        end;
        implementation eq
 parameters
@@ -1688,7 +1785,7 @@ equations
     rate = (input - state) * w;
     state = int (rate, initial);
     output = state;                    implementation_end;
-      MSe 296 128
+      MSe 48 464
        description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -1707,7 +1804,35 @@ equations
        end;
        icon bg ellipse bottom
         figures
-         text 'MSe' 296 128 color 0 18 bold;
+         text 'MSe' 48 464 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      MSe1 376 128
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 376 128 color 0 18 bold;
        end;
        implementation eq
 variables
@@ -1718,6 +1843,33 @@ equations
 implementation_end;
       plug q_set -24 -40;
       plug p2 1014.9 128;
+      OneJunction 504 128
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [1];
+         signal knot out flow [1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 504 128 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
       PlusMinus1 48 -40
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
@@ -1756,6 +1908,44 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+      PlusMinus3 432 288
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 424 280 440 296 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus4 248 128
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 240 120 256 136 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
       QSensor1 976 127.9
        description '<Information>
  <Description>
@@ -1778,6 +1968,35 @@ equations
         figures
          ellipse 969.1 120.9 982.9 135 color 0 fill 16777215;
          text 'q' 975.5 125.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      QSensor2 584 127.9
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+       knot QSensor
+        ports
+         power knot in p1 [1];
+         power knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 577.1 120.9 590.9 135 color 0 fill 16777215;
+         text 'q' 583.5 125.2 color 0;
        end;
        implementation eq
 equations
@@ -1831,6 +2050,29 @@ implementation_end;
 equations
     collect (output) = input;
 implementation_end;
+      Splitter4 584 240
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 580.8 236.8 587.2 243.2 color -1 fill 0;
+         ellipse 579.7 235.7 588.3 244.3 color -1;
+        terminals
+         input 584 240 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
       stiffness 16 88
        description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        type Gain
@@ -1849,23 +2091,53 @@ parameters
 equations
 	output = impedance_stiffness * input;
     implementation_end;
+      stiffness1 480 248
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 464.1 232 495.9 264 color 0 fill 15132390;
+         text 'K' 480 248 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global impedance_stiffness;
+equations
+	output = impedance_stiffness * input;
+    implementation_end;
      end;
      connections
       Attenuate1\output -> MSe\effort;
+      C\p <= OneJunction\p;
       damping\output -> PlusMinus2\plus;
+      damping1\output -> PlusMinus3\plus;
       Differentiate\output -> damping\input;
+      Differentiate1\input <- Splitter4\output;
+      Differentiate1\output -> damping1\input;
+      GY\p2 => OneJunction\p;
       LPF\output -> Attenuate1\input;
-      MSe\p => QSensor1\p1;
+      MSe1\p => GY\p1;
+      OneJunction\p => QSensor2\p1;
       PlusMinus1\output -> Splitter3\input 48 0 -32 0;
-      PlusMinus2\output -> LPF\input;
+      PlusMinus2\output -> PlusMinus4\plus;
+      PlusMinus3\output -> PlusMinus4\minus;
+      PlusMinus4\output -> MSe1\effort;
       q_set -> PlusMinus1\plus;
       QSensor1\p2 => p2;
       QSensor1\q -> PlusMinus1\minus 976 -40;
+      QSensor2\p2 => QSensor1\p1;
+      QSensor2\q -> Splitter4\input;
       Splitter1\output -> Differentiate\input -32 136;
       Splitter1\output -> dq\input -32 232;
       Splitter3\output -> Splitter1\input;
       Splitter3\output -> stiffness\input;
+      Splitter4\output -> stiffness1\input;
       stiffness\output -> PlusMinus2\plus 104 88;
+      stiffness1\output -> PlusMinus3\plus;
      end;
      figures
       rectangle -48 64 120 200 color 0 fill 15980262;
@@ -1873,8 +2145,7 @@ equations
       text 'work inside this area (or at least leave the things outside the box in place)' 680 408 color 255 21;
       text 'your mission, should you choose to accept it, 
 is to replace this MSe (and the LPF & 1/K)
-with a realistic motor-series-elastics drivetrain' 416 224 color 16711935 21;
-      line 336 184 304 160 color 16711935 end;
+with a realistic motor-series-elastics drivetrain' 352 464 color 16711935 21;
       text 'you may want to use the signals (q_set, q_measured, dq) in your actuator' 560 56 color 32768 21;
       line 640 40 696 -32 color 32768 end;
       line 552 48 504 24 160 8 -8 -32 color 32768 end;
@@ -1931,8 +2202,6 @@ with a realistic motor-series-elastics drivetrain' 416 224 color 16711935 21;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
-  <Constants>
-  </Constants>
   <Parameters>
   </Parameters>
   <Initials>
@@ -2580,9 +2849,9 @@ with a realistic motor-series-elastics drivetrain' 416 224 color 16711935 21;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.102604 0.012037 0.897917 0.833333
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+0.102865 0.0104167 0.897786 0.75
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
