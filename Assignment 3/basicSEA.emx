@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\basicSEA.emx</LibraryPath>
-    <TimeStamp>2026-5-8 12:37:48</TimeStamp>
+    <TimeStamp>2026-5-8 17:18:34</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-539D'
@@ -38,7 +38,7 @@
     end;
     implementation eq
 parameters
-	real global k = 2.0; // k = Nm/(rad) 
+	real global k = 7.95; // k = Nm/(rad) 
 equations
 	state = int(p.f);
 	p.e = state * k;
@@ -658,9 +658,9 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real kp = 1.352 {};			// Proportional gain
-	real tauD = 7.54 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.098 {};		// Tameness constant: 0 < beta << 1
+	real kp = 2.42 {};			// Proportional gain
+	real tauD = 42.252 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1611 {};		// Tameness constant: 0 < beta << 1
 variables
 	real state, rate;
 equations
@@ -1004,9 +1004,9 @@ implementation_end;
    <VarName>MaxonMotor\MSe\P</VarName>
    <VarName>MaxonMotor\TF\eff</VarName>
    <VarName>Q\p2.f</VarName>
+   <VarName>MaxonMotor\TF\efftest</VarName>
    <VarName>Theta\q</VarName>
    <VarName>temp0\p.e</VarName>
-   <VarName>MaxonMotor\TF\efftest</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1081,7 +1081,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1089,8 +1089,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-4.0</Minimum>
-      <Maximum>16.0</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q</Label>
@@ -1249,7 +1249,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1257,8 +1257,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>dQspring</Label>
@@ -1365,7 +1365,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1559,7 +1559,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1567,8 +1567,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-15.0</Minimum>
-      <Maximum>35.0</Maximum>
+      <Minimum>-10.0</Minimum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Hbridge</Label>
@@ -1753,7 +1753,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1842,7 +1842,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
    <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
-0.0442708 0.00416667 0.958333 0.842708
+0.0520833 0.00416667 0.950521 0.945833
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1980,7 +1980,7 @@ implementation_end;
     <Mean>0.0967</Mean>
     <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>0.0967</Nominal>
+    <Nominal>0.098</Nominal>
    </MultipleRunVariable>
    <MultipleRunVariable>
     <Name>PD1\kp</Name>
@@ -1991,7 +1991,7 @@ implementation_end;
     <Mean>3.22</Mean>
     <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>0.01</Nominal>
+    <Nominal>1.352</Nominal>
    </MultipleRunVariable>
    <MultipleRunVariable>
     <Name>PD1\tauD</Name>
@@ -2002,7 +2002,7 @@ implementation_end;
     <Mean>147.97</Mean>
     <Deviation>1.0</Deviation>
     <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>0.1</Nominal>
+    <Nominal>7.54</Nominal>
    </MultipleRunVariable>
   </MultipleRunVariables>
  </MultipleRun>

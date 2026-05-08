@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\ass3-impedance-controller.emx</LibraryPath>
-    <TimeStamp>2026-5-8 12:41:18</TimeStamp>
+    <TimeStamp>2026-5-8 17:24:04</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-controller'
@@ -1811,7 +1811,7 @@ equations
           end;
           implementation eq
 parameters
-	real global k = 2.0; // k = Nm/(rad) 
+	real global k = 7.95; // k = Nm/(rad) 
 equations
 	state = int(p.f);
 	p.e = state * k;
@@ -2329,9 +2329,9 @@ equations
           end;
           implementation eq
 parameters
-	real kp = 1.352 {};			// Proportional gain
-	real tauD = 7.54 {s};		// Derivative time constant: tauD > 0
-	real beta = 0.098 {};		// Tameness constant: 0 < beta << 1
+	real kp = 2.42 {};			// Proportional gain
+	real tauD = 42.25 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1611 {};		// Tameness constant: 0 < beta << 1
 variables
 	real state, rate;
 equations
@@ -3238,7 +3238,7 @@ with a realistic motor-series-elastics drivetrain' 416 224 color 16711935 21;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
    <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
--0.00260417 -0.00416667 1.0026 0.954167
+0.0078125 0.00416667 0.992188 0.936458
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
