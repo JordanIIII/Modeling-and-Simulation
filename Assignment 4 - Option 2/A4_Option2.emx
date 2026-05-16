@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 4 - Option 2\A4_Option2.emx</LibraryPath>
-    <TimeStamp>2026-5-15 22:17:43</TimeStamp>
+    <TimeStamp>2026-5-16 19:55:55</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-44EE'
@@ -147,11 +147,12 @@ implementation_end;
       signal in position {m} ;
       signal in force {N} ;
       signal out energy {J} ;
+      signal out energyChange;
     end;
     icon bg
      figures
       rectangle 88 216 200 248 color 0 fill 15132390;
-      text 'Sampling/Passivate' 144 232 color 0 16;
+      text 'EnergySampling' 144 232 color 0 16;
     end;
     implementation eq
 parameters
@@ -179,7 +180,8 @@ equations
 	E = previous(E, 0.0) + dE;
 	Pk = dE/sampletime;
 	
-	energy = E;implementation_end;
+	energy = E;
+	energyChange = dE;implementation_end;
    Force 336 304
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath><TimeStamp>2007-9-26 12:9:46</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type 'Differentiate-Default'
@@ -807,6 +809,7 @@ implementation_end;
       signal in force {N} ;
       signal in velocity {m/s} ;
       signal in energy {J} ;
+      signal in dE {J} ;
       signal out force_pass {N} ;
     end;
     icon bg
@@ -817,7 +820,6 @@ implementation_end;
     implementation eq
 parameters
 	real E0 = 0.125;			// initial energy budget
-	real eps = 1e-2;
 	
 variables
 	real Etank;
@@ -828,7 +830,7 @@ equations
 	
 	P = force * velocity;	// desired power
 	
-	if Etank > 0 then 		// there is energy available
+	if (Etank-dE) > 0 then 		// there is energy available
 		force_pass = force;
 	else 							// tank is empty
 		if P < 0 then
@@ -881,6 +883,7 @@ equations
    Differentiate\output -> PhysicalEnergy\velocity 704 280;
    DiscreteDifferential\output -> Splitter8\input;
    EnergySampling\energy -> Submodel5\energy;
+   EnergySampling\energyChange -> Submodel5\dE;
    Force\output -> MultiplyDivide\multiply 336 352;
    Hold\output -> MSe\effort;
    I\p <= QSensor1\p2;
@@ -926,6 +929,8 @@ equations
 <ExpData>
  <VersionNumber>5.1</VersionNumber>
  <ModelProperties>
+  <ModelProperty section="MatlabCodeDialog" entry="TargetName" value="Whole 20-sim model to Matlab"/>
+  <ModelProperty section="MatlabCodeDialog" entry="TargetDirectory" value="c:\temp\%MODEL_FUNCTION_NAME%"/>
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
@@ -942,7 +947,7 @@ equations
    </Variable>
    <Variable>
     <Name>I1\state_initial</Name>
-    <Value>0.5</Value>
+    <Value>-0.5</Value>
    </Variable>
    <Variable>
     <Name>PSensor\p_initial</Name>
@@ -979,8 +984,8 @@ equations
    <VarName>EnergySampling\Pk</VarName>
    <VarName>TrueEnergy\output</VarName>
    <VarName>QSensor\q</VarName>
-   <VarName>Differentiate\output_in</VarName>
    <VarName>Submodel5\E0</VarName>
+   <VarName>Differentiate\output_in</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1070,15 +1075,15 @@ equations
       <Label>Spring Energy</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.04</Minimum>
-      <Maximum>0.16</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Mass Energy</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.04</Minimum>
-      <Maximum>0.16</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Total Energy</Label>
@@ -1231,8 +1236,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>4.0</Maximum>
+      <Minimum>-0.09999999999999996</Minimum>
+      <Maximum>0.4</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Spring Energy</Label>
@@ -1541,8 +1546,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Position</Label>
@@ -1790,8 +1795,8 @@ equations
     <SharedZAxis>false</SharedZAxis>
     <XAxes>
      <Axis>
-      <Minimum>-1.956873489599275</Minimum>
-      <Maximum>2.1172030342974453</Maximum>
+      <Minimum>-0.7999760899665366</Minimum>
+      <Maximum>0.7972529672124393</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>output</Label>
@@ -1799,8 +1804,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Velocity vs Pos</Label>
@@ -1915,8 +1920,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.5</Minimum>
-      <Maximum>3.5</Maximum>
+      <Minimum>-0.2</Minimum>
+      <Maximum>0.3</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>E (controller)</Label>
@@ -2083,8 +2088,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.25</Minimum>
-      <Maximum>0.25</Maximum>
+      <Minimum>-0.05</Minimum>
+      <Maximum>0.05</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>dE</Label>
@@ -2199,8 +2204,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-0.5</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>dE/ts</Label>
@@ -2241,7 +2246,7 @@ equations
      <PlotId>10</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
+     <PlotIsVisible>false</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -2315,8 +2320,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-1.0</Minimum>
+      <Maximum>1.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>output</Label>
@@ -2419,13 +2424,13 @@ equations
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00625 0.0037037 0.995833 0.987037
+0.0104167 0.0037037 0.991667 0.974074
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
-0.00416667 0.0287037 1.00417 0.962963
+0.00416667 0.0287037 1 0.962963
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="3">
-0.00416667 0.0287037 1.00417 0.962963
+0.00416667 0.0287037 1 0.962963
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
