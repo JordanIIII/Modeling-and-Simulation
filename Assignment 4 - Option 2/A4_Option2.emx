@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 4 - Option 2\A4_Option2.emx</LibraryPath>
-    <TimeStamp>2026-5-16 20:48:03</TimeStamp>
+    <TimeStamp>2026-5-16 21:35:09</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-44EE'
@@ -832,16 +832,16 @@ equations
 	
 	dEpred = P*sampletime;
 	
-	if P <= 0.0 then
+	if P <= 0.0 then 			// energy is added back
 		alpha = 1.0;
-	else
-		if Etank <= 0.0 then
+	else 							// energy is used
+		if Etank <= 0.0 then // tank is empty
 			alpha = 0.0;
-		else 
-			if dEpred <= Etank then
+		else  					// tank is not empty
+			if dEpred <= Etank then 	// predicted energy doesn't exceed limits
 				alpha = 1.0;
-			else
-				alpha = Etank/dEpred;
+			else 								// predicted energy goes over what is left
+				alpha = Etank/dEpred; 	// scale the output force
 			end;
 		end;
 	end;
@@ -1337,7 +1337,7 @@ equations
      <PlotId>3</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
+     <PlotIsVisible>false</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -1621,7 +1621,7 @@ equations
      <PlotId>5</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
+     <PlotIsVisible>false</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -2431,7 +2431,7 @@ equations
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.0104167 0.0037037 0.991667 0.974074
+0.0125 0.0037037 0.989583 0.967593
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
 0.00416667 0.0287037 1 0.962963
