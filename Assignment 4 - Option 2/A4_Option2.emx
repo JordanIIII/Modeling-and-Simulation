@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 4 - Option 2\A4_Option2.emx</LibraryPath>
-    <TimeStamp>2026-5-16 19:55:55</TimeStamp>
+    <TimeStamp>2026-5-16 20:48:03</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-44EE'
@@ -147,7 +147,6 @@ implementation_end;
       signal in position {m} ;
       signal in force {N} ;
       signal out energy {J} ;
-      signal out energyChange;
     end;
     icon bg
      figures
@@ -181,7 +180,7 @@ equations
 	Pk = dE/sampletime;
 	
 	energy = E;
-	energyChange = dE;implementation_end;
+implementation_end;
    Force 336 304
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath><TimeStamp>2007-9-26 12:9:46</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type 'Differentiate-Default'
@@ -809,7 +808,6 @@ implementation_end;
       signal in force {N} ;
       signal in velocity {m/s} ;
       signal in energy {J} ;
-      signal in dE {J} ;
       signal out force_pass {N} ;
     end;
     icon bg
@@ -819,26 +817,36 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real E0 = 0.125;			// initial energy budget
+	real E0  = 0.125;			// initial energy budget
 	
 variables
-	real Etank;
-	real P;
+	real Etank;					// energy in tank
+	real P;						// desired power
+	real dEpred;				// predicted energy injection
+	real alpha;					// scaling factor, 0 < alpha <= 1
 
 equations
 	Etank = E0 - energy;		// remaining energy in tank
 	
 	P = force * velocity;	// desired power
 	
-	if (Etank-dE) > 0 then 		// there is energy available
-		force_pass = force;
-	else 							// tank is empty
-		if P < 0 then
-			force_pass = force;
-		else
-			force_pass = 0.0;
+	dEpred = P*sampletime;
+	
+	if P <= 0.0 then
+		alpha = 1.0;
+	else
+		if Etank <= 0.0 then
+			alpha = 0.0;
+		else 
+			if dEpred <= Etank then
+				alpha = 1.0;
+			else
+				alpha = Etank/dEpred;
+			end;
 		end;
 	end;
+	
+	force_pass = alpha * force;
 	implementation_end;
    TrueEnergy 464 352
     description '<Information><Description><Version>4.3</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Integrate.emx</LibraryPath><TimeStamp>2013-3-8 14:47:42</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
@@ -883,7 +891,6 @@ equations
    Differentiate\output -> PhysicalEnergy\velocity 704 280;
    DiscreteDifferential\output -> Splitter8\input;
    EnergySampling\energy -> Submodel5\energy;
-   EnergySampling\energyChange -> Submodel5\dE;
    Force\output -> MultiplyDivide\multiply 336 352;
    Hold\output -> MSe\effort;
    I\p <= QSensor1\p2;
@@ -1795,8 +1802,8 @@ equations
     <SharedZAxis>false</SharedZAxis>
     <XAxes>
      <Axis>
-      <Minimum>-0.7999760899665366</Minimum>
-      <Maximum>0.7972529672124393</Maximum>
+      <Minimum>-0.7334515126648667</Minimum>
+      <Maximum>0.7332211738091334</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>output</Label>
@@ -1920,8 +1927,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.2</Minimum>
-      <Maximum>0.3</Maximum>
+      <Minimum>-0.25</Minimum>
+      <Maximum>0.25</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>E (controller)</Label>
