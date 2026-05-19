@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\GearFric.emx</LibraryPath>
-    <TimeStamp>2026-5-8 12:35:20</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 3\GearFric.emx</LibraryPath>
+    <TimeStamp>2026-5-13 16:56:58</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-539D'
