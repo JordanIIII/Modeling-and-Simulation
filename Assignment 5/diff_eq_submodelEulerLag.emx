@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
-    <TimeStamp>2026-5-21 08:11:59</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
+    <TimeStamp>2026-5-21 09:29:26</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -138,42 +138,48 @@ Enter your equations here. You can use the Toolbar buttons at the top ( Add , f(
 */
 parameters
 	real grav = 9.81;		// m/s^2
-	real x0[4] = [0;0;0;0]; // Initial state
+	real x01[4] = [0;0;0;0]; // Initial joint state
+	real x02[4] = [0;0;0;0]; // Initial rotor state
 	real L[2] = [1;1];
 	real R[2] = [0.1;0.1];
 	real m[2] = [1,1];
 	real I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
+	real J[2,2] = [0.8* 10^-7, 0; 0, 0.8* 10^-7];
+	real K[2,2] = [7, 0; 0, 7];
 	
 variables
-	real x[4]; // State
+	real x1[4]; // Joint state
+	real x2[4]; // Rotor state
 	real D[2,2];  // "Mass inertia" matrix
 	real h; // Coriolis common term
 	real C[2,2]; // Centrifugal and Coriolis matrix (Christoffel?)
 	real g[2]; // Gravity matrix
 	real u[2]; // Input torques
-	real ddq[2]; // Joint accelerations
+	real ddq1[2]; // Joint accelerations
+	real ddq2[2]; // Rotor accelerations
 	
 equations
 	// State vector x = [q1, q1_dot, q2, q2_dot];
 	// Where q is the angle of the pendulum
 	
 	// EULER LAGRANGE 
-	// M(q)ddq + C(q,dq)dq + g(q) = u
+	// M(q1)ddq1 + C(q1,dq1)dq1 + g(q1) + K(q1 - q2)= 0 // Joint dynamics
+	// J*ddq2 - K(q1 - q2) = u // Rotor dynamics
 	
 	// Inertia matrix D(q)
-	D = [	I[1] + I[2] + m[1]*(L[1]/2)^2 + m[2]*(L[1]^2 + (L[2]/2)^2 + 2*L[1]*(L[2]/2)*cos(x[3])), I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x[3]));
-		  	I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x[3])), I[2] + m[2]*(L[2]/2)^2
+	D = [	I[1] + I[2] + m[1]*(L[1]/2)^2 + m[2]*(L[1]^2 + (L[2]/2)^2 + 2*L[1]*(L[2]/2)*cos(x1[3])), I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x1[3]));
+		  	I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x1[3])), I[2] + m[2]*(L[2]/2)^2
 		 	];
 
 	// Centrifugal and Coriolis C(q,dq)
-	h = -m[2]*L[1]*(L[2]/2)*sin(x[3]);
-	C = [ h*x[4], h*(x[2] + x[4]);
-			-h*x[2], 0
+	h = -m[2]*L[1]*(L[2]/2)*sin(x1[3]);
+	C = [ h*x1[4], h*(x1[2] + x1[4]);
+			-h*x1[2], 0
 			];	
 			
 	// Gravity g(q)
-	g = [	(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(x[1]) + m[2]*(L[2]/2)*grav*cos(x[1] + x[3]);
-			m[2]*(L[2]/2)*grav*cos(x[1] + x[3])
+	g = [	(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(x1[1]) + m[2]*(L[2]/2)*grav*cos(x1[1] + x1[3]);
+			m[2]*(L[2]/2)*grav*cos(x1[1] + x1[3])
 			];
 	
 	// Input torques
@@ -182,14 +188,21 @@ equations
 			];
 	
 	// Accelerations
-	ddq = (1/D)*(u - g - C*[x[2]; x[4]]);
+	ddq1 = (1/D)*(-K *([x1[1]; x1[3]] - [x2[1]; x2[3]]) - g - C*[x1[2]; x1[4]]);
+	ddq2 = (1/J)*(u + K*([x1[1]; x1[3]] - [x2[1]; x2[3]]));
 	
 	// 20-sim does not like it when we define elements of the vector x separately, so we can this:	
-	x = int([	x[2]; 
-					ddq[1];
-					x[4];
-					ddq[2]
-				], x0);
+	x1 = int([	x1[2]; 
+					ddq1[1];
+					x1[4];
+					ddq1[2]
+				], x01);
+				
+	x2 = int([	x2[2]; 
+						ddq2[1];
+						x2[4];
+						ddq2[2]
+					], x02);
 	
 	// You can of course do the same with ddt() for differential form:
 	//ddt(x) = [	x[2];
@@ -197,8 +210,8 @@ equations
 	//			];
 	
 	// Set port variable
-	port1.omega = x[2];
-	port2.omega = x[4];
+	port1.omega = x1[2];
+	port2.omega = x1[4];
  implementation_end;
    QSensor1 264 119.9
     description '<Information>
@@ -292,6 +305,13 @@ implementation_end;
     <Description><![CDATA[Inertia (cylinders)]]></Description>
     <Value>0.08583333333333333 0.08583333333333333</Value>
    </Variable>
+   <Variable>
+    <Name>Pendulum\J</Name>
+    <Rows>2</Rows>
+    <Columns>2</Columns>
+    <Value>8.0e-8 0.0
+0.0 8.0e-8</Value>
+   </Variable>
   </Parameters>
   <Initials>
    <Variable>
@@ -310,9 +330,10 @@ implementation_end;
    <VarName>Pendulum\port1.omega</VarName>
    <VarName>Pendulum\port1.T</VarName>
    <VarName>QSensor1\q</VarName>
-   <VarName>Pendulum\x[1]</VarName>
    <VarName>Pendulum\x[3]</VarName>
    <VarName>Pendulum\x[4]</VarName>
+   <VarName>Pendulum\x1[1]</VarName>
+   <VarName>Pendulum\x1[3]</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -387,7 +408,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>40.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -395,8 +416,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-25.0</Minimum>
-      <Maximum>25.0</Maximum>
+      <Minimum>-0.5000000000000001</Minimum>
+      <Maximum>0.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q1_dot</Label>
@@ -1146,36 +1167,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>7.70794594664353</Value>
+            <Value>4.61455776971145</Value>
            </X>
            <Y>
-            <Value>0.408953961173733</Value>
+            <Value>0.244830687681965</Value>
            </Y>
            <Z>
-            <Value>3.78137711779897</Value>
+            <Value>2.2638175166732</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.896767095851372</Value>
+             <Value>-0.896767084339207</Value>
             </X>
             <Y>
-             <Value>-0.0475790142241044</Value>
+             <Value>-0.0475790130504161</Value>
             </Y>
             <Z>
-             <Value>-0.439937510566851</Value>
+             <Value>-0.439937534160141</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.439319618990322</Value>
+             <Value>-0.43931964460118</Value>
             </X>
             <Y>
-             <Value>-0.0233086093066204</Value>
+             <Value>-0.0233086103520268</Value>
             </Y>
             <Z>
-             <Value>0.898028385465843</Value>
+             <Value>0.89802837290976</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -1440,8 +1461,8 @@ implementation_end;
             <Orientation>
              <Angles>
               <X>
-               <VariableName>Pendulum\x[1]</VariableName>
-               <Value>-0.9478031402018255</Value>
+               <VariableName>Pendulum\x1[1]</VariableName>
+               <Value>0.0</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -1565,8 +1586,8 @@ implementation_end;
               <Orientation>
                <Angles>
                 <X>
-                 <VariableName>Pendulum\x[3]</VariableName>
-                 <Value>-1.3808286341687825</Value>
+                 <VariableName>Pendulum\x1[3]</VariableName>
+                 <Value>0.0</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -1694,9 +1715,9 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
-   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
--0.00260417 -0.00416667 1.0026 0.954167
+  <WindowRectangles virtualDesktopWidth="1280" virtualDesktopHeight="720">
+   <WindowRectangle monitor="0" left="0" top="0" right="1280" bottom="720" plotpanelid="1">
+0 0 1 1
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
