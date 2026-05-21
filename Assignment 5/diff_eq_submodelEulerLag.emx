@@ -8,14 +8,14 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
-    <TimeStamp>2026-5-21 09:29:26</TimeStamp>
+    <TimeStamp>2026-5-21 12:40:42</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
-   Constant 104 120
+   Constant 40 232
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -26,22 +26,18 @@
     end;
     icon bg bottom
      figures
-      rectangle 88.1 104 119.9 136 color 0 fill 15132390;
-      line 92.9 115.6 114.9 115.6 color 16711680 width 2;
-      line 90.2 126.7 115.9 126.7 color 0;
-      line 92.5 110.7 92.5 129 color 0;
+      rectangle 24.1 216 55.9 248 color 0 fill 15132390;
+      line 28.9 227.6 50.9 227.6 color 16711680 width 2;
+      line 26.2 238.7 51.9 238.7 color 0;
+      line 28.5 222.7 28.5 241 color 0;
     end;
     implementation eq
 parameters
-	real C = 0.0;		// output value
+	real C = 2;		// output value
 equations
-	if time>1 then
-		output = C;
-	else
-		output = 0;
-	end;
+	output = C;
      implementation_end;
-   Constant1 104 192
+   Constant1 40 296
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -52,22 +48,405 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 88.1 176 119.9 208 color 0 fill 15132390;
-      line 92.9 187.6 114.9 187.6 color 16711680 width 2;
-      line 90.2 198.7 115.9 198.7 color 0;
-      line 92.5 182.7 92.5 201 color 0;
+      rectangle 24.1 280 55.9 312 color 0 fill 15132390;
+      line 28.9 291.6 50.9 291.6 color 16711680 width 2;
+      line 26.2 302.7 51.9 302.7 color 0;
+      line 28.5 286.7 28.5 305 color 0;
     end;
     implementation eq
 parameters
-	real C = 0.0;		// output value
+	real C = 0;		// output value
 equations
-	if time>1 then
-		output = C;
-	else
-		output = 0;
-	end;
+	output = C;
      implementation_end;
-   MSe 208 120
+   Demux 143 160
+			specifications active 'outputs_2'
+				specification 'outputs_2'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal in input [2,1];
+   signal out output2;
+ end;
+ icon bg bottom
+  figures
+   line 136 144 136 176 color 0 width 2;
+   rectangle 136 144 152 176 color -1;
+   text '2' 142 172 color 8421504 8;
+  terminals
+   output1 136 152 fixed;
+   input 136 160 fixed;
+   output2 136 168 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2] = input;implementation_end;
+specification_end;
+				specification 'outputs_3'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal in input [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '3' 6 26 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   input 0 16 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3] = input;implementation_end;
+specification_end;
+				specification 'outputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal in input [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 32 fixed;
+   output4 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4] = input;implementation_end;
+specification_end;
+				specification 'outputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal in input [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5] = input;implementation_end;
+specification_end;
+				specification 'outputs_6'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal in input [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '6' 6 58 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 40 fixed;
+   output5 0 48 fixed;
+   output6 0 56 fixed;
+   input 0 32 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6] = input;implementation_end;
+specification_end;
+				specification 'outputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal in input [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   input 0 32 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7] = input;implementation_end;
+specification_end;
+				specification 'outputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal in input [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 48 fixed;
+   output6 0 56 fixed;
+   output7 0 64 fixed;
+   output8 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8] = input;implementation_end;
+specification_end;
+				specification 'outputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal out output9;
+   signal in input [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   output8 0 64 fixed;
+   output9 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
+specification_end;
+			end;
+   FlowSensor 336 103.9
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\FlowSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:50:53</TimeStamp>
+</Description>
+</Information>';
+    knot FlowSensor
+     ports
+      rotation knot in p1 [1];
+      rotation knot out p2 [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 329.1 96.8 342.9 111.1 color 0 fill 16777215;
+      text 'f' 336 103.2 color 0;
+    end;
+    implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	flow = p1.f;
+implementation_end;
+   FlowSensor1 336 215.9
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\FlowSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:50:53</TimeStamp>
+</Description>
+</Information>';
+    knot FlowSensor
+     ports
+      rotation knot in p1 [1];
+      rotation knot out p2 [1];
+      signal knot out flow [1];
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 329.1 208.8 342.9 223.1 color 0 fill 16777215;
+      text 'f' 336 215.2 color 0;
+    end;
+    implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	flow = p1.f;
+implementation_end;
+   Imp_contr 232 160
+    description '<Information><Description><Version>4.0</Version><LibraryPath>System\Submodel.emx</LibraryPath><TimeStamp>2007-10-31 11:32:54</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Submodel
+     ports
+      signal in q1 {rad} ;
+      signal in q2 {rad} ;
+      signal in pos_des [2,1] {m} ;
+      signal in dq1 {rad} ;
+      signal in dq2 {rad} ;
+      signal out u [2,1] {N.m} ;
+    end;
+    implementation eq
+parameters
+	real global grav;		// m/s^2
+	real global L[2];
+	real global m[2];
+	real K_imp[2,2] = [5,0; 0,5];
+	real b_imp[2,2] = [2,0; 0,2];
+	
+variables
+	real x[2]; // Joint state
+	real dx[2]; // Joint velocities
+	real J[2,2];  // Jacobian
+	real g[2];
+	real q[2];
+	real pos[2];
+	
+equations
+	pos = [L[1]*cos(q1) + L[2]*cos(q1+q2); L[1]*sin(q1) + L[2]*sin(q1+q2)];
+	J = [-L[1]*sin(q1) - L[2]*sin(q1+q2), -L[2]*sin(q1+q2); L[1]*cos(q1) + L[2]*cos(q1+q2), L[2]*cos(q1+q2)];
+	g = [	(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(q1) + m[2]*(L[2]/2)*grav*cos(q1 + q1);
+		m[2]*(L[2]/2)*grav*cos(q1 + q1)
+		];
+		
+	// u = transpose(J) * (K_imp*(pos_des - pos) - b_imp*J*[dq1; dq2]) + g;
+	u = [1;1];
+	
+	implementation_end;
+   MSe 208 104
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -86,7 +465,7 @@ equations
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 208 120 color 0 18 bold;
+      text 'MSe' 208 104 color 0 18 bold;
     end;
     implementation eq
 variables
@@ -95,7 +474,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   MSe1 208 192
+   MSe1 208 216
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -114,7 +493,7 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 208 192 color 0 18 bold;
+      text 'MSe' 208 216 color 0 18 bold;
     end;
     implementation eq
 variables
@@ -123,8 +502,299 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
+   Mux 127 248
+			specifications active 'inputs_2'
+				specification 'inputs_2'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal out output [2,1];
+   signal in input2;
+ end;
+ icon bg bottom
+  figures
+   line 120 232 120 264 color 0 width 2;
+   rectangle 120 232 136 264 color -1;
+   text '2' 126 258 color 8421504 8;
+  terminals
+   input1 120 240 fixed;
+   output 120 248 fixed;
+   input2 120 256 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2];implementation_end;
+specification_end;
+				specification 'inputs_3'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal out output [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '3' 6 26 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   output 0 16 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3];implementation_end;
+specification_end;
+				specification 'inputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal out output [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 32 fixed;
+   input4 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4];implementation_end;
+specification_end;
+				specification 'inputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal out output [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5];implementation_end;
+specification_end;
+				specification 'inputs_6'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal out output [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '6' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 40 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6];implementation_end;
+specification_end;
+				specification 'inputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal out output [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7];implementation_end;
+specification_end;
+				specification 'inputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal out output [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   input7 0 64 fixed;
+   input8 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8];implementation_end;
+specification_end;
+				specification 'inputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal in input9;
+   signal out output [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   input8 0 64 fixed;
+   input9 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
+specification_end;
+			end;
    Pendulum 424 120
-    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description><Attributes><GlobalRelations></GlobalRelations></Attributes></Information>';
     type 'Submodel-Equation'
      ports
       rotation in port1;
@@ -137,15 +807,16 @@ implementation_end;
 Enter your equations here. You can use the Toolbar buttons at the top ( Add , f(x) etc. ).
 */
 parameters
-	real grav = 9.81;		// m/s^2
-	real x01[4] = [0;0;0;0]; // Initial joint state
-	real x02[4] = [0;0;0;0]; // Initial rotor state
-	real L[2] = [1;1];
-	real R[2] = [0.1;0.1];
-	real m[2] = [1,1];
-	real I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
-	real J[2,2] = [0.8* 10^-7, 0; 0, 0.8* 10^-7];
-	real K[2,2] = [7, 0; 0, 7];
+	real global grav = 0;		// m/s^2
+	real global x01[4] = [-pi/2;0;0;0]; // Initial joint state
+	real global x02[4] = [-pi/2;0;0;0]; // Initial rotor state
+	real global L[2] = [1;1];
+	real global R[2] = [0.1;0.1];
+	real global m[2] = [1,1];
+	real global I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
+	real global J[2,2] = [0.8*10^-7, 0; 0, 0.8*10^-7]; // Rotot inertia
+	real global K_spring[2,2] = [7, 0; 0, 7];
+	real load[2] = [0; -100000000];
 	
 variables
 	real x1[4]; // Joint state
@@ -157,6 +828,7 @@ variables
 	real u[2]; // Input torques
 	real ddq1[2]; // Joint accelerations
 	real ddq2[2]; // Rotor accelerations
+	real Jac[2,2]; // Jacobian
 	
 equations
 	// State vector x = [q1, q1_dot, q2, q2_dot];
@@ -186,10 +858,13 @@ equations
 	u = [	port1.T;
 			port2.T
 			];
+			
+	// Jacobian	
+	Jac = [-L[1]*sin(x1[1]) - L[2]*sin(x1[1]+x1[3]), -L[2]*sin(x1[1]+x1[3]); L[1]*cos(x1[1]) + L[2]*cos(x1[1]+x1[3]), L[2]*cos(x1[1]+x1[3])];
 	
 	// Accelerations
-	ddq1 = (1/D)*(-K *([x1[1]; x1[3]] - [x2[1]; x2[3]]) - g - C*[x1[2]; x1[4]]);
-	ddq2 = (1/J)*(u + K*([x1[1]; x1[3]] - [x2[1]; x2[3]]));
+	ddq1 = (1/D)*(-K_spring*([x1[1]; x1[3]] - [x2[1]; x2[3]]) - g - C*[x1[2]; x1[4]] + transpose(Jac)*load);
+	ddq2 = (1/J)*(u + K_spring*([x1[1]; x1[3]]-[x2[1]; x2[3]]));
 	
 	// 20-sim does not like it when we define elements of the vector x separately, so we can this:	
 	x1 = int([	x1[2]; 
@@ -199,10 +874,10 @@ equations
 				], x01);
 				
 	x2 = int([	x2[2]; 
-						ddq2[1];
-						x2[4];
-						ddq2[2]
-					], x02);
+					ddq2[1];
+					x2[4];
+					ddq2[2]
+				], x02);
 	
 	// You can of course do the same with ddt() for differential form:
 	//ddt(x) = [	x[2];
@@ -213,7 +888,7 @@ equations
 	port1.omega = x1[2];
 	port2.omega = x1[4];
  implementation_end;
-   QSensor1 264 119.9
+   QSensor1 264 103.9
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -233,8 +908,8 @@ equations
     end;
     icon bg ellipse
      figures
-      ellipse 257.1 112.9 270.9 127 color 0 fill 16777215;
-      text 'q' 263.5 117.2 color 0;
+      ellipse 257.1 96.9 270.9 111 color 0 fill 16777215;
+      text 'q' 263.5 101.2 color 0;
     end;
     implementation eq
 equations
@@ -242,7 +917,7 @@ equations
 	p1.e = p2.e;
 	q = int (p1.f);
 implementation_end;
-   QSensor2 264 191.9
+   QSensor2 264 215.9
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -262,8 +937,8 @@ implementation_end;
     end;
     icon bg ellipse
      figures
-      ellipse 257.1 184.9 270.9 199 color 0 fill 16777215;
-      text 'q' 263.5 189.2 color 0;
+      ellipse 257.1 208.9 270.9 223 color 0 fill 16777215;
+      text 'q' 263.5 213.2 color 0;
     end;
     implementation eq
 equations
@@ -273,12 +948,22 @@ equations
 implementation_end;
   end;
   connections
-   Constant\output -> MSe\effort;
-   Constant1\output -> MSe1\effort;
+   Constant\output -> Mux\input1;
+   Constant1\output -> Mux\input2;
+   Demux\output1 -> MSe\effort;
+   Demux\output2 -> MSe1\effort;
+   FlowSensor\flow -> Imp_contr\dq1;
+   FlowSensor\p2 => Pendulum\port1;
+   FlowSensor1\flow -> Imp_contr\dq2;
+   FlowSensor1\p2 => Pendulum\port2;
+   Imp_contr\u -> Demux\input;
    MSe\p => QSensor1\p1;
    MSe1\p => QSensor2\p1;
-   QSensor1\p2 => Pendulum\port1;
-   QSensor2\p2 => Pendulum\port2 424 192;
+   Mux\output -> Imp_contr\pos_des;
+   QSensor1\p2 => FlowSensor\p1;
+   QSensor1\q -> Imp_contr\q1;
+   QSensor2\p2 => FlowSensor1\p1;
+   QSensor2\q -> Imp_contr\q2;
   end;
  implementation_end;
 ]]></Sidops>
@@ -297,23 +982,40 @@ implementation_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
+  <Constants>
+  </Constants>
   <Parameters>
    <Variable>
-    <Name>Pendulum\I</Name>
+    <Name>I</Name>
     <Rows>2</Rows>
     <Columns>1</Columns>
     <Description><![CDATA[Inertia (cylinders)]]></Description>
     <Value>0.08583333333333333 0.08583333333333333</Value>
    </Variable>
    <Variable>
-    <Name>Pendulum\J</Name>
+    <Name>J</Name>
     <Rows>2</Rows>
     <Columns>2</Columns>
+    <Description><![CDATA[Rotot inertia]]></Description>
     <Value>8.0e-8 0.0
 0.0 8.0e-8</Value>
    </Variable>
   </Parameters>
   <Initials>
+   <Variable>
+    <Name>x01</Name>
+    <Rows>4</Rows>
+    <Columns>1</Columns>
+    <Description><![CDATA[Initial joint state]]></Description>
+    <Value>-1.5707963267948966 0.0 0.0 0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>x02</Name>
+    <Rows>4</Rows>
+    <Columns>1</Columns>
+    <Description><![CDATA[Initial rotor state]]></Description>
+    <Value>-1.5707963267948966 0.0 0.0 0.0</Value>
+   </Variable>
    <Variable>
     <Name>QSensor1\q_initial</Name>
     <Value>0.0</Value>
@@ -330,10 +1032,12 @@ implementation_end;
    <VarName>Pendulum\port1.omega</VarName>
    <VarName>Pendulum\port1.T</VarName>
    <VarName>QSensor1\q</VarName>
-   <VarName>Pendulum\x[3]</VarName>
-   <VarName>Pendulum\x[4]</VarName>
    <VarName>Pendulum\x1[1]</VarName>
    <VarName>Pendulum\x1[3]</VarName>
+   <VarName>Pendulum\x2[1]</VarName>
+   <VarName>Pendulum\x2[3]</VarName>
+   <VarName>Pendulum\x[3]</VarName>
+   <VarName>Pendulum\x[4]</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -408,7 +1112,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>40.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -416,8 +1120,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.5000000000000001</Minimum>
-      <Maximum>0.5</Maximum>
+      <Minimum>-0.6000000000000001</Minimum>
+      <Maximum>1.4</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q1_dot</Label>
@@ -1462,7 +2166,7 @@ implementation_end;
              <Angles>
               <X>
                <VariableName>Pendulum\x1[1]</VariableName>
-               <Value>0.0</Value>
+               <Value>-1.5707963138629826</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -1587,7 +2291,7 @@ implementation_end;
                <Angles>
                 <X>
                  <VariableName>Pendulum\x1[3]</VariableName>
-                 <Value>0.0</Value>
+                 <Value>-1.4241955327544805e-8</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -1701,6 +2405,148 @@ implementation_end;
      </Frame>
     </MainFrame>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>3</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>model(1)</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.8</Minimum>
+      <Maximum>0.2</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q_rot_1</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>45.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q_rot_2</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\x2[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\x2[3]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -1710,6 +2556,7 @@ implementation_end;
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>1</PlotId>
+     <PlotId>3</PlotId>
      <PlotId>2</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -1717,7 +2564,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1280" virtualDesktopHeight="720">
    <WindowRectangle monitor="0" left="0" top="0" right="1280" bottom="720" plotpanelid="1">
-0 0 1 1
+0.003125 0.00555556 0.996875 0.995833
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1862,9 +2709,6 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
