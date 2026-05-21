@@ -1,0 +1,1850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+ <Model version="5.1" build="5.1.6.14106">
+  <Sidops><![CDATA[model 128 184
+ description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <IsMainModel>0</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
+    <TimeStamp>2026-5-21 08:11:59</TimeStamp>
+  </Description>
+</Information>';
+ type Mainmodel
+ end;
+ implementation bg
+  submodels
+   Constant 104 120
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 88.1 104 119.9 136 color 0 fill 15132390;
+      line 92.9 115.6 114.9 115.6 color 16711680 width 2;
+      line 90.2 126.7 115.9 126.7 color 0;
+      line 92.5 110.7 92.5 129 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0.0;		// output value
+equations
+	if time>1 then
+		output = C;
+	else
+		output = 0;
+	end;
+     implementation_end;
+   Constant1 104 192
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 88.1 176 119.9 208 color 0 fill 15132390;
+      line 92.9 187.6 114.9 187.6 color 16711680 width 2;
+      line 90.2 198.7 115.9 198.7 color 0;
+      line 92.5 182.7 92.5 201 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0.0;		// output value
+equations
+	if time>1 then
+		output = C;
+	else
+		output = 0;
+	end;
+     implementation_end;
+   MSe 208 120
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 208 120 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   MSe1 208 192
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p;
+      signal in effort;
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 208 192 color 0 18 bold;
+    end;
+    implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+   Pendulum 424 120
+    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'Submodel-Equation'
+     ports
+      rotation in port1;
+      rotation in port2;
+     restrictions
+      causality fixed in port1;
+    end;
+    implementation eq
+/* Equation Submodel
+Enter your equations here. You can use the Toolbar buttons at the top ( Add , f(x) etc. ).
+*/
+parameters
+	real grav = 9.81;		// m/s^2
+	real x0[4] = [0;0;0;0]; // Initial state
+	real L[2] = [1;1];
+	real R[2] = [0.1;0.1];
+	real m[2] = [1,1];
+	real I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
+	
+variables
+	real x[4]; // State
+	real D[2,2];  // "Mass inertia" matrix
+	real h; // Coriolis common term
+	real C[2,2]; // Centrifugal and Coriolis matrix (Christoffel?)
+	real g[2]; // Gravity matrix
+	real u[2]; // Input torques
+	real ddq[2]; // Joint accelerations
+	
+equations
+	// State vector x = [q1, q1_dot, q2, q2_dot];
+	// Where q is the angle of the pendulum
+	
+	// EULER LAGRANGE 
+	// M(q)ddq + C(q,dq)dq + g(q) = u
+	
+	// Inertia matrix D(q)
+	D = [	I[1] + I[2] + m[1]*(L[1]/2)^2 + m[2]*(L[1]^2 + (L[2]/2)^2 + 2*L[1]*(L[2]/2)*cos(x[3])), I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x[3]));
+		  	I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x[3])), I[2] + m[2]*(L[2]/2)^2
+		 	];
+
+	// Centrifugal and Coriolis C(q,dq)
+	h = -m[2]*L[1]*(L[2]/2)*sin(x[3]);
+	C = [ h*x[4], h*(x[2] + x[4]);
+			-h*x[2], 0
+			];	
+			
+	// Gravity g(q)
+	g = [	(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(x[1]) + m[2]*(L[2]/2)*grav*cos(x[1] + x[3]);
+			m[2]*(L[2]/2)*grav*cos(x[1] + x[3])
+			];
+	
+	// Input torques
+	u = [	port1.T;
+			port2.T
+			];
+	
+	// Accelerations
+	ddq = (1/D)*(u - g - C*[x[2]; x[4]]);
+	
+	// 20-sim does not like it when we define elements of the vector x separately, so we can this:	
+	x = int([	x[2]; 
+					ddq[1];
+					x[4];
+					ddq[2]
+				], x0);
+	
+	// You can of course do the same with ddt() for differential form:
+	//ddt(x) = [	x[2];
+	//				(1/m) * (-sin(x[1]) + port1.T)
+	//			];
+	
+	// Set port variable
+	port1.omega = x[2];
+	port2.omega = x[4];
+ implementation_end;
+   QSensor1 264 119.9
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+    knot QSensor
+     ports
+      power knot in p1 [1];
+      rotation knot out p2 [1];
+      signal knot out q [1];
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 257.1 112.9 270.9 127 color 0 fill 16777215;
+      text 'q' 263.5 117.2 color 0;
+    end;
+    implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+   QSensor2 264 191.9
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
+</Description>
+</Information>';
+    knot QSensor
+     ports
+      power knot in p1 [1];
+      rotation knot out p2 [1];
+      signal knot out q [1];
+     restrictions
+      causality constraint not_equal p1 p2;
+    end;
+    icon bg ellipse
+     figures
+      ellipse 257.1 184.9 270.9 199 color 0 fill 16777215;
+      text 'q' 263.5 189.2 color 0;
+    end;
+    implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+  end;
+  connections
+   Constant\output -> MSe\effort;
+   Constant1\output -> MSe1\effort;
+   MSe\p => QSensor1\p1;
+   MSe1\p => QSensor2\p1;
+   QSensor1\p2 => Pendulum\port1;
+   QSensor2\p2 => Pendulum\port2 424 192;
+  end;
+ implementation_end;
+]]></Sidops>
+ </Model>
+ <Experiments>
+  <DefaultExperiment><![CDATA[Experiment 1]]></DefaultExperiment>
+<Experiment>
+   <Name>Experiment 1</Name>
+   <CreatedBy></CreatedBy>
+   <Info></Info>
+<ExpData>
+ <VersionNumber>5.1</VersionNumber>
+ <ModelProperties>
+  <ModelProperty section="processing\warnings" entry="typeBoolean" value="0"/>
+  <ModelProperty section="processing\warnings" entry="debug_typeBoolean" value="1"/>
+ </ModelProperties>
+ <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
+ <Variables>
+  <Parameters>
+   <Variable>
+    <Name>Pendulum\I</Name>
+    <Rows>2</Rows>
+    <Columns>1</Columns>
+    <Description><![CDATA[Inertia (cylinders)]]></Description>
+    <Value>0.08583333333333333 0.08583333333333333</Value>
+   </Variable>
+  </Parameters>
+  <Initials>
+   <Variable>
+    <Name>QSensor1\q_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>QSensor2\q_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+  </Initials>
+ </Variables>
+ <PlotSpecs>
+  <VarNames>
+   <VarName>time</VarName>
+   <VarName>Pendulum\port1.omega</VarName>
+   <VarName>Pendulum\port1.T</VarName>
+   <VarName>QSensor1\q</VarName>
+   <VarName>Pendulum\x[1]</VarName>
+   <VarName>Pendulum\x[3]</VarName>
+   <VarName>Pendulum\x[4]</VarName>
+  </VarNames>
+  <Plots>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>1</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>model</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-25.0</Minimum>
+      <Maximum>25.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q1_dot</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>tau</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q1</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q2</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-6.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>q2_dot</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\port1.omega</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\port1.T</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>QSensor1\q</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\x[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Pendulum\x[4]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>D3DPlot</PlotType>
+    <BasePlot>
+     <PlotId>2</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <PlotTitle>3D Animation</PlotTitle>
+    <RenderQuality>137</RenderQuality>
+    <ShowGrid>true</ShowGrid>
+    <ShowFPS>false</ShowFPS>
+    <BackgroundColor>4294967295</BackgroundColor>
+    <SceneBackgroundImage>Gradients\BlueWhite.png</SceneBackgroundImage>
+    <ApplyTextureBackground>true</ApplyTextureBackground>
+    <FrameScale>1.0</FrameScale>
+    <FrameThickness>1.0</FrameThickness>
+    <MainFrame>
+     <Frame>
+      <ScaleValue>
+       <X>
+        <Value>1</Value>
+       </X>
+       <Y>
+        <Value>1</Value>
+       </Y>
+       <Z>
+        <Value>1</Value>
+       </Z>
+      </ScaleValue>
+      <ShowReferenceFrame>true</ShowReferenceFrame>
+      <Name>Reference Frame</Name>
+      <Position>
+      </Position>
+      <Orientation>
+       <Angles>
+       </Angles>
+       <OrientationType>Bryant</OrientationType>
+      </Orientation>
+      <LockX>false</LockX>
+      <LockY>false</LockY>
+      <LockZ>false</LockZ>
+      <LockXPitch>false</LockXPitch>
+      <LockYYaw>false</LockYYaw>
+      <LockZRoll>false</LockZRoll>
+      <Childs>
+       <Frame>
+        <ScaleValue>
+         <X>
+          <Value>1</Value>
+         </X>
+         <Y>
+          <Value>1</Value>
+         </Y>
+         <Z>
+          <Value>1</Value>
+         </Z>
+        </ScaleValue>
+        <ShowReferenceFrame>false</ShowReferenceFrame>
+        <Name>Default Lights and Cameras</Name>
+        <Position>
+        </Position>
+        <Orientation>
+         <Angles>
+         </Angles>
+         <OrientationType>Bryant</OrientationType>
+        </Orientation>
+        <LockX>false</LockX>
+        <LockY>false</LockY>
+        <LockZ>false</LockZ>
+        <LockXPitch>false</LockXPitch>
+        <LockYYaw>false</LockYYaw>
+        <LockZRoll>false</LockZRoll>
+        <Childs>
+         <Light>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Ambient</Name>
+          <Position>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <Y>
+             <Value>1</Value>
+            </Y>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <LightType>0</LightType>
+          <LightColor>
+           <Color>
+            <X>
+             <Value>0.3</Value>
+            </X>
+            <Y>
+             <Value>0.3</Value>
+            </Y>
+            <Z>
+             <Value>0.3</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </LightColor>
+          <AmbientLight>
+           <Color>
+            <X>
+             <Value>0.3</Value>
+            </X>
+            <Y>
+             <Value>0.3</Value>
+            </Y>
+            <Z>
+             <Value>0.3</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </AmbientLight>
+          <AmbientOn>true</AmbientOn>
+          <DiffuseOn>false</DiffuseOn>
+          <SpecularOn>false</SpecularOn>
+         </Light>
+         <Light>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Parallel</Name>
+          <Position>
+           <X>
+            <Value>-3</Value>
+           </X>
+           <Y>
+            <Value>5</Value>
+           </Y>
+           <Z>
+            <Value>3</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <Value>0.45749568939209</Value>
+            </X>
+            <Y>
+             <Value>-0.762492835521698</Value>
+            </Y>
+            <Z>
+             <Value>-0.45749568939209</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <Value>0.235379606485367</Value>
+            </X>
+            <Y>
+             <Value>-0.392299354076385</Value>
+            </Y>
+            <Z>
+             <Value>0.88921183347702</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <LightType>3</LightType>
+          <LightColor>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </LightColor>
+          <Attenuation>
+           <Constant>
+            <Value>1.0</Value>
+           </Constant>
+           <Linear>
+            <Value>0.0</Value>
+           </Linear>
+           <Quadratic>
+            <Value>0.0</Value>
+           </Quadratic>
+          </Attenuation>
+          <DiffuseLight>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </DiffuseLight>
+          <SpecularLight>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </SpecularLight>
+          <AmbientOn>false</AmbientOn>
+          <DiffuseOn>true</DiffuseOn>
+          <SpecularOn>true</SpecularOn>
+         </Light>
+         <Light>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Spot Light 1</Name>
+          <Position>
+           <X>
+            <Value>-3</Value>
+           </X>
+           <Y>
+            <Value>-5</Value>
+           </Y>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <Value>0.50709255283711</Value>
+            </X>
+            <Y>
+             <Value>0.845154254728517</Value>
+            </Y>
+            <Z>
+             <Value>-0.169030850945703</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <Value>0.0869656553478673</Value>
+            </X>
+            <Y>
+             <Value>0.144942758913112</Value>
+            </Y>
+            <Z>
+             <Value>0.985610760609162</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <LightType>2</LightType>
+          <LightColor>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </LightColor>
+          <Attenuation>
+           <Constant>
+            <Value>1.0</Value>
+           </Constant>
+           <Linear>
+            <Value>0.05</Value>
+           </Linear>
+           <Quadratic>
+            <Value>0.05</Value>
+           </Quadratic>
+          </Attenuation>
+          <Umbra>
+           <Value>1.0471975511965976</Value>
+          </Umbra>
+          <Penumbra>
+           <Value>1.0471975511965976</Value>
+          </Penumbra>
+          <SpotExponent>0.0</SpotExponent>
+          <DiffuseLight>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </DiffuseLight>
+          <SpecularLight>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </SpecularLight>
+          <AmbientOn>false</AmbientOn>
+          <DiffuseOn>true</DiffuseOn>
+          <SpecularOn>true</SpecularOn>
+         </Light>
+         <Light>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Spot Light 2</Name>
+          <Position>
+           <X>
+            <Value>2</Value>
+           </X>
+           <Y>
+            <Value>-3</Value>
+           </Y>
+           <Z>
+            <Value>-1</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <Value>-0.534522496597273</Value>
+            </X>
+            <Y>
+             <Value>0.801783715093586</Value>
+            </Y>
+            <Z>
+             <Value>0.267261248298637</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <Value>0.148249867750411</Value>
+            </X>
+            <Y>
+             <Value>-0.222374801625616</Value>
+            </Y>
+            <Z>
+             <Value>0.963624109450336</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <LightType>2</LightType>
+          <LightColor>
+           <Color>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </LightColor>
+          <Attenuation>
+           <Constant>
+            <Value>1.0</Value>
+           </Constant>
+           <Linear>
+            <Value>0.05</Value>
+           </Linear>
+           <Quadratic>
+            <Value>0.05</Value>
+           </Quadratic>
+          </Attenuation>
+          <Umbra>
+           <Value>1.5707963267948966</Value>
+          </Umbra>
+          <Penumbra>
+           <Value>1.5707963267948966</Value>
+          </Penumbra>
+          <SpotExponent>0.0</SpotExponent>
+          <DiffuseLight>
+           <Color>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </DiffuseLight>
+          <SpecularLight>
+           <Color>
+            <X>
+             <Value>0.5</Value>
+            </X>
+            <Y>
+             <Value>0.5</Value>
+            </Y>
+            <Z>
+             <Value>0.5</Value>
+            </Z>
+           </Color>
+           <Offset>
+           </Offset>
+           <Multipliers>
+            <X>
+             <Value>1</Value>
+            </X>
+            <Y>
+             <Value>1</Value>
+            </Y>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </Multipliers>
+           <Direct3DColorRange>true</Direct3DColorRange>
+          </SpecularLight>
+          <AmbientOn>false</AmbientOn>
+          <DiffuseOn>true</DiffuseOn>
+          <SpecularOn>true</SpecularOn>
+         </Light>
+         <Camera>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Camera Looking at Origin</Name>
+          <Position>
+           <X>
+            <Value>7.70794594664353</Value>
+           </X>
+           <Y>
+            <Value>0.408953961173733</Value>
+           </Y>
+           <Z>
+            <Value>3.78137711779897</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <Value>-0.896767095851372</Value>
+            </X>
+            <Y>
+             <Value>-0.0475790142241044</Value>
+            </Y>
+            <Z>
+             <Value>-0.439937510566851</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <Value>-0.439319618990322</Value>
+            </X>
+            <Y>
+             <Value>-0.0233086093066204</Value>
+            </Y>
+            <Z>
+             <Value>0.898028385465843</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <FrontPlane>0.01</FrontPlane>
+          <BackPlane>100.0</BackPlane>
+          <AutoFrontBack>true</AutoFrontBack>
+          <Field>0.003926990816987242</Field>
+          <Fieldy>45.0</Fieldy>
+          <PlaneLeft>-10.0</PlaneLeft>
+          <PlaneRight>10.0</PlaneRight>
+          <PlaneTop>10.0</PlaneTop>
+          <PlaneBottom>-10.0</PlaneBottom>
+          <UseLookatPosition>true</UseLookatPosition>
+          <LookatPosition>
+          </LookatPosition>
+          <UseAlwaysLookUp>true</UseAlwaysLookUp>
+          <LookUpVector>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </LookUpVector>
+          <RightHand>true</RightHand>
+          <Perspective>true</Perspective>
+          <IsSelectedCamera>true</IsSelectedCamera>
+         </Camera>
+         <Camera>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Front(XY)-Camera</Name>
+          <Position>
+           <Z>
+            <Value>10</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <Z>
+             <Value>-1</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <Y>
+             <Value>1</Value>
+            </Y>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <FrontPlane>0.01</FrontPlane>
+          <BackPlane>100.0</BackPlane>
+          <AutoFrontBack>true</AutoFrontBack>
+          <Field>9.999999999999998</Field>
+          <Fieldy>45.0</Fieldy>
+          <PlaneLeft>-9.999999999999998</PlaneLeft>
+          <PlaneRight>9.999999999999998</PlaneRight>
+          <PlaneTop>9.999999999999998</PlaneTop>
+          <PlaneBottom>-9.999999999999998</PlaneBottom>
+          <UseLookatPosition>true</UseLookatPosition>
+          <LookatPosition>
+          </LookatPosition>
+          <UseAlwaysLookUp>true</UseAlwaysLookUp>
+          <LookUpVector>
+           <Y>
+            <Value>1</Value>
+           </Y>
+          </LookUpVector>
+          <RightHand>true</RightHand>
+          <Perspective>false</Perspective>
+          <IsSelectedCamera>false</IsSelectedCamera>
+         </Camera>
+         <Camera>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Side(YZ)-Camera</Name>
+          <Position>
+           <X>
+            <Value>10</Value>
+           </X>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <Value>-1</Value>
+            </X>
+           </ZAxis>
+           <YAxis>
+            <Z>
+             <Value>1</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <FrontPlane>0.01</FrontPlane>
+          <BackPlane>100.0</BackPlane>
+          <AutoFrontBack>true</AutoFrontBack>
+          <Field>9.999999999999998</Field>
+          <Fieldy>45.0</Fieldy>
+          <PlaneLeft>-9.999999999999998</PlaneLeft>
+          <PlaneRight>9.999999999999998</PlaneRight>
+          <PlaneTop>9.999999999999998</PlaneTop>
+          <PlaneBottom>-9.999999999999998</PlaneBottom>
+          <UseLookatPosition>true</UseLookatPosition>
+          <LookatPosition>
+          </LookatPosition>
+          <UseAlwaysLookUp>true</UseAlwaysLookUp>
+          <LookUpVector>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </LookUpVector>
+          <RightHand>true</RightHand>
+          <Perspective>false</Perspective>
+          <IsSelectedCamera>false</IsSelectedCamera>
+         </Camera>
+         <Camera>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Top(XZ)-Camera</Name>
+          <Position>
+           <Y>
+            <Value>10</Value>
+           </Y>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <Y>
+             <Value>-1</Value>
+            </Y>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <Value>1</Value>
+            </X>
+           </YAxis>
+           <OrientationType>Direct3D</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+          </Childs>
+          <FrontPlane>0.01</FrontPlane>
+          <BackPlane>100.0</BackPlane>
+          <AutoFrontBack>true</AutoFrontBack>
+          <Field>9.999999999999998</Field>
+          <Fieldy>45.0</Fieldy>
+          <PlaneLeft>-9.999999999999998</PlaneLeft>
+          <PlaneRight>9.999999999999998</PlaneRight>
+          <PlaneTop>9.999999999999998</PlaneTop>
+          <PlaneBottom>-9.999999999999998</PlaneBottom>
+          <UseLookatPosition>true</UseLookatPosition>
+          <LookatPosition>
+          </LookatPosition>
+          <UseAlwaysLookUp>true</UseAlwaysLookUp>
+          <LookUpVector>
+           <X>
+            <Value>1</Value>
+           </X>
+          </LookUpVector>
+          <RightHand>true</RightHand>
+          <Perspective>false</Perspective>
+          <IsSelectedCamera>false</IsSelectedCamera>
+         </Camera>
+        </Childs>
+       </Frame>
+       <Frame>
+        <ScaleValue>
+         <X>
+          <Value>1</Value>
+         </X>
+         <Y>
+          <Value>1</Value>
+         </Y>
+         <Z>
+          <Value>1</Value>
+         </Z>
+        </ScaleValue>
+        <ShowReferenceFrame>false</ShowReferenceFrame>
+        <Name>Scenery</Name>
+        <Position>
+        </Position>
+        <Orientation>
+         <Angles>
+         </Angles>
+         <OrientationType>Bryant</OrientationType>
+        </Orientation>
+        <LockX>false</LockX>
+        <LockY>false</LockY>
+        <LockZ>false</LockZ>
+        <LockXPitch>false</LockXPitch>
+        <LockYYaw>false</LockYYaw>
+        <LockZRoll>false</LockZRoll>
+        <Childs>
+         <Frame>
+          <ScaleValue>
+           <X>
+            <Value>1</Value>
+           </X>
+           <Y>
+            <Value>1</Value>
+           </Y>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </ScaleValue>
+          <ShowReferenceFrame>true</ShowReferenceFrame>
+          <Name>Reference Frame</Name>
+          <Position>
+          </Position>
+          <Orientation>
+           <Angles>
+           </Angles>
+           <OrientationType>Bryant</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+           <Frame>
+            <ScaleValue>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </ScaleValue>
+            <ShowReferenceFrame>false</ShowReferenceFrame>
+            <Name>link1</Name>
+            <Position>
+            </Position>
+            <Orientation>
+             <Angles>
+              <X>
+               <VariableName>Pendulum\x[1]</VariableName>
+               <Value>-0.9478031402018255</Value>
+              </X>
+             </Angles>
+             <OrientationType>Bryant</OrientationType>
+            </Orientation>
+            <LockX>false</LockX>
+            <LockY>false</LockY>
+            <LockZ>false</LockZ>
+            <LockXPitch>false</LockXPitch>
+            <LockYYaw>false</LockYYaw>
+            <LockZRoll>false</LockZRoll>
+            <Childs>
+             <Cylinder>
+              <CircleElements>16</CircleElements>
+              <LowerRadius>0.5</LowerRadius>
+              <UpperRadius>0.5</UpperRadius>
+              <Height>1.0</Height>
+              <Closed>true</Closed>
+              <LowerClosed>true</LowerClosed>
+              <UpperClosed>true</UpperClosed>
+              <CenterInOrigin>true</CenterInOrigin>
+              <ShowInnerSide>false</ShowInnerSide>
+              <ShowOuterSide>true</ShowOuterSide>
+              <ScaleValue>
+               <X>
+                <Value>0.1</Value>
+               </X>
+               <Y>
+                <Value>0.1</Value>
+               </Y>
+               <Z>
+                <Value>1</Value>
+               </Z>
+              </ScaleValue>
+              <OverrideColor>true</OverrideColor>
+              <MeshColor>
+               <X>
+                <Value>1</Value>
+               </X>
+               <Y>
+                <Value>1</Value>
+               </Y>
+               <Z>
+                <Value>1</Value>
+               </Z>
+              </MeshColor>
+              <Alpha>1.0</Alpha>
+              <MeshColorMultipliers>
+               <X>
+                <Value>1</Value>
+               </X>
+               <Y>
+                <Value>1</Value>
+               </Y>
+               <Z>
+                <Value>1</Value>
+               </Z>
+              </MeshColorMultipliers>
+              <MeshColorOffsets>
+              </MeshColorOffsets>
+              <Direct3DColorRange>true</Direct3DColorRange>
+              <SpecularColor>
+               <X>
+                <Value>0.5</Value>
+               </X>
+               <Y>
+                <Value>0.5</Value>
+               </Y>
+               <Z>
+                <Value>0.5</Value>
+               </Z>
+              </SpecularColor>
+              <EmissiveColor>
+              </EmissiveColor>
+              <ShininessPower>
+               <Value>15</Value>
+              </ShininessPower>
+              <OverrideQuality>false</OverrideQuality>
+              <ShowReferenceFrame>false</ShowReferenceFrame>
+              <Name>Cylinder</Name>
+              <Position>
+               <Y>
+                <Value>0.5</Value>
+               </Y>
+              </Position>
+              <Orientation>
+               <Angles>
+                <X>
+                 <Value>1.5707963267949</Value>
+                </X>
+               </Angles>
+               <OrientationType>Bryant</OrientationType>
+              </Orientation>
+              <LockX>false</LockX>
+              <LockY>false</LockY>
+              <LockZ>false</LockZ>
+              <LockXPitch>false</LockXPitch>
+              <LockYYaw>false</LockYYaw>
+              <LockZRoll>false</LockZRoll>
+              <Childs>
+              </Childs>
+             </Cylinder>
+             <Frame>
+              <ScaleValue>
+               <X>
+                <Value>1</Value>
+               </X>
+               <Y>
+                <Value>1</Value>
+               </Y>
+               <Z>
+                <Value>1</Value>
+               </Z>
+              </ScaleValue>
+              <ShowReferenceFrame>false</ShowReferenceFrame>
+              <Name>link2</Name>
+              <Position>
+               <Y>
+                <Value>1</Value>
+               </Y>
+              </Position>
+              <Orientation>
+               <Angles>
+                <X>
+                 <VariableName>Pendulum\x[3]</VariableName>
+                 <Value>-1.3808286341687825</Value>
+                </X>
+               </Angles>
+               <OrientationType>Bryant</OrientationType>
+              </Orientation>
+              <LockX>false</LockX>
+              <LockY>false</LockY>
+              <LockZ>false</LockZ>
+              <LockXPitch>false</LockXPitch>
+              <LockYYaw>false</LockYYaw>
+              <LockZRoll>false</LockZRoll>
+              <Childs>
+               <Cylinder>
+                <CircleElements>16</CircleElements>
+                <LowerRadius>0.5</LowerRadius>
+                <UpperRadius>0.5</UpperRadius>
+                <Height>1.0</Height>
+                <Closed>true</Closed>
+                <LowerClosed>true</LowerClosed>
+                <UpperClosed>true</UpperClosed>
+                <CenterInOrigin>true</CenterInOrigin>
+                <ShowInnerSide>false</ShowInnerSide>
+                <ShowOuterSide>true</ShowOuterSide>
+                <ScaleValue>
+                 <X>
+                  <Value>0.1</Value>
+                 </X>
+                 <Y>
+                  <Value>0.1</Value>
+                 </Y>
+                 <Z>
+                  <Value>1</Value>
+                 </Z>
+                </ScaleValue>
+                <OverrideColor>true</OverrideColor>
+                <MeshColor>
+                 <X>
+                  <Value>1</Value>
+                 </X>
+                 <Y>
+                  <Value>1</Value>
+                 </Y>
+                 <Z>
+                  <Value>1</Value>
+                 </Z>
+                </MeshColor>
+                <Alpha>1.0</Alpha>
+                <MeshColorMultipliers>
+                 <X>
+                  <Value>1</Value>
+                 </X>
+                 <Y>
+                  <Value>1</Value>
+                 </Y>
+                 <Z>
+                  <Value>1</Value>
+                 </Z>
+                </MeshColorMultipliers>
+                <MeshColorOffsets>
+                </MeshColorOffsets>
+                <Direct3DColorRange>true</Direct3DColorRange>
+                <SpecularColor>
+                 <X>
+                  <Value>0.5</Value>
+                 </X>
+                 <Y>
+                  <Value>0.5</Value>
+                 </Y>
+                 <Z>
+                  <Value>0.5</Value>
+                 </Z>
+                </SpecularColor>
+                <EmissiveColor>
+                </EmissiveColor>
+                <ShininessPower>
+                 <Value>15</Value>
+                </ShininessPower>
+                <OverrideQuality>false</OverrideQuality>
+                <ShowReferenceFrame>false</ShowReferenceFrame>
+                <Name>Cylinder</Name>
+                <Position>
+                 <Y>
+                  <Value>0.5</Value>
+                 </Y>
+                </Position>
+                <Orientation>
+                 <Angles>
+                  <X>
+                   <Value>1.5707963267949</Value>
+                  </X>
+                 </Angles>
+                 <OrientationType>Bryant</OrientationType>
+                </Orientation>
+                <LockX>false</LockX>
+                <LockY>false</LockY>
+                <LockZ>false</LockZ>
+                <LockXPitch>false</LockXPitch>
+                <LockYYaw>false</LockYYaw>
+                <LockZRoll>false</LockZRoll>
+                <Childs>
+                </Childs>
+               </Cylinder>
+              </Childs>
+             </Frame>
+            </Childs>
+           </Frame>
+          </Childs>
+         </Frame>
+        </Childs>
+       </Frame>
+      </Childs>
+     </Frame>
+    </MainFrame>
+   </Plot>
+  </Plots>
+  <PlotPanels>
+   <PlotPanel>
+    <PlotPanelId>1</PlotPanelId>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Window 1</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>1</PlotId>
+     <PlotId>2</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
+  </PlotPanels>
+  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
+   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
+-0.00260417 -0.00416667 1.0026 0.954167
+   </WindowRectangle>
+  </WindowRectangles>
+ </PlotSpecs>
+ <RunSpecs>
+  <SimulatorSettings>
+   <StartTime>0.0</StartTime>
+   <FinishTime>20.0</FinishTime>
+   <Warp>true</Warp>
+   <SimulationMode>2</SimulationMode>
+   <FPGonio>true</FPGonio>
+   <UseOutputAfterEach>false</UseOutputAfterEach>
+   <OutputAfterEach>0.01</OutputAfterEach>
+   <EventEpsilon>1.0e-6</EventEpsilon>
+   <AlgebraicTolerance>1.0e-7</AlgebraicTolerance>
+   <SteadyStateAnalysis>false</SteadyStateAnalysis>
+   <UpdateHoldInstructions>false</UpdateHoldInstructions>
+   <PreferredArchitecture>0</PreferredArchitecture>
+  </SimulatorSettings>
+  <IntegrationMethods>
+   <IntegrationMethod>
+    <Name>Euler</Name>
+    <StepSize>0.1</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>BackwardEuler</Name>
+    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-5</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <StepSize>0.01</StepSize>
+    <Alpha>1.0</Alpha>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>AdamsBashforth</Name>
+    <StepSize>0.1</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta2</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta4</Name>
+    <StepSize>0.01</StepSize>
+    <AutoStepSize>false</AutoStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKutta8</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+    <SafetyFactor>0.9</SafetyFactor>
+    <Factor1>0.33</Factor1>
+    <Factor2>6.0</Factor2>
+    <Beta>0.0</Beta>
+    <UseMaxNrSteps>false</UseMaxNrSteps>
+    <MaxNrSteps>100000</MaxNrSteps>
+    <UseStiffDetection>false</UseStiffDetection>
+    <MaxNrStiffnessSteps>1000</MaxNrStiffnessSteps>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>RungeKuttaFehlberg</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>VodeAdams</Name>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+    <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-6</RelativeTolerance>
+    <VodeUseBDF>true</VodeUseBDF>
+    <VodeUseNewton>true</VodeUseNewton>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>BDFMethod</Name>
+    <AbsoluteTolerance>1.0e-5</AbsoluteTolerance>
+    <RelativeTolerance>1.0e-5</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+   </IntegrationMethod>
+   <IntegrationMethod>
+    <Name>MeBDFiMethod</Name>
+    <AbsoluteTolerance>9.0e-6</AbsoluteTolerance>
+    <RelativeTolerance>9.0e-6</RelativeTolerance>
+    <AlgebraicAbsoluteTolerance>9.0e-6</AlgebraicAbsoluteTolerance>
+    <AlgebraicRelativeTolerance>9.0e-6</AlgebraicRelativeTolerance>
+    <UseInitialStepSize>false</UseInitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
+    <UseMaximumStepSize>false</UseMaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
+   </IntegrationMethod>
+   <SelectedIntegrationMethod>9</SelectedIntegrationMethod>
+  </IntegrationMethods>
+ </RunSpecs>
+ <MultipleRun>
+  <NrSteps>6</NrSteps>
+  <CopyFromStates>false</CopyFromStates>
+  <JoinParameterVariation>true</JoinParameterVariation>
+  <ClearAfterRun>false</ClearAfterRun>
+  <RedrawAfterRun>false</RedrawAfterRun>
+  <DrawDuringSimulation>true</DrawDuringSimulation>
+  <ActionBeforeOptimization>0</ActionBeforeOptimization>
+  <CompareValue>0.0</CompareValue>
+  <UseCompareValue>true</UseCompareValue>
+  <MultipleRunType>MultipleRun</MultipleRunType>
+  <Minimize>true</Minimize>
+  <OptimizationVariable></OptimizationVariable>
+  <ResulVarUsage>UseEndValue</ResulVarUsage>
+  <Tolerance>0.01</Tolerance>
+  <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
+  <MultipleRunVariables>
+  </MultipleRunVariables>
+ </MultipleRun>
+ <ExportData>
+  <WriteAsText>true</WriteAsText>
+  <ReadAsText>true</ReadAsText>
+  <WriteHeader>true</WriteHeader>
+  <ReadHeader>true</ReadHeader>
+  <ReadFilename></ReadFilename>
+  <WriteFilename></WriteFilename>
+  <DoWrite>false</DoWrite>
+  <ExportVariables>
+  </ExportVariables>
+  <ImportVariables>
+  </ImportVariables>
+ </ExportData>
+ <BreakPoints>
+ </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
+</ExpData>
+  </Experiment>
+</Experiments>
+</Document>
