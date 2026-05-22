@@ -7,15 +7,15 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
-    <TimeStamp>2026-5-21 12:40:42</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
+    <TimeStamp>2026-5-22 21:51:08</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
-   Constant 40 232
+   Constant 40 224
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -26,10 +26,10 @@
     end;
     icon bg bottom
      figures
-      rectangle 24.1 216 55.9 248 color 0 fill 15132390;
-      line 28.9 227.6 50.9 227.6 color 16711680 width 2;
-      line 26.2 238.7 51.9 238.7 color 0;
-      line 28.5 222.7 28.5 241 color 0;
+      rectangle 24.1 208 55.9 240 color 0 fill 15132390;
+      line 28.9 219.6 50.9 219.6 color 16711680 width 2;
+      line 26.2 230.7 51.9 230.7 color 0;
+      line 28.5 214.7 28.5 233 color 0;
     end;
     implementation eq
 parameters
@@ -37,7 +37,7 @@ parameters
 equations
 	output = C;
      implementation_end;
-   Constant1 40 296
+   Constant1 40 288
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -48,10 +48,10 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 24.1 280 55.9 312 color 0 fill 15132390;
-      line 28.9 291.6 50.9 291.6 color 16711680 width 2;
-      line 26.2 302.7 51.9 302.7 color 0;
-      line 28.5 286.7 28.5 305 color 0;
+      rectangle 24.1 272 55.9 304 color 0 fill 15132390;
+      line 28.9 283.6 50.9 283.6 color 16711680 width 2;
+      line 26.2 294.7 51.9 294.7 color 0;
+      line 28.5 278.7 28.5 297 color 0;
     end;
     implementation eq
 parameters
@@ -350,72 +350,14 @@ equations
 	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
 specification_end;
 			end;
-   FlowSensor 336 103.9
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\FlowSensor.emx</LibraryPath>
-  <TimeStamp>2011-11-29 15:50:53</TimeStamp>
-</Description>
-</Information>';
-    knot FlowSensor
-     ports
-      rotation knot in p1 [1];
-      rotation knot out p2 [1];
-      signal knot out flow [1];
-     restrictions
-      causality constraint not_equal p1 p2;
-    end;
-    icon bg ellipse
-     figures
-      ellipse 329.1 96.8 342.9 111.1 color 0 fill 16777215;
-      text 'f' 336 103.2 color 0;
-    end;
-    implementation eq
-equations
-	p2.f = p1.f;
-	p1.e = p2.e;
-	flow = p1.f;
-implementation_end;
-   FlowSensor1 336 215.9
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\FlowSensor.emx</LibraryPath>
-  <TimeStamp>2011-11-29 15:50:53</TimeStamp>
-</Description>
-</Information>';
-    knot FlowSensor
-     ports
-      rotation knot in p1 [1];
-      rotation knot out p2 [1];
-      signal knot out flow [1];
-     restrictions
-      causality constraint not_equal p1 p2;
-    end;
-    icon bg ellipse
-     figures
-      ellipse 329.1 208.8 342.9 223.1 color 0 fill 16777215;
-      text 'f' 336 215.2 color 0;
-    end;
-    implementation eq
-equations
-	p2.f = p1.f;
-	p1.e = p2.e;
-	flow = p1.f;
-implementation_end;
    Imp_contr 232 160
     description '<Information><Description><Version>4.0</Version><LibraryPath>System\Submodel.emx</LibraryPath><TimeStamp>2007-10-31 11:32:54</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Submodel
      ports
-      signal in q1 {rad} ;
+      signal in q1;
       signal in q2 {rad} ;
       signal in pos_des [2,1] {m} ;
-      signal in dq1 {rad} ;
+      signal in dq1;
       signal in dq2 {rad} ;
       signal out u [2,1] {N.m} ;
     end;
@@ -434,16 +376,31 @@ variables
 	real g[2];
 	real q[2];
 	real pos[2];
+	real vel[2];
+	real F_imp[2];
 	
 equations
-	pos = [L[1]*cos(q1) + L[2]*cos(q1+q2); L[1]*sin(q1) + L[2]*sin(q1+q2)];
-	J = [-L[1]*sin(q1) - L[2]*sin(q1+q2), -L[2]*sin(q1+q2); L[1]*cos(q1) + L[2]*cos(q1+q2), L[2]*cos(q1+q2)];
-	g = [	(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(q1) + m[2]*(L[2]/2)*grav*cos(q1 + q1);
-		m[2]*(L[2]/2)*grav*cos(q1 + q1)
-		];
+	pos = [
+				L[1]*cos(q1) + L[2]*cos(q1+q2); 
+				L[1]*sin(q1) + L[2]*sin(q1+q2)
+			];
+			
+	J = 	[
+				-L[1]*sin(q1) - L[2]*sin(q1+q2), 	-L[2]*sin(q1+q2);
+				L[1]*cos(q1) + L[2]*cos(q1+q2), 		L[2]*cos(q1+q2)
+			];
+	
+	g = 	[	
+				(m[1]*(L[1]/2) + m[2]*L[1])*grav*cos(q1) + m[2]*(L[2]/2)*grav*cos(q1 + q2);
+				m[2]*(L[2]/2)*grav*cos(q1 + q2)
+			];
+			
+	vel = J * [dq1; dq2];
+	F_imp = K_imp*(pos_des - pos) - b_imp*vel;
 		
-	// u = transpose(J) * (K_imp*(pos_des - pos) - b_imp*J*[dq1; dq2]) + g;
-	u = [1;1];
+	u = transpose(J)*F_imp + g;
+	// u = [1;1];
+
 	
 	implementation_end;
    MSe 208 104
@@ -502,7 +459,7 @@ equations
 	p.e = effort;
 	flow = p.f;
 implementation_end;
-   Mux 127 248
+   Mux 127 240
 			specifications active 'inputs_2'
 				specification 'inputs_2'
  description '<Description>
@@ -521,13 +478,13 @@ implementation_end;
  end;
  icon bg bottom
   figures
-   line 120 232 120 264 color 0 width 2;
-   rectangle 120 232 136 264 color -1;
-   text '2' 126 258 color 8421504 8;
+   line 120 224 120 256 color 0 width 2;
+   rectangle 120 224 136 256 color -1;
+   text '2' 126 250 color 8421504 8;
   terminals
-   input1 120 240 fixed;
-   output 120 248 fixed;
-   input2 120 256 fixed;
+   input1 120 232 fixed;
+   output 120 240 fixed;
+   input2 120 248 fixed;
  end;
  implementation eq
 equations
@@ -793,12 +750,16 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
-   Pendulum 424 120
+   Pendulum 408 160
     description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description><Attributes><GlobalRelations></GlobalRelations></Attributes></Information>';
     type 'Submodel-Equation'
      ports
       rotation in port1;
       rotation in port2;
+      signal out q1_out;
+      signal out dq1_out;
+      signal out q2_out;
+      signal out dq2_out;
      restrictions
       causality fixed in port1;
     end;
@@ -814,9 +775,10 @@ parameters
 	real global R[2] = [0.1;0.1];
 	real global m[2] = [1,1];
 	real global I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
-	real global J[2,2] = [0.8*10^-7, 0; 0, 0.8*10^-7]; // Rotot inertia
+	real global J[2,2] = [0.001, 0; 0, 0.001]; // Rotot inertia
 	real global K_spring[2,2] = [7, 0; 0, 7];
-	real load[2] = [0; -100000000];
+	real global D_spring[2,2] = [0.1, 0; 0, 0.1];
+	real load[2] = [0; -5];
 	
 variables
 	real x1[4]; // Joint state
@@ -829,6 +791,7 @@ variables
 	real ddq1[2]; // Joint accelerations
 	real ddq2[2]; // Rotor accelerations
 	real Jac[2,2]; // Jacobian
+	real tau_s[2];
 	
 equations
 	// State vector x = [q1, q1_dot, q2, q2_dot];
@@ -837,7 +800,7 @@ equations
 	// EULER LAGRANGE 
 	// M(q1)ddq1 + C(q1,dq1)dq1 + g(q1) + K(q1 - q2)= 0 // Joint dynamics
 	// J*ddq2 - K(q1 - q2) = u // Rotor dynamics
-	
+
 	// Inertia matrix D(q)
 	D = [	I[1] + I[2] + m[1]*(L[1]/2)^2 + m[2]*(L[1]^2 + (L[2]/2)^2 + 2*L[1]*(L[2]/2)*cos(x1[3])), I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x1[3]));
 		  	I[2] + m[2]*((L[2]/2)^2 + L[1]*(L[2]/2)*cos(x1[3])), I[2] + m[2]*(L[2]/2)^2
@@ -860,11 +823,17 @@ equations
 			];
 			
 	// Jacobian	
-	Jac = [-L[1]*sin(x1[1]) - L[2]*sin(x1[1]+x1[3]), -L[2]*sin(x1[1]+x1[3]); L[1]*cos(x1[1]) + L[2]*cos(x1[1]+x1[3]), L[2]*cos(x1[1]+x1[3])];
+	Jac = [
+				-L[1]*sin(x1[1]) - L[2]*sin(x1[1]+x1[3]), -L[2]*sin(x1[1]+x1[3]); 
+				L[1]*cos(x1[1]) + L[2]*cos(x1[1]+x1[3]), L[2]*cos(x1[1]+x1[3])
+			];
 	
 	// Accelerations
-	ddq1 = (1/D)*(-K_spring*([x1[1]; x1[3]] - [x2[1]; x2[3]]) - g - C*[x1[2]; x1[4]] + transpose(Jac)*load);
-	ddq2 = (1/J)*(u + K_spring*([x1[1]; x1[3]]-[x2[1]; x2[3]]));
+	tau_s = K_spring*([x2[1]; x2[3]] - [x1[1]; x1[3]]) + D_spring*([x2[2]; x2[4]] - [x1[2]; x1[4]]);
+	 
+	ddq1 = (1/D)*(tau_s - g - C*[x1[2]; x1[4]] + transpose(Jac)*load);
+			
+	ddq2 = (1/J)*(u - tau_s);
 	
 	// 20-sim does not like it when we define elements of the vector x separately, so we can this:	
 	x1 = int([	x1[2]; 
@@ -885,85 +854,26 @@ equations
 	//			];
 	
 	// Set port variable
-	port1.omega = x1[2];
-	port2.omega = x1[4];
- implementation_end;
-   QSensor1 264 103.9
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
-</Description>
-</Information>';
-    knot QSensor
-     ports
-      power knot in p1 [1];
-      rotation knot out p2 [1];
-      signal knot out q [1];
-     restrictions
-      causality constraint not_equal p1 p2;
-    end;
-    icon bg ellipse
-     figures
-      ellipse 257.1 96.9 270.9 111 color 0 fill 16777215;
-      text 'q' 263.5 101.2 color 0;
-    end;
-    implementation eq
-equations
-	p2.f = p1.f;
-	p1.e = p2.e;
-	q = int (p1.f);
-implementation_end;
-   QSensor2 264 215.9
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\QSensor.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:34:15</TimeStamp>
-</Description>
-</Information>';
-    knot QSensor
-     ports
-      power knot in p1 [1];
-      rotation knot out p2 [1];
-      signal knot out q [1];
-     restrictions
-      causality constraint not_equal p1 p2;
-    end;
-    icon bg ellipse
-     figures
-      ellipse 257.1 208.9 270.9 223 color 0 fill 16777215;
-      text 'q' 263.5 213.2 color 0;
-    end;
-    implementation eq
-equations
-	p2.f = p1.f;
-	p1.e = p2.e;
-	q = int (p1.f);
-implementation_end;
+	port1.omega = x2[2];
+	port2.omega = x2[4];
+ 	q1_out  = x1[1];
+	dq1_out = x1[2];
+	q2_out  = x1[3];
+	dq2_out = x1[4];implementation_end;
   end;
   connections
    Constant\output -> Mux\input1;
    Constant1\output -> Mux\input2;
    Demux\output1 -> MSe\effort;
    Demux\output2 -> MSe1\effort;
-   FlowSensor\flow -> Imp_contr\dq1;
-   FlowSensor\p2 => Pendulum\port1;
-   FlowSensor1\flow -> Imp_contr\dq2;
-   FlowSensor1\p2 => Pendulum\port2;
    Imp_contr\u -> Demux\input;
-   MSe\p => QSensor1\p1;
-   MSe1\p => QSensor2\p1;
+   MSe\p => Pendulum\port1 408 104;
+   MSe1\p => Pendulum\port2 408 216;
    Mux\output -> Imp_contr\pos_des;
-   QSensor1\p2 => FlowSensor\p1;
-   QSensor1\q -> Imp_contr\q1;
-   QSensor2\p2 => FlowSensor1\p1;
-   QSensor2\q -> Imp_contr\q2;
+   Pendulum\dq1_out -> Imp_contr\dq1 344 120 256 120;
+   Pendulum\dq2_out -> Imp_contr\dq2 352 200 256 200;
+   Pendulum\q1_out -> Imp_contr\q1 352 144 288 144;
+   Pendulum\q2_out -> Imp_contr\q2 352 176 288 176;
   end;
  implementation_end;
 ]]></Sidops>
@@ -992,14 +902,6 @@ implementation_end;
     <Description><![CDATA[Inertia (cylinders)]]></Description>
     <Value>0.08583333333333333 0.08583333333333333</Value>
    </Variable>
-   <Variable>
-    <Name>J</Name>
-    <Rows>2</Rows>
-    <Columns>2</Columns>
-    <Description><![CDATA[Rotot inertia]]></Description>
-    <Value>8.0e-8 0.0
-0.0 8.0e-8</Value>
-   </Variable>
   </Parameters>
   <Initials>
    <Variable>
@@ -1015,14 +917,6 @@ implementation_end;
     <Columns>1</Columns>
     <Description><![CDATA[Initial rotor state]]></Description>
     <Value>-1.5707963267948966 0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>QSensor1\q_initial</Name>
-    <Value>0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>QSensor2\q_initial</Name>
-    <Value>0.0</Value>
    </Variable>
   </Initials>
  </Variables>
@@ -1112,7 +1006,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>7.524819999884295</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1120,8 +1014,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.6000000000000001</Minimum>
-      <Maximum>1.4</Maximum>
+      <Minimum>-3.5e40</Minimum>
+      <Maximum>1.5e40</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q1_dot</Label>
@@ -2166,7 +2060,7 @@ implementation_end;
              <Angles>
               <X>
                <VariableName>Pendulum\x1[1]</VariableName>
-               <Value>-1.5707963138629826</Value>
+               <Value>-2076.377989052463</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -2291,7 +2185,7 @@ implementation_end;
                <Angles>
                 <X>
                  <VariableName>Pendulum\x1[3]</VariableName>
-                 <Value>-1.4241955327544805e-8</Value>
+                 <Value>2911.3335110831185</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -2477,7 +2371,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>7.524819999884295</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2485,8 +2379,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.8</Minimum>
-      <Maximum>0.2</Maximum>
+      <Minimum>-5.000000000000003e287</Minimum>
+      <Maximum>4.5e288</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q_rot_1</Label>
@@ -2562,9 +2456,9 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1280" virtualDesktopHeight="720">
-   <WindowRectangle monitor="0" left="0" top="0" right="1280" bottom="720" plotpanelid="1">
-0.003125 0.00555556 0.996875 0.995833
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.00520833 0.0037037 0.994792 0.987963
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -2610,7 +2504,7 @@ implementation_end;
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>RungeKutta4</Name>
-    <StepSize>0.01</StepSize>
+    <StepSize>1.0e-5</StepSize>
     <AutoStepSize>false</AutoStepSize>
    </IntegrationMethod>
    <IntegrationMethod>
@@ -2672,7 +2566,7 @@ implementation_end;
     <UseMaximumStepSize>false</UseMaximumStepSize>
     <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
-   <SelectedIntegrationMethod>9</SelectedIntegrationMethod>
+   <SelectedIntegrationMethod>4</SelectedIntegrationMethod>
   </IntegrationMethods>
  </RunSpecs>
  <MultipleRun>
@@ -2709,6 +2603,9 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
