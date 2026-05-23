@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
-    <TimeStamp>2026-5-23 13:11:14</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 5\diff_eq_submodelEulerLag.emx</LibraryPath>
+    <TimeStamp>2026-5-23 22:10:52</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -33,7 +33,7 @@
     end;
     implementation eq
 parameters
-	real C = 2;		// output value
+	real C = 1;		// output value
 equations
 	output = C;
      implementation_end;
@@ -55,7 +55,7 @@ equations
     end;
     implementation eq
 parameters
-	real C = 0;		// output value
+	real C = 1;		// output value
 equations
 	output = C;
      implementation_end;
@@ -366,8 +366,8 @@ parameters
 	real global grav;		// m/s^2
 	real global L[2];
 	real global m[2];
-	real K_imp[2,2] = [5,0; 0,5];
-	real b_imp[2,2] = [2,0; 0,2];
+	real K_imp[2,2] = [20,0; 0,20];
+	real b_imp[2,2] = [5,0; 0,5];
 	
 variables
 	real x[2]; // Joint state
@@ -764,11 +764,11 @@ specification_end;
       causality fixed in port1;
     end;
     implementation eq
-/* Equation Submodel
+	/* Equation Submodel
 Enter your equations here. You can use the Toolbar buttons at the top ( Add , f(x) etc. ).
 */
 parameters
-	real global grav = 9.8;		// m/s^2
+	real global grav = 9.81;		// m/s^2
 	real global x01[4] = [-pi/2;0;0;0]; // Initial joint state
 	real global x02[4] = [-pi/2;0;0;0]; // Initial rotor state
 	real global L[2] = [1;1];
@@ -776,9 +776,9 @@ parameters
 	real global m[2] = [1,1];
 	real global I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
 	real global J[2,2] = [0.001, 0; 0, 0.001]; // Rotot inertia
-	real global K_spring[2,2] = [7, 0; 0, 7];
-	real global D_spring[2,2] = [0.1, 0; 0, 0.1];
-	real load[2] = [0; -5];
+	real global K_spring[2,2] = [5, 0; 0, 5];
+	real global D_spring[2,2] = [1, 0; 0, 1];
+	real load[2] = [2; 2];
 	
 variables
 	real x1[4]; // Joint state
@@ -892,32 +892,7 @@ equations
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
-  <Constants>
-  </Constants>
-  <Parameters>
-   <Variable>
-    <Name>I</Name>
-    <Rows>2</Rows>
-    <Columns>1</Columns>
-    <Description><![CDATA[Inertia (cylinders)]]></Description>
-    <Value>0.08583333333333333 0.08583333333333333</Value>
-   </Variable>
-  </Parameters>
   <Initials>
-   <Variable>
-    <Name>x01</Name>
-    <Rows>4</Rows>
-    <Columns>1</Columns>
-    <Description><![CDATA[Initial joint state]]></Description>
-    <Value>-1.5707963267948966 0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>x02</Name>
-    <Rows>4</Rows>
-    <Columns>1</Columns>
-    <Description><![CDATA[Initial rotor state]]></Description>
-    <Value>-1.5707963267948966 0.0 0.0 0.0</Value>
-   </Variable>
   </Initials>
  </Variables>
  <PlotSpecs>
@@ -1006,7 +981,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.000009999412015</Maximum>
+      <Maximum>20.00019999996673</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1014,8 +989,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-60.0</Minimum>
-      <Maximum>140.0</Maximum>
+      <Minimum>-100.0</Minimum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q1_dot</Label>
@@ -1765,36 +1740,36 @@ equations
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>4.61455776971145</Value>
+            <Value>4.34435944586173</Value>
            </X>
            <Y>
-            <Value>0.244830687681965</Value>
+            <Value>-2.08629444272562</Value>
            </Y>
            <Z>
-            <Value>2.2638175166732</Value>
+            <Value>1.80357431504801</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.896767084339207</Value>
+             <Value>-0.844258143392672</Value>
             </X>
             <Y>
-             <Value>-0.0475790130504161</Value>
+             <Value>0.405438609774263</Value>
             </Y>
             <Z>
-             <Value>-0.439937534160141</Value>
+             <Value>-0.35049639230593</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.43931964460118</Value>
+             <Value>-0.315952143866212</Value>
             </X>
             <Y>
-             <Value>-0.0233086103520268</Value>
+             <Value>0.151729898297204</Value>
             </Y>
             <Z>
-             <Value>0.89802837290976</Value>
+             <Value>0.936564082564063</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -1935,20 +1910,38 @@ equations
           <ShowReferenceFrame>false</ShowReferenceFrame>
           <Name>Top(XZ)-Camera</Name>
           <Position>
+           <X>
+            <Value>1.57562166442231</Value>
+           </X>
            <Y>
-            <Value>10</Value>
+            <Value>1.80659688389517</Value>
            </Y>
+           <Z>
+            <Value>-1.16103008937846</Value>
+           </Z>
           </Position>
           <Orientation>
            <ZAxis>
+            <X>
+             <Value>-0.591554976087721</Value>
+            </X>
             <Y>
-             <Value>-1</Value>
+             <Value>-0.678272876291454</Value>
             </Y>
+            <Z>
+             <Value>0.435899776959307</Value>
+            </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>1</Value>
+             <Value>0.806264657231784</Value>
             </X>
+            <Y>
+             <Value>-0.497647639294085</Value>
+            </Y>
+            <Z>
+             <Value>0.319818901261226</Value>
+            </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
           </Orientation>
@@ -1963,12 +1956,12 @@ equations
           <FrontPlane>0.01</FrontPlane>
           <BackPlane>100.0</BackPlane>
           <AutoFrontBack>true</AutoFrontBack>
-          <Field>9.999999999999998</Field>
+          <Field>1.3936365881237482</Field>
           <Fieldy>45.0</Fieldy>
-          <PlaneLeft>-9.999999999999998</PlaneLeft>
-          <PlaneRight>9.999999999999998</PlaneRight>
-          <PlaneTop>9.999999999999998</PlaneTop>
-          <PlaneBottom>-9.999999999999998</PlaneBottom>
+          <PlaneLeft>-1.3936365881237482</PlaneLeft>
+          <PlaneRight>1.3936365881237482</PlaneRight>
+          <PlaneTop>1.3936365881237482</PlaneTop>
+          <PlaneBottom>-1.3936365881237482</PlaneBottom>
           <UseLookatPosition>true</UseLookatPosition>
           <LookatPosition>
           </LookatPosition>
@@ -2060,7 +2053,7 @@ equations
              <Angles>
               <X>
                <VariableName>Pendulum\x1[1]</VariableName>
-               <Value>-0.3532840648949178</Value>
+               <Value>0.10579338918259881</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -2185,7 +2178,7 @@ equations
                <Angles>
                 <X>
                  <VariableName>Pendulum\x1[3]</VariableName>
-                 <Value>-0.20456280655458695</Value>
+                 <Value>1.3592143432423605</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -2371,7 +2364,7 @@ equations
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.000009999412015</Maximum>
+      <Maximum>20.00019999996673</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2379,8 +2372,8 @@ equations
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-4.0</Minimum>
-      <Maximum>6.0</Maximum>
+      <Minimum>-12.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>q_rot_1</Label>
@@ -2456,16 +2449,16 @@ equations
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="3840" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
-0.00520833 0.003125 0.994792 0.889583
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.00729167 0.0037037 0.992708 0.982407
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
  <RunSpecs>
   <SimulatorSettings>
    <StartTime>0.0</StartTime>
-   <FinishTime>20.0</FinishTime>
+   <FinishTime>10.0</FinishTime>
    <Warp>true</Warp>
    <SimulationMode>2</SimulationMode>
    <FPGonio>true</FPGonio>
@@ -2504,7 +2497,7 @@ equations
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>RungeKutta4</Name>
-    <StepSize>1.0e-5</StepSize>
+    <StepSize>1.0e-4</StepSize>
     <AutoStepSize>false</AutoStepSize>
    </IntegrationMethod>
    <IntegrationMethod>
@@ -2603,9 +2596,6 @@ equations
  </ExportData>
  <BreakPoints>
  </BreakPoints>
- <AnimationPlayback>
-  <PlaybackSpeed>1.0</PlaybackSpeed>
- </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
