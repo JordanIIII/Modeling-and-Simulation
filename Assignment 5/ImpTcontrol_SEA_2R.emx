@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A5\ImpTcontrol_SEA_2R.emx</LibraryPath>
-    <TimeStamp>2026-5-23 18:52:05</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 5\ImpTcontrol_SEA_2R.emx</LibraryPath>
+    <TimeStamp>2026-5-25 09:04:59</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -350,29 +350,6 @@ equations
 	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
 specification_end;
 			end;
-   Differentiate2 232 272
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Block Diagram\Differentiate.emx</LibraryPath>
-  <TimeStamp>2007-9-26 12:9:46</TimeStamp>
-</Description>';
-    type 'Differentiate-Default'
-     ports
-      signal in input [2,1];
-      signal out output [2,1];
-    end;
-    icon bg bottom
-     figures
-      group
-       rectangle 216 256 248 288 color 0 fill 15132390;
-       text 'd/dt' 232 272 color 16711680 13 bold;
-      end;
-    end;
-    implementation eq
-parameters
-	real initial[2] = [0;0];		// initial value
-equations
-	output = ddt (input, initial);
-    implementation_end;
    Dynamics2R 568 160
     description '<Information><Description><Version>5.1</Version><LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A5\Dynamics2R.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2026-5-22 09:54:58</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Equation'
@@ -380,6 +357,7 @@ equations
       rotation in port1;
       rotation in port2;
       signal out q [2,1];
+      signal out dq [2,1];
      restrictions
       causality fixed in port1;
     end;
@@ -451,6 +429,7 @@ equations
 	port1.omega = x[2];
 	port2.omega = x[4];
 	q = [x[1]; x[3]];
+	dq = [x[2]; x[4]];
  implementation_end;
    Imp_contr 208 168
     description '<Information><Description><Version>4.0</Version><LibraryPath>System\Submodel.emx</LibraryPath><TimeStamp>2007-10-31 11:32:54</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
@@ -2381,6 +2360,52 @@ equations
 equations
     collect (output) = input;
 implementation_end;
+   Splitter2 224 384
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [2,1];
+      signal knot in input [2,1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 220.8 380.8 227.2 387.2 color -1 fill 0;
+      ellipse 219.7 379.7 228.3 388.3 color -1;
+     terminals
+      input 224 384 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+   Splitter3 592 384
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [2,1];
+      signal knot in input [2,1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 588.8 380.8 595.2 387.2 color -1 fill 0;
+      ellipse 587.7 379.7 596.3 388.3 color -1;
+     terminals
+      input 592 384 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
    WaveGenerator1 32 224
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
@@ -2420,15 +2445,16 @@ implementation_end;
    Constant2\output -> PlusMinus1\plus;
    Demux1\output1 -> MaxonT_control\input;
    Demux1\output2 -> MaxonT_control1\input;
-   Differentiate2\output -> Imp_contr\dq;
+   Dynamics2R\dq -> Splitter3\input;
    Dynamics2R\q -> Splitter1\input 648 160 648 416;
    Imp_contr\u -> Demux1\input;
    MaxonT_control\p => Dynamics2R\port1 568 80;
    MaxonT_control1\p => Dynamics2R\port2 568 232;
    Mux1\output -> Imp_contr\pos_des;
    PlusMinus1\output -> Mux1\input2;
-   Splitter1\output -> Differentiate2\input;
    Splitter1\output -> Imp_contr\q 184 416;
+   Splitter2\output -> Imp_contr\dq;
+   Splitter3\output -> Splitter2\input;
    WaveGenerator1\output -> PlusMinus1\plus;
   end;
  implementation_end;
@@ -2573,6 +2599,12 @@ implementation_end;
    <VarName>MaxonT_control\MaxonMotor\R\P</VarName>
    <VarName>MaxonT_control\MaxonMotor\TF\efftest</VarName>
    <VarName>MaxonT_control\MaxonMotor\TF\eff</VarName>
+   <VarName>Imp_contr\u[1]</VarName>
+   <VarName>Imp_contr\u[2]</VarName>
+   <VarName>Imp_contr\pos[1]</VarName>
+   <VarName>Imp_contr\pos[2]</VarName>
+   <VarName>Imp_contr\pos_des[1]</VarName>
+   <VarName>Imp_contr\pos_des[2]</VarName>
    <VarName>Pendulum\def[1]</VarName>
    <VarName>Pendulum\def[2]</VarName>
    <VarName>MaxonT_control\q1motorcalc\output</VarName>
@@ -2581,12 +2613,6 @@ implementation_end;
    <VarName>MaxonT_control1\Differentiate2\output_in</VarName>
    <VarName>MaxonT_control1\MaxonMotor\Ides</VarName>
    <VarName>MaxonT_control\MaxonMotor\Ides</VarName>
-   <VarName>Imp_contr\u[1]</VarName>
-   <VarName>Imp_contr\u[2]</VarName>
-   <VarName>Imp_contr\pos[1]</VarName>
-   <VarName>Imp_contr\pos[2]</VarName>
-   <VarName>Imp_contr\pos_des[1]</VarName>
-   <VarName>Imp_contr\pos_des[2]</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -3689,7 +3715,7 @@ implementation_end;
              <Angles>
               <X>
                <VariableName>Dynamics2R\x[1]</VariableName>
-               <Value>0.2938922030173321</Value>
+               <Value>0.7970352726273682</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -3814,7 +3840,7 @@ implementation_end;
                <Angles>
                 <X>
                  <VariableName>Dynamics2R\x[3]</VariableName>
-                 <Value>2.4202204291448193</Value>
+                 <Value>1.6613143782432083</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -5346,9 +5372,9 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
-   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
--0.00260417 -0.00416667 1.0026 0.954167
+  <WindowRectangles virtualDesktopWidth="1280" virtualDesktopHeight="720">
+   <WindowRectangle monitor="0" left="0" top="0" right="1280" bottom="720" plotpanelid="1">
+0 0 1 1
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
