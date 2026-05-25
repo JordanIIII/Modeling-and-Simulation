@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 5\ImpTcontrol_SEA_2R.emx</LibraryPath>
-    <TimeStamp>2026-5-25 09:04:59</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 5\ImpTcontrol_SEA_2R.emx</LibraryPath>
+    <TimeStamp>2026-5-25 10:57:29</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -371,6 +371,7 @@ parameters
 	real global L[2] = [1;1];
 	real R[2] = [0.1;0.1];
 	real global m[2] = [1,1];
+	real m_ee = 0.2; // End effector mass
 	real I[2] = [1/12 * (L[1]^2 + 3*R[1]^2) * m[1]; 1/12 * (L[2]^2 + 3*R[2]^2) * m[2]]; // Inertia (cylinders)
 	
 variables
@@ -381,10 +382,16 @@ variables
 	real g[2]; // Gravity matrix
 	real u[2]; // Input torques
 	real ddq[2]; // Joint accelerations
+	real v_ee[2]; // End effector velocities
+	real Jac[2,2]; // Jacobian
+	real E_arm; // Arm energy
+	real E_ee; // End effector energy
 	
 equations
 	// State vector x = [q1, q1_dot, q2, q2_dot];
 	// Where q is the angle of the pendulum
+	dq = [x[2]; x[4]];
+	q = [x[1]; x[3]];
 	
 	// EULER LAGRANGE 
 	// M(q)ddq + C(q,dq)dq + g(q) = u
@@ -411,7 +418,8 @@ equations
 			];
 	
 	// Accelerations
-	ddq = (1/D)*(u - g - C*[x[2]; x[4]]);
+	ddq = (1/D)*(u - g - C*dq);
+	
 	
 	// 20-sim does not like it when we define elements of the vector x separately, so we can this:	
 	x = int([	x[2]; 
@@ -419,17 +427,30 @@ equations
 					x[4];
 					ddq[2]
 				], x0);
+				
+	// Jacobian	
+	Jac = [
+				-L[1]*sin(x1[1]) - L[2]*sin(x1[1]+x1[3]), -L[2]*sin(x1[1]+x1[3]); 
+				L[1]*cos(x1[1]) + L[2]*cos(x1[1]+x1[3]), L[2]*cos(x1[1]+x1[3])
+			];
+			
+	// ee velocities
+	v_ee = Jac*dq;
+				
+	// Energy
+	E_arm = 0.5 * transpose(dq) * D * dq;
+	E_ee = 0.5 * transpose(v_ee) * m_ee * v_ee;
 	
 	// You can of course do the same with ddt() for differential form:
 	//ddt(x) = [	x[2];
 	//				(1/m) * (-sin(x[1]) + port1.T)
 	//			];
-	
+
 	// Set port variable
 	port1.omega = x[2];
 	port2.omega = x[4];
-	q = [x[1]; x[3]];
-	dq = [x[2]; x[4]];
+	
+	
  implementation_end;
    Imp_contr 208 168
     description '<Information><Description><Version>4.0</Version><LibraryPath>System\Submodel.emx</LibraryPath><TimeStamp>2007-10-31 11:32:54</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
@@ -2337,75 +2358,6 @@ specification_end;
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   Splitter1 232 416
-    description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [2,1];
-      signal knot in input [2,1];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 228.8 412.8 235.2 419.2 color -1 fill 0;
-      ellipse 227.7 411.7 236.3 420.3 color -1;
-     terminals
-      input 232 416 fixed;
-    end;
-    implementation eq
-equations
-    collect (output) = input;
-implementation_end;
-   Splitter2 224 384
-    description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [2,1];
-      signal knot in input [2,1];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 220.8 380.8 227.2 387.2 color -1 fill 0;
-      ellipse 219.7 379.7 228.3 388.3 color -1;
-     terminals
-      input 224 384 fixed;
-    end;
-    implementation eq
-equations
-    collect (output) = input;
-implementation_end;
-   Splitter3 592 384
-    description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [2,1];
-      signal knot in input [2,1];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 588.8 380.8 595.2 387.2 color -1 fill 0;
-      ellipse 587.7 379.7 596.3 388.3 color -1;
-     terminals
-      input 592 384 fixed;
-    end;
-    implementation eq
-equations
-    collect (output) = input;
-implementation_end;
    WaveGenerator1 32 224
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
@@ -2445,16 +2397,13 @@ implementation_end;
    Constant2\output -> PlusMinus1\plus;
    Demux1\output1 -> MaxonT_control\input;
    Demux1\output2 -> MaxonT_control1\input;
-   Dynamics2R\dq -> Splitter3\input;
-   Dynamics2R\q -> Splitter1\input 648 160 648 416;
+   Dynamics2R\dq -> Imp_contr\dq 592 280 224 280;
+   Dynamics2R\q -> Imp_contr\q 616 320 184 320;
    Imp_contr\u -> Demux1\input;
    MaxonT_control\p => Dynamics2R\port1 568 80;
    MaxonT_control1\p => Dynamics2R\port2 568 232;
    Mux1\output -> Imp_contr\pos_des;
    PlusMinus1\output -> Mux1\input2;
-   Splitter1\output -> Imp_contr\q 184 416;
-   Splitter2\output -> Imp_contr\dq;
-   Splitter3\output -> Splitter2\input;
    WaveGenerator1\output -> PlusMinus1\plus;
   end;
  implementation_end;
@@ -2613,6 +2562,7 @@ implementation_end;
    <VarName>MaxonT_control1\Differentiate2\output_in</VarName>
    <VarName>MaxonT_control1\MaxonMotor\Ides</VarName>
    <VarName>MaxonT_control\MaxonMotor\Ides</VarName>
+   <VarName>Dynamics2R\E_arm</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -3715,7 +3665,7 @@ implementation_end;
              <Angles>
               <X>
                <VariableName>Dynamics2R\x[1]</VariableName>
-               <Value>0.7970352726273682</Value>
+               <Value>0.32133848884153965</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -3840,7 +3790,7 @@ implementation_end;
                <Angles>
                 <X>
                  <VariableName>Dynamics2R\x[3]</VariableName>
-                 <Value>1.6613143782432083</Value>
+                 <Value>2.4192222254689</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -5350,6 +5300,122 @@ implementation_end;
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>11</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Plot</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>30.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Arm energy</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Dynamics2R\E_arm</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -5371,10 +5437,23 @@ implementation_end;
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
+   <PlotPanel>
+    <PlotPanelId>2</PlotPanelId>
+    <PlotPanelVisible>true</PlotPanelVisible>
+    <Name>Energy</Name>
+    <Tiling>0</Tiling>
+    <PlotIds>
+     <PlotId>11</PlotId>
+    </PlotIds>
+    <ToggleState>Base</ToggleState>
+   </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1280" virtualDesktopHeight="720">
-   <WindowRectangle monitor="0" left="0" top="0" right="1280" bottom="720" plotpanelid="1">
-0 0 1 1
+  <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
+   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
+0.0015625 0.00277778 0.998437 0.997917
+   </WindowRectangle>
+   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="2">
+0.242578 0.172222 0.633203 0.625694
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
