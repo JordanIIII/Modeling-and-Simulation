@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 5\ImpTcontrol_SEA_2R.emx</LibraryPath>
-    <TimeStamp>2026-5-25 10:57:29</TimeStamp>
+    <TimeStamp>2026-5-25 11:19:53</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -377,6 +377,7 @@ parameters
 variables
 	real x[4]; // State
 	real D[2,2];  // "Mass inertia" matrix
+	real Lambda[2,2];
 	real h; // Coriolis common term
 	real C[2,2]; // Centrifugal and Coriolis matrix (Christoffel?)
 	real g[2]; // Gravity matrix
@@ -430,8 +431,8 @@ equations
 				
 	// Jacobian	
 	Jac = [
-				-L[1]*sin(x1[1]) - L[2]*sin(x1[1]+x1[3]), -L[2]*sin(x1[1]+x1[3]); 
-				L[1]*cos(x1[1]) + L[2]*cos(x1[1]+x1[3]), L[2]*cos(x1[1]+x1[3])
+				-L[1]*sin(x[1]) - L[2]*sin(x[1]+x[3]), -L[2]*sin(x[1]+x[3]); 
+				L[1]*cos(x[1]) + L[2]*cos(x[1]+x[3]), L[2]*cos(x[1]+x[3])
 			];
 			
 	// ee velocities
@@ -2563,6 +2564,7 @@ implementation_end;
    <VarName>MaxonT_control1\MaxonMotor\Ides</VarName>
    <VarName>MaxonT_control\MaxonMotor\Ides</VarName>
    <VarName>Dynamics2R\E_arm</VarName>
+   <VarName>Dynamics2R\E_ee</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -3665,7 +3667,7 @@ implementation_end;
              <Angles>
               <X>
                <VariableName>Dynamics2R\x[1]</VariableName>
-               <Value>0.32133848884153965</Value>
+               <Value>0.3213243108233438</Value>
               </X>
              </Angles>
              <OrientationType>Bryant</OrientationType>
@@ -3790,7 +3792,7 @@ implementation_end;
                <Angles>
                 <X>
                  <VariableName>Dynamics2R\x[3]</VariableName>
-                 <Value>2.4192222254689</Value>
+                 <Value>2.419226575040335</Value>
                 </X>
                </Angles>
                <OrientationType>Bryant</OrientationType>
@@ -4566,8 +4568,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-150.0</Minimum>
-      <Maximum>350.0</Maximum>
+      <Minimum>-100.0</Minimum>
+      <Maximum>400.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Pin</Label>
@@ -5386,6 +5388,13 @@ implementation_end;
       <Scaling>2</Scaling>
       <Label>Arm energy</Label>
      </Axis>
+     <Axis>
+      <Minimum>-1.0</Minimum>
+      <Maximum>4.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>End-effector energy</Label>
+     </Axis>
     </YAxes>
     <ZAxes>
     </ZAxes>
@@ -5407,6 +5416,25 @@ implementation_end;
       <YCurveData>
        <ShowUnit>true</ShowUnit>
        <VarName>Dynamics2R\E_arm</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Dynamics2R\E_ee</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -5439,7 +5467,7 @@ implementation_end;
    </PlotPanel>
    <PlotPanel>
     <PlotPanelId>2</PlotPanelId>
-    <PlotPanelVisible>true</PlotPanelVisible>
+    <PlotPanelVisible>false</PlotPanelVisible>
     <Name>Energy</Name>
     <Tiling>0</Tiling>
     <PlotIds>
