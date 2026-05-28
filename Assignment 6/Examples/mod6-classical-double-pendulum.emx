@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 6\Examples\mod6-classical-double-pendulum.emx</LibraryPath>
-    <TimeStamp>2026-5-28 12:27:21</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 6\Examples\mod6-classical-double-pendulum.emx</LibraryPath>
+    <TimeStamp>2026-5-28 19:58:16</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-pendulum'
@@ -2813,9 +2813,9 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
-   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00520833 0.00462963 0.991146 0.940741
+  <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
+   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
+0.00664062 0.00277778 0.989453 0.934028
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
