@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 6\Gyroscope.emx</LibraryPath>
-    <TimeStamp>2026-5-28 22:05:10</TimeStamp>
+    <TimeStamp>2026-5-28 22:34:37</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -24,6 +24,50 @@
     end;
     implementation bg
      submodels
+      Disturbance 192 360
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\MSe-3.emx</LibraryPath><TimeStamp>2007-9-25 12:11:16</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'MSe-3'
+        ports
+         power out p [3,1];
+         signal in effort [3,1];
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 192 360 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow[3];
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      Gravity 136 296
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Se
+        ports
+         translation out p [3,1];
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 136 296 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global m_frame;
+	real M[3,3] = [m_frame, 0.0, 0.0;                  0.0, m_frame, 0.0;                  0.0, 0.0, m_frame];
+
+	real grav[3] = [0.0; 0.0; -9.81];
+variables
+	real flow[3];
+equations
+	p.e = M*grav;
+	flow = p.f;
+implementation_end;
       gyro_forces1 192 64
        description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\R-3.emx</LibraryPath><TimeStamp>2007-9-25 12:11:54</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        type 'R-3'
@@ -39,8 +83,299 @@
 equations					
 	p.e = skew(L) * p.f;
 implementation_end;
-      plug output_translation 552 232;
+      Mux 127 360
+						specifications active 'inputs_3'
+							specification 'inputs_2'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal out output [2,1];
+   signal in input2;
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 color 0 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '2' 6 26 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   output 0 16 fixed;
+   input2 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2];implementation_end;
+specification_end;
+							specification 'inputs_3'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal out output [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 120 344 120 376 color 0 width 2;
+   rectangle 120 344 136 376 color -1;
+   text '3' 126 370 color 8421504 8;
+  terminals
+   input1 120 352 fixed;
+   input2 120 360 fixed;
+   input3 120 368 fixed;
+   output 120 360 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3];implementation_end;
+specification_end;
+							specification 'inputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal out output [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 32 fixed;
+   input4 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4];implementation_end;
+specification_end;
+							specification 'inputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal out output [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5];implementation_end;
+specification_end;
+							specification 'inputs_6'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal out output [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '6' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 40 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6];implementation_end;
+specification_end;
+							specification 'inputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal out output [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7];implementation_end;
+specification_end;
+							specification 'inputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal out output [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   input7 0 64 fixed;
+   input8 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8];implementation_end;
+specification_end;
+							specification 'inputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal in input9;
+   signal out output [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   input8 0 64 fixed;
+   input9 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
+specification_end;
+						end;
       plug output_rotation 552 72;
+      plug output_translation 552 232;
       OneJunction 24 120
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
@@ -129,6 +464,93 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+      PulseX 48 312
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\SignalGenerator-Pulse.emx</LibraryPath><TimeStamp>2007-9-27 16:1:38</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'SignalGenerator-Pulse'
+        ports
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 32.1 296 63.9 328 color 0 fill 15132390;
+         line 43.7 310.4 49.4 310.4 color 16711680 width 2;
+         line 35 322.2 61 322.2 color 0;
+         line 38 322.1 43.6 322.1 43.6 310.5 color 16711680 width 2;
+         line 38 304.6 38 325 color 0;
+         line 58.2 322.2 49.4 322.1 49.4 310.5 color 16711680 width 2;
+       end;
+       implementation eq
+parameters
+	real start_time = 5.0 {s};
+	real stop_time = 5.5 {s};
+	real amplitude = 0.1 {none};
+variables
+	boolean hidden change;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+
+	"calculate the block signal"
+	output = amplitude * (step (start_time) - step (stop_time));
+implementation_end;
+      PulseY 48 360
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\SignalGenerator-Pulse.emx</LibraryPath><TimeStamp>2007-9-27 16:1:38</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'SignalGenerator-Pulse'
+        ports
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 32.1 344 63.9 376 color 0 fill 15132390;
+         line 43.7 358.4 49.4 358.4 color 16711680 width 2;
+         line 35 370.2 61 370.2 color 0;
+         line 38 370.1 43.6 370.1 43.6 358.5 color 16711680 width 2;
+         line 38 352.6 38 373 color 0;
+         line 58.2 370.2 49.4 370.1 49.4 358.5 color 16711680 width 2;
+       end;
+       implementation eq
+parameters
+	real start_time = 1.0 {s};
+	real stop_time = 2 {s};
+	real amplitude = 0 {none};
+variables
+	boolean hidden change;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+
+	"calculate the block signal"
+	output = amplitude * (step (start_time) - step (stop_time));
+implementation_end;
+      PulseZ 48 408
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Sources\SignalGenerator-Pulse.emx</LibraryPath><TimeStamp>2007-9-27 16:1:38</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'SignalGenerator-Pulse'
+        ports
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 32.1 392 63.9 424 color 0 fill 15132390;
+         line 43.7 406.4 49.4 406.4 color 16711680 width 2;
+         line 35 418.2 61 418.2 color 0;
+         line 38 418.1 43.6 418.1 43.6 406.5 color 16711680 width 2;
+         line 38 400.6 38 421 color 0;
+         line 58.2 418.2 49.4 418.1 49.4 406.5 color 16711680 width 2;
+       end;
+       implementation eq
+parameters
+	real start_time = 1.0 {s};
+	real stop_time = 2 {s};
+	real amplitude = 0 {none};
+variables
+	boolean hidden change;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+
+	"calculate the block signal"
+	output = amplitude * (step (start_time) - step (stop_time));
+implementation_end;
       QFrame 248 295.9
        description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        knot QSensor
@@ -168,9 +590,9 @@ parameters
 	real global m_frame = 0.2;	// kg
 
 	// Frame dimensions?
-	real global Lx_frame = 0.20; // m
+	real global Lx_frame = 0.2; // m
 	real global Ly_frame = 0.08; // m
-	real global Lz_frame = 0.20; // m
+	real global Lz_frame = 0.2; // m
 	
 	real J[3] = [(1.0/12.0)*m_frame*(Ly_frame^2 + Lz_frame^2);                 (1.0/12.0)*m_frame*(Lx_frame^2 + Lz_frame^2);                 (1.0/12.0)*m_frame*(Lx_frame^2 + Ly_frame^2)];  // rectangular cuboid      
 	
@@ -313,38 +735,6 @@ equations
 	// Rransformations
 	world.v = R * body.v;
 	body.F = transpose(R)*world.F;implementation_end;
-      Se 136 296
-       description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
-</Description>
-</Information>';
-       type Se
-        ports
-         translation out p [3,1];
-        restrictions
-         causality fixed out p;
-       end;
-       icon bg ellipse bottom
-        figures
-         text 'Se' 136 296 color 0 18 bold;
-       end;
-       implementation eq
-parameters
-	real global m_frame;
-	real M[3,3] = [m_frame, 0.0, 0.0;                  0.0, m_frame, 0.0;                  0.0, 0.0, m_frame];
-
-	real grav[3] = [0.0; 0.0; -9.81];
-variables
-	real flow[3];
-equations
-	p.e = M*grav;
-	flow = p.f;
-implementation_end;
       Se1 24 72
        description '<Information>
  <Description>
@@ -361,7 +751,7 @@ implementation_end;
         restrictions
          causality fixed out p;
        end;
-       icon bg ellipse bottom
+       icon bg ellipse
         figures
          text 'Se' 24 72 color 0 18 bold;
        end;
@@ -553,11 +943,17 @@ equations
 implementation_end;
      end;
      connections
+      Disturbance\effort <- Mux\output;
+      Disturbance\p => OneJunction1\p;
+      Gravity\p => OneJunction1\p;
       OneJunction1\p => QFrame\p1;
       OneJunction2\p => RTF\body;
       OneJunction2\p => ZeroJunction\p;
       OneJunction2\p => ZeroJunction1\p 232 200 56 216 smooth;
       OneJunction3\p => ZeroJunction\p;
+      PulseX\output -> Mux\input1 88 348 smooth;
+      PulseY\output -> Mux\input2;
+      PulseZ\output -> Mux\input3 84 376 smooth;
       QFrame\p2 => Translation\p;
       Rotation\state -> gyro_forces1\L 136 64;
       RotorAngVel\flow -> Splitter1\input;
@@ -569,7 +965,6 @@ implementation_end;
       RTF\world => OneJunction1\p;
       RTFT\world => output_translation;
       RTFT1\world => output_rotation;
-      Se\p => OneJunction1\p;
       Se1\p => OneJunction\p;
       Splitter1\output -> RTF\omega;
       Splitter1\output -> Splitter2\input;
@@ -1226,6 +1621,14 @@ implementation_end;
  <Variables>
   <Parameters>
    <Variable>
+    <Name>FrameBody\Gravity\M</Name>
+    <Rows>3</Rows>
+    <Columns>3</Columns>
+    <Value>0.2 0.0 0.0
+0.0 0.2 0.0
+0.0 0.0 0.2</Value>
+   </Variable>
+   <Variable>
     <Name>FrameBody\Rotation\J</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
@@ -1237,14 +1640,6 @@ implementation_end;
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>FrameBody\Se\M</Name>
-    <Rows>3</Rows>
-    <Columns>3</Columns>
-    <Value>0.2 0.0 0.0
-0.0 0.2 0.0
-0.0 0.0 0.2</Value>
    </Variable>
    <Variable>
     <Name>FrameBody\Translation\M</Name>
@@ -1438,7 +1833,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1446,8 +1841,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.5000000000000001</Minimum>
-      <Maximum>0.5</Maximum>
+      <Minimum>-0.30000000000000004</Minimum>
+      <Maximum>0.2</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -1606,7 +2001,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1614,8 +2009,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-4.000000000000001e-71</Minimum>
-      <Maximum>1.6e-70</Maximum>
+      <Minimum>-0.2</Minimum>
+      <Maximum>0.3</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -2313,36 +2708,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>0.187469561801521</Value>
+            <Value>-0.366477222146142</Value>
            </X>
            <Y>
-            <Value>-0.753758613083314</Value>
+            <Value>-1.22011651854576</Value>
            </Y>
            <Z>
-            <Value>0.211344480643076</Value>
+            <Value>0.163687634818249</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.232892511502248</Value>
+             <Value>0.285320862508429</Value>
             </X>
             <Y>
-             <Value>0.936390630914716</Value>
+             <Value>0.94992173511276</Value>
             </Y>
             <Z>
-             <Value>-0.262552212752656</Value>
+             <Value>-0.12743901513198</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.0633695906146581</Value>
+             <Value>0.036659918724352</Value>
             </X>
             <Y>
-             <Value>0.254790038730108</Value>
+             <Value>0.122052251862473</Value>
             </Y>
             <Z>
-             <Value>0.964917784657968</Value>
+             <Value>0.991846408560531</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -2577,44 +2972,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>FrameBody\QFrame\q[1]</VariableName>
-            <Value>0.0</Value>
+            <Value>-0.08091870221193943</Value>
            </X>
            <Y>
             <VariableName>FrameBody\QFrame\q[2]</VariableName>
-            <Value>0.0</Value>
+            <Value>-0.057067813019944964</Value>
            </Y>
            <Z>
             <VariableName>FrameBody\QFrame\q[3]</VariableName>
-            <Value>-5.808275099168389e-30</Value>
+            <Value>-0.08602479201734055</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,3]</VariableName>
-             <Value>0.0</Value>
+             <Value>-0.8091920018196106</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,3]</VariableName>
-             <Value>0.0</Value>
+             <Value>-0.5706815719604492</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,3]</VariableName>
-             <Value>1.0</Value>
+             <Value>0.13975296914577484</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,2]</VariableName>
-             <Value>-6.450725458993002e-24</Value>
+             <Value>0.5413318872451782</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,2]</VariableName>
-             <Value>1.0</Value>
+             <Value>-0.6316826343536377</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,2]</VariableName>
-             <Value>0.0</Value>
+             <Value>0.5549206137657166</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -2687,7 +3082,7 @@ implementation_end;
             </ShininessPower>
             <OverrideQuality>false</OverrideQuality>
             <ShowReferenceFrame>false</ShowReferenceFrame>
-            <Name>Block</Name>
+            <Name>Frame shaft</Name>
             <Position>
             </Position>
             <Orientation>
@@ -2704,85 +3099,12 @@ implementation_end;
             <Childs>
             </Childs>
            </Cube>
-          </Childs>
-         </Frame>
-         <Frame>
-          <ScaleValue>
-           <X>
-            <Value>1</Value>
-           </X>
-           <Y>
-            <Value>1</Value>
-           </Y>
-           <Z>
-            <Value>1</Value>
-           </Z>
-          </ScaleValue>
-          <ShowReferenceFrame>false</ShowReferenceFrame>
-          <Name>Reference Frame</Name>
-          <Position>
-           <X>
-            <VariableName>RotorBody\QRotor\q[1]</VariableName>
-            <Value>0.0</Value>
-           </X>
-           <Y>
-            <VariableName>RotorBody\QRotor\q[2]</VariableName>
-            <Value>0.0</Value>
-           </Y>
-           <Z>
-            <VariableName>RotorBody\QRotor\q[3]</VariableName>
-            <Value>1.5449276721054686e-70</Value>
-           </Z>
-          </Position>
-          <Orientation>
-           <ZAxis>
-            <X>
-             <VariableName>RotorBody\RTF\R[1,3]</VariableName>
-             <Value>0.0</Value>
-            </X>
-            <Y>
-             <VariableName>RotorBody\RTF\R[2,3]</VariableName>
-             <Value>0.0</Value>
-            </Y>
-            <Z>
-             <VariableName>RotorBody\RTF\R[3,3]</VariableName>
-             <Value>1.0</Value>
-            </Z>
-           </ZAxis>
-           <YAxis>
-            <X>
-             <VariableName>RotorBody\RTF\R[1,2]</VariableName>
-             <Value>-0.3643912971019745</Value>
-            </X>
-            <Y>
-             <VariableName>RotorBody\RTF\R[2,2]</VariableName>
-             <Value>0.9312459230422974</Value>
-            </Y>
-            <Z>
-             <VariableName>RotorBody\RTF\R[3,2]</VariableName>
-             <Value>0.0</Value>
-            </Z>
-           </YAxis>
-           <OrientationType>Matrix</OrientationType>
-          </Orientation>
-          <LockX>false</LockX>
-          <LockY>false</LockY>
-          <LockZ>false</LockZ>
-          <LockXPitch>false</LockXPitch>
-          <LockYYaw>false</LockYYaw>
-          <LockZRoll>false</LockZRoll>
-          <Childs>
-           <Cylinder>
-            <CircleElements>16</CircleElements>
-            <LowerRadius>0.05</LowerRadius>
-            <UpperRadius>0.05</UpperRadius>
-            <Height>0.1</Height>
-            <Closed>true</Closed>
-            <LowerClosed>true</LowerClosed>
-            <UpperClosed>true</UpperClosed>
+           <Torus>
+            <TorusRadius>0.08</TorusRadius>
+            <TubeRadius>0.002</TubeRadius>
+            <Segments>50</Segments>
+            <PointsPerSegment>16</PointsPerSegment>
             <CenterInOrigin>true</CenterInOrigin>
-            <ShowInnerSide>false</ShowInnerSide>
-            <ShowOuterSide>true</ShowOuterSide>
             <ScaleValue>
              <X>
               <Value>1</Value>
@@ -2800,10 +3122,10 @@ implementation_end;
               <Value>1</Value>
              </X>
              <Y>
-              <Value>1</Value>
+              <Value>0</Value>
              </Y>
              <Z>
-              <Value>1</Value>
+              <Value>0</Value>
              </Z>
             </MeshColor>
             <Alpha>1.0</Alpha>
@@ -2839,7 +3161,241 @@ implementation_end;
             </ShininessPower>
             <OverrideQuality>false</OverrideQuality>
             <ShowReferenceFrame>false</ShowReferenceFrame>
-            <Name>Cylinder</Name>
+            <Name>Vertical ring</Name>
+            <Position>
+            </Position>
+            <Orientation>
+             <Angles>
+              <X>
+               <Value>1.5707963267949</Value>
+              </X>
+             </Angles>
+             <OrientationType>Bryant</OrientationType>
+            </Orientation>
+            <LockX>false</LockX>
+            <LockY>false</LockY>
+            <LockZ>false</LockZ>
+            <LockXPitch>false</LockXPitch>
+            <LockYYaw>false</LockYYaw>
+            <LockZRoll>false</LockZRoll>
+            <Childs>
+            </Childs>
+           </Torus>
+           <Torus>
+            <TorusRadius>0.082</TorusRadius>
+            <TubeRadius>0.002</TubeRadius>
+            <Segments>50</Segments>
+            <PointsPerSegment>16</PointsPerSegment>
+            <CenterInOrigin>true</CenterInOrigin>
+            <ScaleValue>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </ScaleValue>
+            <OverrideColor>true</OverrideColor>
+            <MeshColor>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>0</Value>
+             </Y>
+             <Z>
+              <Value>0</Value>
+             </Z>
+            </MeshColor>
+            <Alpha>1.0</Alpha>
+            <MeshColorMultipliers>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </MeshColorMultipliers>
+            <MeshColorOffsets>
+            </MeshColorOffsets>
+            <Direct3DColorRange>true</Direct3DColorRange>
+            <SpecularColor>
+             <X>
+              <Value>0.498039215686275</Value>
+             </X>
+             <Y>
+              <Value>0.498039215686275</Value>
+             </Y>
+             <Z>
+              <Value>0.498039215686275</Value>
+             </Z>
+            </SpecularColor>
+            <EmissiveColor>
+            </EmissiveColor>
+            <ShininessPower>
+             <Value>14.298713684082</Value>
+            </ShininessPower>
+            <OverrideQuality>false</OverrideQuality>
+            <ShowReferenceFrame>false</ShowReferenceFrame>
+            <Name>Horizontal ring</Name>
+            <Position>
+            </Position>
+            <Orientation>
+             <Angles>
+             </Angles>
+             <OrientationType>Bryant</OrientationType>
+            </Orientation>
+            <LockX>false</LockX>
+            <LockY>false</LockY>
+            <LockZ>false</LockZ>
+            <LockXPitch>false</LockXPitch>
+            <LockYYaw>false</LockYYaw>
+            <LockZRoll>false</LockZRoll>
+            <Childs>
+            </Childs>
+           </Torus>
+          </Childs>
+         </Frame>
+         <Frame>
+          <ScaleValue>
+           <X>
+            <Value>1</Value>
+           </X>
+           <Y>
+            <Value>1</Value>
+           </Y>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </ScaleValue>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Reference Frame</Name>
+          <Position>
+           <X>
+            <VariableName>RotorBody\QRotor\q[1]</VariableName>
+            <Value>0.08091870221194725</Value>
+           </X>
+           <Y>
+            <VariableName>RotorBody\QRotor\q[2]</VariableName>
+            <Value>0.057067813019940794</Value>
+           </Y>
+           <Z>
+            <VariableName>RotorBody\QRotor\q[3]</VariableName>
+            <Value>0.08602479201732184</Value>
+           </Z>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <VariableName>RotorBody\RTF\R[1,3]</VariableName>
+             <Value>-0.8012252449989319</Value>
+            </X>
+            <Y>
+             <VariableName>RotorBody\RTF\R[2,3]</VariableName>
+             <Value>-0.5846171379089355</Value>
+            </Y>
+            <Z>
+             <VariableName>RotorBody\RTF\R[3,3]</VariableName>
+             <Value>0.12751881778240204</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <VariableName>RotorBody\RTF\R[1,2]</VariableName>
+             <Value>0.5885405540466309</Value>
+            </X>
+            <Y>
+             <VariableName>RotorBody\RTF\R[2,2]</VariableName>
+             <Value>-0.8084245324134827</Value>
+            </Y>
+            <Z>
+             <VariableName>RotorBody\RTF\R[3,2]</VariableName>
+             <Value>-0.008353587239980698</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Matrix</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+           <Cylinder>
+            <CircleElements>16</CircleElements>
+            <LowerRadius>0.05</LowerRadius>
+            <UpperRadius>0.05</UpperRadius>
+            <Height>0.01</Height>
+            <Closed>true</Closed>
+            <LowerClosed>true</LowerClosed>
+            <UpperClosed>true</UpperClosed>
+            <CenterInOrigin>true</CenterInOrigin>
+            <ShowInnerSide>false</ShowInnerSide>
+            <ShowOuterSide>true</ShowOuterSide>
+            <ScaleValue>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </ScaleValue>
+            <OverrideColor>true</OverrideColor>
+            <MeshColor>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>0</Value>
+             </Z>
+            </MeshColor>
+            <Alpha>1.0</Alpha>
+            <MeshColorMultipliers>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </MeshColorMultipliers>
+            <MeshColorOffsets>
+            </MeshColorOffsets>
+            <Direct3DColorRange>true</Direct3DColorRange>
+            <SpecularColor>
+             <X>
+              <Value>0.5</Value>
+             </X>
+             <Y>
+              <Value>0.5</Value>
+             </Y>
+             <Z>
+              <Value>0.5</Value>
+             </Z>
+            </SpecularColor>
+            <EmissiveColor>
+            </EmissiveColor>
+            <ShininessPower>
+             <Value>15</Value>
+            </ShininessPower>
+            <OverrideQuality>false</OverrideQuality>
+            <ShowReferenceFrame>false</ShowReferenceFrame>
+            <Name>Rotor</Name>
             <Position>
             </Position>
             <Orientation>
@@ -2881,7 +3437,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
    <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
-0.498828 0.00277778 1.00117 0.96875
+0.110156 0.0513889 0.608203 1.0125
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
