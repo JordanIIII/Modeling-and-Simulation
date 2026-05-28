@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 6\3D rigid body.emx</LibraryPath>
-    <TimeStamp>2026-5-28 05:26:18</TimeStamp>
+    <TimeStamp>2026-5-28 10:09:57</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -203,6 +203,24 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
+   Orientation 64 224
+    description '<Information><Description><Version>4.3</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Integrate.emx</LibraryPath><TimeStamp>2013-3-8 14:47:42</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Integrate
+     ports
+      signal in input [3,1];
+      signal out output [3,1];
+    end;
+    icon bg top
+     figures
+      rectangle 48 208 80 240 color 0 fill 15132390;
+      text '∫' 64 224.3 color 16711680 'Lucida Sans' 21 italic;
+    end;
+    implementation eq
+parameters
+	real initial[3] = [0.0; 0.0; 0.0];		// initial value
+equations
+	output = int (input, initial);
+     implementation_end;
    Position 520 344
     description '<Information><Description><Version>4.3</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Integrate.emx</LibraryPath><TimeStamp>2013-3-8 14:47:42</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Integrate
@@ -228,7 +246,7 @@ equations
       rotation in p [3,1];
       signal out state [3,1];
      restrictions
-      causality preferred in p;
+      causality fixed in p;
     end;
     icon bg ellipse top
      figures
@@ -382,7 +400,7 @@ implementation_end;
     implementation eq
 parameters
 	real r_B[3] = [1.0;
-						0.0;
+						1.0;
 						0.0]; // point [x; y; z]
 						
 variables 
@@ -477,6 +495,7 @@ implementation_end;
    RTF\world => OneJunction1\p;
    RTFT\world => v_w\p;
    Sf\p => OneJunction4\p;
+   Splitter1\output -> Orientation\input;
    Splitter1\output -> RTF\omega;
    Splitter1\output -> RTFT\omega 448 224;
    TF\body_t => OneJunction3\p;
@@ -530,6 +549,18 @@ implementation_end;
    <VarName>RTFT\body.F[1]</VarName>
    <VarName>RTFT\body.F[2]</VarName>
    <VarName>RTFT\body.F[3]</VarName>
+   <VarName>OneJunction\flow[1]</VarName>
+   <VarName>OneJunction\flow[2]</VarName>
+   <VarName>OneJunction\flow[3]</VarName>
+   <VarName>RTF\R[1]</VarName>
+   <VarName>RTF\R[2]</VarName>
+   <VarName>RTF\R[3]</VarName>
+   <VarName>RTF\R[1,3]</VarName>
+   <VarName>RTF\R[2,3]</VarName>
+   <VarName>RTF\R[3,3]</VarName>
+   <VarName>RTF\R[1,2]</VarName>
+   <VarName>RTF\R[2,2]</VarName>
+   <VarName>RTF\R[3,2]</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -706,7 +737,7 @@ implementation_end;
      <PlotId>2</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>false</PlotIsVisible>
+     <PlotIsVisible>true</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <PlotTitle>3D Animation</PlotTitle>
@@ -1311,36 +1342,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>8</Value>
+            <Value>2.75384772528433</Value>
            </X>
            <Y>
-            <Value>4</Value>
+            <Value>0.558727821610594</Value>
            </Y>
            <Z>
-            <Value>4</Value>
+            <Value>1.26276056870099</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.816496580927726</Value>
+             <Value>-0.893917116607839</Value>
             </X>
             <Y>
-             <Value>-0.408248290463863</Value>
+             <Value>-0.181366721331421</Value>
             </Y>
             <Z>
-             <Value>-0.408248290463863</Value>
+             <Value>-0.409900354999869</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.365148366228976</Value>
+             <Value>-0.401715550627544</Value>
             </X>
             <Y>
-             <Value>-0.182574183114488</Value>
+             <Value>-0.0815040142025774</Value>
             </Y>
             <Z>
-             <Value>0.912870931895844</Value>
+             <Value>0.912130315280046</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -1555,6 +1586,140 @@ implementation_end;
         <LockYYaw>false</LockYYaw>
         <LockZRoll>false</LockZRoll>
         <Childs>
+         <Frame>
+          <ScaleValue>
+           <X>
+            <Value>1</Value>
+           </X>
+           <Y>
+            <Value>1</Value>
+           </Y>
+           <Z>
+            <Value>1</Value>
+           </Z>
+          </ScaleValue>
+          <ShowReferenceFrame>false</ShowReferenceFrame>
+          <Name>Reference Frame</Name>
+          <Position>
+          </Position>
+          <Orientation>
+           <ZAxis>
+            <X>
+             <VariableName>RTF\R[1,3]</VariableName>
+             <Value>0.47232720255851746</Value>
+            </X>
+            <Y>
+             <VariableName>RTF\R[2,3]</VariableName>
+             <Value>0.8292635083198547</Value>
+            </Y>
+            <Z>
+             <VariableName>RTF\R[3,3]</VariableName>
+             <Value>-0.29871246218681335</Value>
+            </Z>
+           </ZAxis>
+           <YAxis>
+            <X>
+             <VariableName>RTF\R[1,2]</VariableName>
+             <Value>0.8279054760932922</Value>
+            </X>
+            <Y>
+             <VariableName>RTF\R[2,2]</VariableName>
+             <Value>-0.3011039197444916</Value>
+            </Y>
+            <Z>
+             <VariableName>RTF\R[3,2]</VariableName>
+             <Value>0.4731901288032532</Value>
+            </Z>
+           </YAxis>
+           <OrientationType>Matrix</OrientationType>
+          </Orientation>
+          <LockX>false</LockX>
+          <LockY>false</LockY>
+          <LockZ>false</LockZ>
+          <LockXPitch>false</LockXPitch>
+          <LockYYaw>false</LockYYaw>
+          <LockZRoll>false</LockZRoll>
+          <Childs>
+           <Cube>
+            <Center>Center</Center>
+            <RibLength>1.0</RibLength>
+            <ShowInnerSide>true</ShowInnerSide>
+            <Accuracy>4</Accuracy>
+            <ScaleValue>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </ScaleValue>
+            <OverrideColor>true</OverrideColor>
+            <MeshColor>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </MeshColor>
+            <Alpha>1.0</Alpha>
+            <MeshColorMultipliers>
+             <X>
+              <Value>1</Value>
+             </X>
+             <Y>
+              <Value>1</Value>
+             </Y>
+             <Z>
+              <Value>1</Value>
+             </Z>
+            </MeshColorMultipliers>
+            <MeshColorOffsets>
+            </MeshColorOffsets>
+            <Direct3DColorRange>true</Direct3DColorRange>
+            <SpecularColor>
+             <X>
+              <Value>0.5</Value>
+             </X>
+             <Y>
+              <Value>0.5</Value>
+             </Y>
+             <Z>
+              <Value>0.5</Value>
+             </Z>
+            </SpecularColor>
+            <EmissiveColor>
+            </EmissiveColor>
+            <ShininessPower>
+             <Value>15</Value>
+            </ShininessPower>
+            <OverrideQuality>false</OverrideQuality>
+            <ShowReferenceFrame>false</ShowReferenceFrame>
+            <Name>Block</Name>
+            <Position>
+            </Position>
+            <Orientation>
+             <Angles>
+             </Angles>
+             <OrientationType>Bryant</OrientationType>
+            </Orientation>
+            <LockX>false</LockX>
+            <LockY>false</LockY>
+            <LockZ>false</LockZ>
+            <LockXPitch>false</LockXPitch>
+            <LockYYaw>false</LockYYaw>
+            <LockZRoll>false</LockZRoll>
+            <Childs>
+            </Childs>
+           </Cube>
+          </Childs>
+         </Frame>
         </Childs>
        </Frame>
       </Childs>
@@ -1564,7 +1729,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>4</PlotId>
+     <PlotId>3</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -1732,10 +1897,10 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>5</PlotId>
+     <PlotId>4</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
+     <PlotIsVisible>false</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -1897,6 +2062,174 @@ implementation_end;
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
    </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>6</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Angular Velocities</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Ang Vel[x]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Ang Vel[y]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Ang Vel[z]</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>OneJunction\flow[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>OneJunction\flow[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>OneJunction\flow[3]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
   </Plots>
   <PlotPanels>
    <PlotPanel>
@@ -1906,8 +2239,9 @@ implementation_end;
     <Tiling>0</Tiling>
     <PlotIds>
      <PlotId>1</PlotId>
+     <PlotId>3</PlotId>
      <PlotId>4</PlotId>
-     <PlotId>5</PlotId>
+     <PlotId>6</PlotId>
      <PlotId>2</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -1915,7 +2249,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.00416667 0.103704 0.644271 0.927778
+0.164583 0.148148 0.800521 0.965741
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
