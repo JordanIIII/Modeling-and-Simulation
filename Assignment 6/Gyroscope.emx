@@ -8,40 +8,18 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 6\Gyroscope.emx</LibraryPath>
-    <TimeStamp>2026-5-28 10:45:09</TimeStamp>
+    <TimeStamp>2026-5-28 11:40:44</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
-   FixedWorld 600 216
-    description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\Sf-3.emx</LibraryPath><TimeStamp>2007-9-25 12:11:58</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type 'Sf-3'
-     ports
-      power out p [3,1];
-     restrictions
-      causality fixed in p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Sf' 600 216 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real flow[3,1] = [0.0; 0.0; 0.0];
-variables
-	real effort [3];
-equations
-	p.f = flow;
-	effort = p.e;
-implementation_end;
-   FrameBody 464 216
+   FrameBody 448 216
     description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Graphical.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>True</KeepParameterValues><TimeStamp>2007-11-1 22:32:34</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
     type 'Submodel-Graphical'
      ports
       translation out Rotor [3,1];
-      translation out FixedFrame [3,1];
     end;
     implementation bg
      submodels
@@ -143,7 +121,6 @@ equations
 	flow = first (p.f);
 implementation_end;
       plug Rotor 952 232;
-      plug FixedFrame 160 400;
       OneJunction1 504 296
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
@@ -232,28 +209,6 @@ equations
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-      OneJunction5 320 168
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
-  <TimeStamp>2007-9-27 9:51:18</TimeStamp>
-</Description>';
-       knot OneJunction
-        ports
-         translation knot duplicatable none p [3,1];
-         signal knot out flow [3,1];
-        restrictions
-         causality constraint one_out p;
-       end;
-       icon bg ellipse
-        figures
-         text '1' 320 168 color 0 18 bold;
-       end;
-       implementation eq
-equations
-	sum (direct (p.e)) = 0;
-	equal (collect (p.f));
-	flow = first (p.f);
-implementation_end;
       OneJunction6 248 264
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
@@ -269,28 +224,6 @@ implementation_end;
        icon bg ellipse
         figures
          text '1' 248 264 color 0 18 bold;
-       end;
-       implementation eq
-equations
-	sum (direct (p.e)) = 0;
-	equal (collect (p.f));
-	flow = first (p.f);
-implementation_end;
-      OneJunction7 160 344
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
-  <TimeStamp>2007-9-27 9:51:18</TimeStamp>
-</Description>';
-       knot OneJunction
-        ports
-         translation knot duplicatable none p [3,1];
-         signal knot out flow [3,1];
-        restrictions
-         causality constraint one_out p;
-       end;
-       icon bg ellipse
-        figures
-         text '1' 160 344 color 0 18 bold;
        end;
        implementation eq
 equations
@@ -442,44 +375,6 @@ equations
 	// Rransformations
 	world.v = R * body.v;
 	body.F = transpose(R)*world.F;implementation_end;
-      RTFT1 160 264
-       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\MTF-3.emx</LibraryPath><TimeStamp>2007-9-25 12:11:21</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-       type 'MTF-3'
-        ports
-         translation out world [3,1];
-         translation in body [3,1];
-         signal in omega [3,1] {rad/s} ;
-        restrictions
-         causality constraint not_equal world body;
-       end;
-       icon bg ellipse bottom
-        figures
-         text 'RTF(T)' 160 264 color 2124031 18 bold;
-       end;
-       implementation eq
-parameters
-	real R0[3,3] = [1,0,0;
-						 0,1,0;
-						 0,0,1];
-						
-variables
-	real R[3,3]; // Rotation matrix
-	real S[3,3]; // Skew-symmetric matrix
-	real Rdot[3,3];
-
-equations					
-	// Skew-symmetric matrix of the body-fixed angular velocity
-	S = [0,		  -omega[3],	omega[2];
-		  omega[3],	0,			  -omega[1];
-		 -omega[2],	omega[1],	0		 ];
-		
-	// Orientation
-	Rdot = R*S;
-	R = int(Rdot, R0);
-
-	// Rransformations
-	world.v = R * body.v;
-	body.F = transpose(R)*world.F;implementation_end;
       Splitter1 800 200
        description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
@@ -498,29 +393,6 @@ equations
          ellipse 795.7 195.7 804.3 204.3 color -1;
         terminals
          input 800 200 fixed;
-       end;
-       implementation eq
-equations
-    collect (output) = input;
-implementation_end;
-      Splitter2 504 200
-       description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-       knot Splitter
-        ports
-         signal knot duplicatable out output [3,1];
-         signal knot in input [3,1];
-       end;
-       icon bg ellipse
-        figures
-         ellipse 500.8 196.8 507.2 203.2 color -1 fill 0;
-         ellipse 499.7 195.7 508.3 204.3 color -1;
-        terminals
-         input 504 200 fixed;
        end;
        implementation eq
 equations
@@ -599,6 +471,27 @@ equations
 	body_r.T = transpose(A)*body_t.F;
 				
 implementation_end;
+      Zero 168 264
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\Sf-3.emx</LibraryPath><TimeStamp>2007-9-25 12:11:58</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type 'Sf-3'
+        ports
+         power out p [3,1];
+        restrictions
+         causality fixed in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Sf' 168 264 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real flow[3,1] = [0.0; 0.0; 0.0];
+variables
+	real effort [3];
+equations
+	p.f = flow;
+	effort = p.e;
+implementation_end;
       ZeroJunction 664 232
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
@@ -658,21 +551,16 @@ implementation_end;
       OneJunction2\p => ZeroJunction1\p 592 264;
       OneJunction3\p => ZeroJunction\p;
       OneJunction4\p => RTFT\body;
-      OneJunction5\p => ZeroJunction1\p;
-      OneJunction6\p => RTFT1\body;
-      OneJunction7\p => FixedFrame;
       RotorConnection\body_t => OneJunction3\p;
       RTF\world => OneJunction1\p;
       RTFT\world => v_w\p;
-      RTFT1\world => OneJunction7\p;
+      Splitter1\output -> RTF\omega 504 200;
       Splitter1\output -> RTFT\omega;
-      Splitter1\output -> Splitter2\input;
-      Splitter2\output -> RTF\omega 504 200;
-      Splitter2\output -> RTFT1\omega 160 200;
       Translation\F_g -> Forces\effort 408 392;
       v_w\flow -> Position\input;
       v_w\p => Rotor;
-      WorldConnection\body_t => OneJunction5\p;
+      WorldConnection\body_t => ZeroJunction1\p 320 168;
+      Zero\p => OneJunction6\p;
       ZeroJunction\p => OneJunction4\p;
       ZeroJunction1\p => OneJunction6\p;
      end;
@@ -692,33 +580,6 @@ implementation_end;
     icon bg ellipse
      figures
       text '1' 344 152 color 0 18 bold;
-    end;
-    implementation eq
-equations
-	sum (direct (p.e)) = 0;
-	equal (collect (p.f));
-	flow = first (p.f);
-implementation_end;
-   OneJunction2 544 216
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
-</Description>
-</Information>';
-    knot OneJunction
-     ports
-      translation knot duplicatable none p [3,1];
-      signal knot out flow [3,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 544 216 color 0 18 bold;
     end;
     implementation eq
 equations
@@ -1226,9 +1087,7 @@ equations
 implementation_end;
   end;
   connections
-   FrameBody\FixedFrame => OneJunction2\p;
    FrameBody\Rotor => ZeroJunction\p;
-   OneJunction2\p <= FixedWorld\p;
    RotorBody\output => ZeroJunction\p;
    Sf\p => OneJunction\p;
    ZeroJunction\p => OneJunction\p;
@@ -1256,14 +1115,7 @@ implementation_end;
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Unit>N.m.s</Unit>
-    <Value>0.0 0.0 0.0</Value>
-   </Variable>
-   <Variable>
-    <Name>FrameBody\Translation\p.F_initial</Name>
-    <Rows>3</Rows>
-    <Columns>1</Columns>
-    <Unit>N</Unit>
-    <Value>0.0 0.0 0.0</Value>
+    <Value>0.0 0.0 1.0</Value>
    </Variable>
    <Variable>
     <Name>RotorBody\Rotation\state_initial</Name>
@@ -1372,8 +1224,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.4999999999999998e-6</Minimum>
-      <Maximum>2.4999999999999998e-6</Maximum>
+      <Minimum>-0.6000000000000001</Minimum>
+      <Maximum>1.4</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>flow[1]</Label>
@@ -1644,7 +1496,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
-0.160417 0.126852 0.804688 0.959259
+0.164583 0.0768519 0.800521 0.896296
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
@@ -1789,6 +1641,9 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
