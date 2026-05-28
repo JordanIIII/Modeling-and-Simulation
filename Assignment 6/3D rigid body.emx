@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 6\3D rigid body.emx</LibraryPath>
-    <TimeStamp>2026-5-28 05:07:10</TimeStamp>
+    <TimeStamp>2026-5-28 05:26:18</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -28,7 +28,7 @@
     knot FlowSensor
      ports
       translation knot in p1 [3,1];
-      mechanical knot out p2 [3,1];
+      translation knot out p2 [3,1];
       signal knot out flow [3,1];
      restrictions
       causality constraint not_equal p1 p2;
@@ -316,6 +316,30 @@ equations
 	// Rransformations
 	world.v = R * body.v;
 	body.F = transpose(R)*world.F;implementation_end;
+   Sf 376 344
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Bond Graph\3D\Sf-3.emx</LibraryPath>
+  <TimeStamp>2007-9-25 12:11:58</TimeStamp>
+</Description>';
+    type 'Sf-3'
+     ports
+      power out p [3,1];
+     restrictions
+      causality fixed in p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'Sf' 376 344 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real flow[3,1] = [0.0; 0.0; 0.0];
+variables
+	real effort [3];
+equations
+	p.f = flow;
+	effort = p.e;
+implementation_end;
    Splitter1 152 224
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
@@ -346,10 +370,10 @@ implementation_end;
 </Description>';
     type 'TF-3'
      ports
-      rotation in body [3,1];
-      translation out world [3,1];
+      rotation in body_r [3,1];
+      translation out body_t [3,1];
      restrictions
-      causality constraint not_equal body world;
+      causality constraint not_equal body_r body_t;
     end;
     icon bg ellipse bottom
      figures
@@ -357,7 +381,7 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real r_B[3] = [0.2;
+	real r_B[3] = [1.0;
 						0.0;
 						0.0]; // point [x; y; z]
 						
@@ -369,15 +393,15 @@ equations
 		  -r_B[3],	0.0,		r_B[1];
 		  r_B[2],	-r_B[1],	0.0];
 		
-	world.v = A*body.omega;
-	body.T = transpose(A)*world.F;
+	body_t.v = A*body_r.omega;
+	body_r.T = transpose(A)*body_t.F;
 				
 implementation_end;
    Translation 152 440
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\3D\I-3.emx</LibraryPath><TimeStamp>2007-9-25 12:12:14</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type 'I-3'
      ports
-      mechanical in p [3,1];
+      translation in p [3,1];
       signal out state [3,1];
       signal out F_g [3,1] {N} ;
      restrictions
@@ -444,7 +468,7 @@ implementation_end;
    Forces\p => OneJunction1\p;
    OneJunction\flow -> Splitter1\input;
    OneJunction\p => FlowSensor1\p1;
-   OneJunction\p => TF\body;
+   OneJunction\p => TF\body_r;
    OneJunction1\p => FlowSensor\p1;
    OneJunction2\p => RTF\body;
    OneJunction2\p => ZeroJunction\p;
@@ -452,9 +476,10 @@ implementation_end;
    OneJunction4\p => RTFT\body;
    RTF\world => OneJunction1\p;
    RTFT\world => v_w\p;
+   Sf\p => OneJunction4\p;
    Splitter1\output -> RTF\omega;
    Splitter1\output -> RTFT\omega 448 224;
-   TF\world => OneJunction3\p;
+   TF\body_t => OneJunction3\p;
    Translation\F_g -> Forces\effort 56 440;
    v_w\flow -> Position\input;
    ZeroJunction\p => OneJunction4\p;
@@ -482,7 +507,7 @@ implementation_end;
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Unit>N.m.s</Unit>
-    <Value>0.0 0.0 10.0</Value>
+    <Value>10.0 10.0 10.0</Value>
    </Variable>
    <Variable>
     <Name>Translation\state_initial</Name>
@@ -1942,9 +1967,9 @@ implementation_end;
    <IntegrationMethod>
     <Name>RungeKutta8</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <SafetyFactor>0.9</SafetyFactor>
@@ -1959,18 +1984,18 @@ implementation_end;
    <IntegrationMethod>
     <Name>RungeKuttaFehlberg</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>VodeAdams</Name>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
     <AbsoluteTolerance>1.0e-6</AbsoluteTolerance>
     <RelativeTolerance>1.0e-6</RelativeTolerance>
     <VodeUseBDF>true</VodeUseBDF>
@@ -1983,9 +2008,9 @@ implementation_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <IntegrationMethod>
     <Name>MeBDFiMethod</Name>
@@ -1994,9 +2019,9 @@ implementation_end;
     <AlgebraicAbsoluteTolerance>1.0e-5</AlgebraicAbsoluteTolerance>
     <AlgebraicRelativeTolerance>1.0e-5</AlgebraicRelativeTolerance>
     <UseInitialStepSize>false</UseInitialStepSize>
-    <InitialStepSize>0.001</InitialStepSize>
+    <InitialStepSize>0.0</InitialStepSize>
     <UseMaximumStepSize>false</UseMaximumStepSize>
-    <MaximumStepSize>1.0</MaximumStepSize>
+    <MaximumStepSize>0.0</MaximumStepSize>
    </IntegrationMethod>
    <SelectedIntegrationMethod>8</SelectedIntegrationMethod>
   </IntegrationMethods>
