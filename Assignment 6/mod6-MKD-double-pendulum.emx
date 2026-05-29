@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\User\OneDrive - University of Twente\2B - Modelling and Simulation\20-sim\mod6-MKD-double-pendulum.emx</LibraryPath>
-    <TimeStamp>2026-5-29 14:04:28</TimeStamp>
+    <LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 6\mod6-MKD-double-pendulum.emx</LibraryPath>
+    <TimeStamp>2026-5-30 00:51:53</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel-gyroscope'
@@ -110,7 +110,7 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real global Rf, Lf;
+	real global Lf;
 	real pj_b[3] = [0; 0; -Lf/2];
 	real Hj_b[4,4] = homogeneous(eye(3), pj_b);
 variables
@@ -137,12 +137,13 @@ implementation_end;
       text 'MTF' 192 320 color 0 18 bold;
     end;
     implementation eq
-// Coordinate transformer from body frame to 0 frame
+// Assume k-frame (at where forces are applied) is same position as rotor body frame with no orientation (z-axis upward)
+// Coordinate transformer from k frame to 0 frame
 variables
 	real AdH0k[6,6];
 	real H0k[4,4];
 equations
-	H0k = homogeneous(eye(3),-Hb0[1:3,4]);
+	H0k = homogeneous(eye(3),-Hb0[1:3,4]);		// no rotation but shifted position
 	AdH0k = Adjoint(H0k);
 	pK.f = AdH0k * p0.f;
 	p0.e = transpose(AdH0k) * pK.e;
@@ -225,6 +226,27 @@ equations
 	p.f = flow;
 	effort = p.e;
 implementation_end;
+   FrameGravity 504 248
+    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Se
+     ports
+      power out p [6,1];
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'Se' 504 248 color 0 18 bold;
+    end;
+    implementation eq
+parameters
+	real global mf;
+variables
+	real flow[6];
+equations
+	p.e = [0;0;0;0;0;-g_n*mf];
+	flow = p.f;
+implementation_end;
    I_frame 616 56
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type I
@@ -275,10 +297,10 @@ implementation_end;
     end;
     implementation eq
 parameters
-	real global m = 0.15;		// mass
+	real global m = 0.3;		// mass
 	real global R = 0.05;	// radius
-	real global L = 0.005;		// length
-	real w0 = 20 * 6.28; // rps to rad/s
+	real global L = 0.01;		// length
+	real w0 = 40 * 6.28; // rps to rad/s
 	real J[3] = [(1/12)*m*(3*R^2+L^2); (1/12)*m*(3*R^2+L^2); (1/2)*m*R^2];
 	real i[6] = transpose([J[1],J[2],J[3],m,m,m]);
 	real p_init[6] = i .* [0; 0; w0; 0; 0; 0];
@@ -448,28 +470,29 @@ parameters
 equations
 	p.e = r * p.f;
 implementation_end;
-   SeFrame 504 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type Se
+   RotorDisturbance 128 208
+    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+    type 'Submodel-Equation'
      ports
       power out p [6,1];
      restrictions
       causality fixed out p;
     end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 504 248 color 0 18 bold;
-    end;
     implementation eq
+// disturbance in rotor body frame
 parameters
-	real global mf;
-variables
-	real flow[6];
+	real t0 = 0.5;       // start time
+	real duration = 0.02;
+   real tau_d = 0.001;
+	real force_d = 0.001;
+
 equations
-	p.e = [0;0;0;0;0;-g_n*mf];
-	flow = p.f;
-implementation_end;
-   SeRotor 96 320
+   if time >= t0 and time <= t0 + duration then
+		p.e = [0; 0; 0; force_d; 0; 0];
+   else
+      p.e = [0; 0; 0; 0; 0; 0];
+   end;implementation_end;
+   RotorGravity 96 320
     description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Se
      ports
@@ -482,6 +505,7 @@ implementation_end;
       text 'Se' 96 320 color 0 18 bold;
     end;
     implementation eq
+// expressed in k-frame that is at rotor body with no rotation frame (z-axis is upward)
 parameters
 	real global m;
 variables
@@ -569,7 +593,7 @@ implementation_end;
       text '1' 264 208 color 0 18 bold;
     end;
     implementation eq
-// P_dot + ad*_T P = W -> M T_dot + ad*_T (MT) = W
+// P_dot + ad*_T P = W_external -> M T_dot + ad*_T (MT) = W_reaction + W_disturbances
 equations
 	sum (direct (p.e)) = 0;
 	equal (collect (p.f));
@@ -678,14 +702,15 @@ implementation_end;
    AdHk0\p0 => TB00\p;
    AdHk1\p0 => TB1\p;
    FixedBase\p => ZeroJunction1\p;
+   FrameGravity\p => AdHk1\pK;
    I_frame\state -> EJS1\P;
    I_rotor\state -> EJS\P;
    OneJunction\p => R1\p;
    OneJunction\p => R3\p;
    OneJunction6\p => R\p;
    OneJunction6\p => R2\p;
-   SeFrame\p => AdHk1\pK;
-   SeRotor\p => AdHk0\pK;
+   RotorDisturbance\p => Tb0b\p;
+   RotorGravity\p => AdHk0\pK;
    Splitter1\output -> AdHj2\Hb0;
    Splitter1\output -> AdHk1\Hb0 600 184;
    Splitter2\output -> AdHj1\Hb0;
@@ -778,27 +803,23 @@ implementation_end;
     <Name>I_rotor\i</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
-    <Value>9.40625e-5 9.40625e-5 1.8750000000000003e-4 0.15 0.15 0.15</Value>
+    <Value>1.9000000000000004e-4 1.9000000000000004e-4 3.7500000000000006e-4 0.3 0.3 0.3</Value>
    </Variable>
    <Variable>
     <Name>I_rotor\J</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>9.40625e-5 9.40625e-5 1.8750000000000003e-4</Value>
+    <Value>1.9000000000000004e-4 1.9000000000000004e-4 3.7500000000000006e-4</Value>
    </Variable>
    <Variable>
     <Name>I_rotor\w0</Name>
     <Description><![CDATA[rps to rad/s]]></Description>
-    <Value>125.60000000000001</Value>
+    <Value>251.20000000000002</Value>
    </Variable>
    <Variable>
     <Name>mf</Name>
     <Description><![CDATA[rod]]></Description>
     <Value>0.11</Value>
-   </Variable>
-   <Variable>
-    <Name>Rf</Name>
-    <Value>0.06</Value>
    </Variable>
    <Variable>
     <Name>Rring</Name>
@@ -836,7 +857,7 @@ implementation_end;
     <Name>I_rotor\p_init</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
-    <Value>0.0 0.0 0.023550000000000005 1.5e-4 0.0 0.0</Value>
+    <Value>0.0 0.0 0.09420000000000002 0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
     <Name>R\E_dissipated_initial</Name>
@@ -890,7 +911,7 @@ implementation_end;
    <Plot>
     <PlotType>D3DPlot</PlotType>
     <BasePlot>
-     <PlotId>2</PlotId>
+     <PlotId>1</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -1498,36 +1519,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-0.60962220423487</Value>
+            <Value>0.405046479882388</Value>
            </X>
            <Y>
-            <Value>0.472516729489049</Value>
+            <Value>0.777071551172404</Value>
            </Y>
            <Z>
-            <Value>0.416015658250035</Value>
+            <Value>-0.00878488128022311</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.695641896605101</Value>
+             <Value>-0.462199989001548</Value>
             </X>
             <Y>
-             <Value>-0.539190381907358</Value>
+             <Value>-0.886719053818093</Value>
             </Y>
             <Z>
-             <Value>-0.474716845863148</Value>
+             <Value>0.0100244582354488</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.3752056121796</Value>
+             <Value>0.00463353703171912</Value>
             </X>
             <Y>
-             <Value>-0.290820970044379</Value>
+             <Value>0.00888932461517299</Value>
             </Y>
             <Z>
-             <Value>0.880138575436492</Value>
+             <Value>0.999949753858894</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -1767,48 +1788,48 @@ implementation_end;
            </Z>
           </ScaleValue>
           <ShowReferenceFrame>false</ShowReferenceFrame>
-          <Name>Psi_b</Name>
+          <Name>Rotor</Name>
           <Position>
            <X>
             <VariableName>AdHb0\Hb0[1,4]</VariableName>
-            <Value>0.04503189389927114</Value>
+            <Value>0.08544864081220634</Value>
            </X>
            <Y>
             <VariableName>AdHb0\Hb0[2,4]</VariableName>
-            <Value>-0.005092132986581906</Value>
+            <Value>-0.014339510169525902</Value>
            </Y>
            <Z>
             <VariableName>AdHb0\Hb0[3,4]</VariableName>
-            <Value>-0.08908821660010227</Value>
+            <Value>-0.049992171896318806</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>AdHb0\Hb0[1,3]</VariableName>
-             <Value>0.44166916608810425</Value>
+             <Value>0.8744102716445923</Value>
             </X>
             <Y>
              <VariableName>AdHb0\Hb0[2,3]</VariableName>
-             <Value>-0.05245663598179817</Value>
+             <Value>-0.15580512583255768</Value>
             </Y>
             <Z>
              <VariableName>AdHb0\Hb0[3,3]</VariableName>
-             <Value>-0.8956431746482849</Value>
+             <Value>-0.45949044823646545</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>AdHb0\Hb0[1,2]</VariableName>
-             <Value>0.8969939947128296</Value>
+             <Value>-0.3236240744590759</Value>
             </X>
             <Y>
              <VariableName>AdHb0\Hb0[2,2]</VariableName>
-             <Value>0.005602169781923294</Value>
+             <Value>-0.8928820490837097</Value>
             </Y>
             <Z>
              <VariableName>AdHb0\Hb0[3,2]</VariableName>
-             <Value>0.4420071840286255</Value>
+             <Value>-0.3130960166454315</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -1824,7 +1845,7 @@ implementation_end;
             <CircleElements>16</CircleElements>
             <LowerRadius>0.05</LowerRadius>
             <UpperRadius>0.05</UpperRadius>
-            <Height>0.001</Height>
+            <Height>0.01</Height>
             <Closed>true</Closed>
             <LowerClosed>true</LowerClosed>
             <UpperClosed>true</UpperClosed>
@@ -1919,48 +1940,48 @@ implementation_end;
            </Z>
           </ScaleValue>
           <ShowReferenceFrame>false</ShowReferenceFrame>
-          <Name>Psi_f</Name>
+          <Name>Frame</Name>
           <Position>
            <X>
             <VariableName>AdHb1\Hb0[1,4]</VariableName>
-            <Value>0.04474388528794412</Value>
+            <Value>0.08717549636836444</Value>
            </X>
            <Y>
             <VariableName>AdHb1\Hb0[2,4]</VariableName>
-            <Value>-0.005690463597296291</Value>
+            <Value>-0.018560057952871255</Value>
            </Y>
            <Z>
             <VariableName>AdHb1\Hb0[3,4]</VariableName>
-            <Value>-0.08920450547588099</Value>
+            <Value>-0.04536456497667794</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>AdHb1\Hb0[1,3]</VariableName>
-             <Value>0.44874072074890137</Value>
+             <Value>0.8717710375785828</Value>
             </X>
             <Y>
              <VariableName>AdHb1\Hb0[2,3]</VariableName>
-             <Value>-0.0571320615708828</Value>
+             <Value>-0.1851063072681427</Value>
             </Y>
             <Z>
              <VariableName>AdHb1\Hb0[3,3]</VariableName>
-             <Value>-0.8918339014053345</Value>
+             <Value>-0.45359787344932556</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>AdHb1\Hb0[1,2]</VariableName>
-             <Value>-0.5448817610740662</Value>
+             <Value>-0.057432398200035095</Value>
             </X>
             <Y>
              <VariableName>AdHb1\Hb0[2,2]</VariableName>
-             <Value>0.7735053300857544</Value>
+             <Value>-0.958102822303772</Value>
             </Y>
             <Z>
              <VariableName>AdHb1\Hb0[3,2]</VariableName>
-             <Value>-0.3237178921699524</Value>
+             <Value>0.2806074917316437</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -2231,7 +2252,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>3</PlotId>
+     <PlotId>2</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -2300,7 +2321,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2308,8 +2329,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.1</Minimum>
-      <Maximum>0.1</Maximum>
+      <Minimum>-0.25</Minimum>
+      <Maximum>0.25</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Rotor x</Label>
@@ -2399,7 +2420,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>4</PlotId>
+     <PlotId>3</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -2468,7 +2489,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2476,8 +2497,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-40.0</Minimum>
-      <Maximum>160.0</Maximum>
+      <Minimum>-50.0</Minimum>
+      <Maximum>450.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Rotor - Angular Velocity z</Label>
@@ -2593,7 +2614,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>5</PlotId>
+     <PlotId>4</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -2662,7 +2683,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2670,8 +2691,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Frame Orientation z-x</Label>
@@ -2761,7 +2782,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>6</PlotId>
+     <PlotId>5</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>false</PlotIsVisible>
@@ -2830,7 +2851,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>20.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2838,8 +2859,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.1</Minimum>
-      <Maximum>0.1</Maximum>
+      <Minimum>-0.25</Minimum>
+      <Maximum>0.25</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>Frame x</Label>
@@ -2934,18 +2955,18 @@ implementation_end;
     <Name>Window 1</Name>
     <Tiling>0</Tiling>
     <PlotIds>
-     <PlotId>3</PlotId>
-     <PlotId>6</PlotId>
+     <PlotId>2</PlotId>
      <PlotId>5</PlotId>
      <PlotId>4</PlotId>
-     <PlotId>2</PlotId>
+     <PlotId>3</PlotId>
+     <PlotId>1</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="3840" virtualDesktopHeight="1080">
    <WindowRectangle monitor="1" left="1920" top="0" right="3840" bottom="1080" plotpanelid="1">
--0.00208333 -0.0037037 1.00208 0.959259
+0 0.0037037 0.997917 0.956481
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
