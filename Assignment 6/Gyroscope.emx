@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 6\Gyroscope.emx</LibraryPath>
-    <TimeStamp>2026-5-28 23:40:52</TimeStamp>
+    <TimeStamp>2026-5-29 14:53:34</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -1050,7 +1050,7 @@ implementation_end;
        end;
        implementation eq
 parameters
-	real k[3] = [0; 0; 0];
+	real k[3] = [1e3; 1e3; 0];
 equations
     state = int(p.f);
     p.e = k .* state;
@@ -1856,7 +1856,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1864,8 +1864,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.01</Minimum>
-      <Maximum>0.01</Maximum>
+      <Minimum>-0.1</Minimum>
+      <Maximum>0.1</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -2024,7 +2024,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>10.0</Maximum>
+      <Maximum>100.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2032,8 +2032,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.01</Minimum>
-      <Maximum>0.01</Maximum>
+      <Minimum>-0.1</Minimum>
+      <Maximum>0.1</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -2731,36 +2731,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>-0.441997023362487</Value>
+            <Value>0.030194617672443</Value>
            </X>
            <Y>
-            <Value>-0.194585774833908</Value>
+            <Value>-0.488568180253286</Value>
            </Y>
            <Z>
-            <Value>0.146066734281792</Value>
+            <Value>0.122271663787272</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.87603983094938</Value>
+             <Value>-0.059845796182381</Value>
             </X>
             <Y>
-             <Value>0.385669753908239</Value>
+             <Value>0.968343173459051</Value>
             </Y>
             <Z>
-             <Value>-0.289504845400798</Value>
+             <Value>-0.242342689377155</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.264964458373423</Value>
+             <Value>-0.0149488048219817</Value>
             </X>
             <Y>
-             <Value>0.116648549706</Value>
+             <Value>0.241881204644101</Value>
             </Y>
             <Z>
-             <Value>0.957176551974799</Value>
+             <Value>0.9701907111874</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -2995,44 +2995,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>FrameBody\QFrame\q[1]</VariableName>
-            <Value>0.0018465697674831915</Value>
+            <Value>0.005194337761294202</Value>
            </X>
            <Y>
             <VariableName>FrameBody\QFrame\q[2]</VariableName>
-            <Value>-1.266023841172986e-4</Value>
+            <Value>-0.0019873357593495444</Value>
            </Y>
            <Z>
             <VariableName>FrameBody\QFrame\q[3]</VariableName>
-            <Value>-1.712991897385983e-5</Value>
+            <Value>-1.547485038673809e-4</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,3]</VariableName>
-             <Value>0.018465697765350342</Value>
+             <Value>0.05194336548447609</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,3]</VariableName>
-             <Value>-0.0012660238426178694</Value>
+             <Value>-0.019873352721333504</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,3]</VariableName>
-             <Value>0.9998286962509155</Value>
+             <Value>0.9984523057937622</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,2]</VariableName>
-             <Value>0.9495248198509216</Value>
+             <Value>-0.8908470869064331</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,2]</VariableName>
-             <Value>-0.313179075717926</Value>
+             <Value>0.4509226679801941</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,2]</VariableName>
-             <Value>-0.017933201044797897</Value>
+             <Value>0.055320560932159424</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -3302,44 +3302,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>RotorBody\QRotor\q[1]</VariableName>
-            <Value>0.0018465697674834916</Value>
+            <Value>0.0051943377612743945</Value>
            </X>
            <Y>
             <VariableName>RotorBody\QRotor\q[2]</VariableName>
-            <Value>-1.2660238412051642e-4</Value>
+            <Value>-0.001987335759353327</Value>
            </Y>
            <Z>
             <VariableName>RotorBody\QRotor\q[3]</VariableName>
-            <Value>-1.7129918973884238e-5</Value>
+            <Value>-1.5474850386741848e-4</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>RotorBody\RTF\R[1,3]</VariableName>
-             <Value>0.018468404188752174</Value>
+             <Value>0.05204908177256584</Value>
             </X>
             <Y>
              <VariableName>RotorBody\RTF\R[2,3]</VariableName>
-             <Value>-0.00121198664419353</Value>
+             <Value>-0.01987890526652336</Value>
             </Y>
             <Z>
              <VariableName>RotorBody\RTF\R[3,3]</VariableName>
-             <Value>0.9998287558555603</Value>
+             <Value>0.9984467029571533</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>RotorBody\RTF\R[1,2]</VariableName>
-             <Value>-0.44939348101615906</Value>
+             <Value>0.7743210196495056</Value>
             </X>
             <Y>
              <VariableName>RotorBody\RTF\R[2,2]</VariableName>
-             <Value>-0.8933048248291016</Value>
+             <Value>0.6321829557418823</Value>
             </Y>
             <Z>
              <VariableName>RotorBody\RTF\R[3,2]</VariableName>
-             <Value>0.0072181434370577335</Value>
+             <Value>-0.027778740972280502</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -3458,16 +3458,16 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="2560" virtualDesktopHeight="1440">
-   <WindowRectangle monitor="0" left="0" top="0" right="2560" bottom="1440" plotpanelid="1">
-0.0183594 0.03125 0.513281 0.975
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+-0.00208333 -0.0037037 1.00208 0.959259
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
  <RunSpecs>
   <SimulatorSettings>
    <StartTime>0.0</StartTime>
-   <FinishTime>10.0</FinishTime>
+   <FinishTime>100.0</FinishTime>
    <AllowPassFinishTime>false</AllowPassFinishTime>
    <Warp>false</Warp>
    <SimulationMode>0</SimulationMode>
