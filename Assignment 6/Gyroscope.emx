@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 6\Gyroscope.emx</LibraryPath>
-    <TimeStamp>2026-5-30 16:02:48</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 6\Gyroscope.emx</LibraryPath>
+    <TimeStamp>2026-5-31 13:33:16</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -1765,13 +1765,13 @@ implementation_end;
     <Name>RotorBody\Rotation\omega_init</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>0.0 0.0 300.0</Value>
+    <Value>0.0 0.0 150.0</Value>
    </Variable>
    <Variable>
     <Name>RotorBody\Rotation\p_init</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>0.0 0.0 0.037500000000000006</Value>
+    <Value>0.0 0.0 0.018750000000000003</Value>
    </Variable>
    <Variable>
     <Name>RotorBody\Se\M</Name>
@@ -1969,7 +1969,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -1977,8 +1977,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.30000000000000004</Minimum>
-      <Maximum>0.2</Maximum>
+      <Minimum>-0.25000000000000006</Minimum>
+      <Maximum>0.25</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -2137,7 +2137,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -2145,8 +2145,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.30000000000000004</Minimum>
-      <Maximum>0.2</Maximum>
+      <Minimum>-0.25000000000000006</Minimum>
+      <Maximum>0.25</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>q[1]</Label>
@@ -2844,36 +2844,36 @@ implementation_end;
           <Name>Camera</Name>
           <Position>
            <X>
-            <Value>0.220793415005144</Value>
+            <Value>0.351911157584573</Value>
            </X>
            <Y>
-            <Value>0.123186242913487</Value>
+            <Value>0.196340155880627</Value>
            </Y>
            <Z>
-            <Value>0.0854138290272433</Value>
+            <Value>0.136136664823976</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.82734149411345</Value>
+             <Value>-0.827341512919074</Value>
             </X>
             <Y>
-             <Value>-0.461594818443109</Value>
+             <Value>-0.461594795680302</Value>
             </Y>
             <Z>
-             <Value>-0.320056675769462</Value>
+             <Value>-0.320056659986381</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.279498213137737</Value>
+             <Value>-0.279498208818567</Value>
             </X>
             <Y>
-             <Value>-0.155939149134812</Value>
+             <Value>-0.155939129174375</Value>
             </Y>
             <Z>
-             <Value>0.947398401212459</Value>
+             <Value>0.947398405772118</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -2955,44 +2955,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>FrameBody\QTranslation\q[1]</VariableName>
-            <Value>-0.0014935345543020053</Value>
+            <Value>-0.09816126904383989</Value>
            </X>
            <Y>
             <VariableName>FrameBody\QTranslation\q[2]</VariableName>
-            <Value>-0.002580704106752488</Value>
+            <Value>0.01806165410167396</Value>
            </Y>
            <Z>
             <VariableName>FrameBody\QTranslation\q[3]</VariableName>
-            <Value>-0.19995581908475377</Value>
+            <Value>-0.09384023530908298</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,3]</VariableName>
-             <Value>-0.014935086040310163</Value>
+             <Value>-0.9816224676172514</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,3]</VariableName>
-             <Value>-0.02580671681264515</Value>
+             <Value>0.18061833663100071</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,3]</VariableName>
-             <Value>-0.9995553794424402</Value>
+             <Value>0.061598275476420175</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>FrameBody\RTF\R[1,2]</VariableName>
-             <Value>-0.19435868087518823</Value>
+             <Value>0.18598868188884535</Value>
             </X>
             <Y>
              <VariableName>FrameBody\RTF\R[2,2]</VariableName>
-             <Value>0.9806743916505157</Value>
+             <Value>0.9777619366767832</Value>
             </Y>
             <Z>
              <VariableName>FrameBody\RTF\R[3,2]</VariableName>
-             <Value>-0.022415189701350605</Value>
+             <Value>0.09690100822652038</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -3262,44 +3262,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>RotorBody\QTranslation\q[1]</VariableName>
-            <Value>-0.0014935345542914588</Value>
+            <Value>-0.09816126904383726</Value>
            </X>
            <Y>
             <VariableName>RotorBody\QTranslation\q[2]</VariableName>
-            <Value>-0.0025807041067213298</Value>
+            <Value>0.01806165410167844</Value>
            </Y>
            <Z>
             <VariableName>RotorBody\QTranslation\q[3]</VariableName>
-            <Value>-0.19995581908480725</Value>
+            <Value>-0.09384023530906564</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>RotorBody\RTF\R[1,3]</VariableName>
-             <Value>0.05079574840498533</Value>
+             <Value>-0.9792205108069724</Value>
             </X>
             <Y>
              <VariableName>RotorBody\RTF\R[2,3]</VariableName>
-             <Value>0.07716417993139912</Value>
+             <Value>0.1927678470231274</Value>
             </Y>
             <Z>
              <VariableName>RotorBody\RTF\R[3,3]</VariableName>
-             <Value>-0.9957235968277002</Value>
+             <Value>0.06299006563737111</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>RotorBody\RTF\R[1,2]</VariableName>
-             <Value>-0.7033665407088675</Value>
+             <Value>0.17826801603202355</Value>
             </X>
             <Y>
              <VariableName>RotorBody\RTF\R[2,2]</VariableName>
-             <Value>-0.7050402987927951</Value>
+             <Value>0.9662796890061616</Value>
             </Y>
             <Z>
              <VariableName>RotorBody\RTF\R[3,2]</VariableName>
-             <Value>-0.09051898413817583</Value>
+             <Value>-0.18580655821084957</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -3475,7 +3475,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -3483,8 +3483,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-100.0</Minimum>
-      <Maximum>400.0</Maximum>
+      <Minimum>-20.0</Minimum>
+      <Maximum>180.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>rotor_vel</Label>
@@ -3617,7 +3617,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -3625,8 +3625,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>v_X</Label>
@@ -3785,7 +3785,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -3793,8 +3793,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-1.0</Minimum>
-      <Maximum>1.0</Maximum>
+      <Minimum>-2.5</Minimum>
+      <Maximum>2.5</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>v_X</Label>
@@ -3953,7 +3953,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -4121,7 +4121,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>100.0</Maximum>
+      <Maximum>10.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -4129,8 +4129,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-100.0</Minimum>
-      <Maximum>400.0</Maximum>
+      <Minimum>-40.0</Minimum>
+      <Maximum>160.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>omega_X</Label>
@@ -4248,7 +4248,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
--0.0015625 0.0037037 0.501563 0.958333
+0.00208333 0.0037037 0.499479 0.951852
    </WindowRectangle>
    <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="2">
 0.500521 0.0287037 0.999479 0.95463
@@ -4258,7 +4258,7 @@ implementation_end;
  <RunSpecs>
   <SimulatorSettings>
    <StartTime>0.0</StartTime>
-   <FinishTime>100.0</FinishTime>
+   <FinishTime>10.0</FinishTime>
    <AllowPassFinishTime>false</AllowPassFinishTime>
    <Warp>false</Warp>
    <SimulationMode>0</SimulationMode>
@@ -4396,6 +4396,9 @@ implementation_end;
  </ExportData>
  <BreakPoints>
  </BreakPoints>
+ <AnimationPlayback>
+  <PlaybackSpeed>1.0</PlaybackSpeed>
+ </AnimationPlayback>
 </ExpData>
   </Experiment>
 </Experiments>
