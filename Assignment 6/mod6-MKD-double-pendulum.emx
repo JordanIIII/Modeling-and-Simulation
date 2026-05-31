@@ -8,79 +8,99 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 6\mod6-MKD-double-pendulum.emx</LibraryPath>
-    <TimeStamp>2026-5-30 00:51:53</TimeStamp>
+    <TimeStamp>2026-5-31 20:51:43</TimeStamp>
   </Description>
 </Information>';
- type 'Mainmodel-gyroscope'
+ type Mainmodel
  end;
  implementation bg
   submodels
-   AdHb0 264 256
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power in p0 [6,1];
-      power out pB [6,1];
-      signal out Hb0 [4,4];
-     restrictions
-      causality constraint not_equal p0 pB;
+   model 716.5 412.5
+    description '<Information>
+  <Description>
+    <Version>5.1</Version>
+    <IsMainModel>0</IsMainModel>
+    <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 6\mod6-MKD-double-pendulum.emx</LibraryPath>
+    <TimeStamp>2026-5-31 20:34:11</TimeStamp>
+  </Description>
+</Information>';
+    type 'Mainmodel-gyroscope'
     end;
-    icon bg ellipse right
-     figures
-      text 'MTF' 264 256 color 0 18 bold;
-    end;
-    implementation eq
+    implementation bg
+     submodels
+      AdHb0 264 200
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power in p0 [6,1];
+         power out pB [6,1];
+         signal out Hb0 [4,4];
+        restrictions
+         causality constraint not_equal p0 pB;
+       end;
+       icon bg ellipse right
+        figures
+         text 'MTF' 264 200 color 0 18 bold;
+       end;
+       implementation eq
 // 0 frame to rotor body frame
 parameters
 	real global Lf;
+	real global m;
 	real Hb0_init[4,4] = homogeneous(eye(3),[0;0;Lf/2]);		// rotor is at the middle of frame height
 variables
 	real AdH[6,6];
+	real PE;
 equations
 	Hb0 = int(Hb0 * tilde(pB.f),Hb0_init);
 	AdH = Adjoint(Hb0);
 	p0.f = AdH * pB.f;
-	pB.e = transpose(AdH) * p0.e;implementation_end;
-   AdHb1 672 184
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power in p0 [6,1];
-      power out pB [6,1];
-      signal out Hb0 [4,4];
-     restrictions
-      causality constraint not_equal p0 pB;
-    end;
-    icon bg ellipse right
-     figures
-      text 'MTF' 672 184 color 0 18 bold;
-    end;
-    implementation eq
+	pB.e = transpose(AdH) * p0.e;
+	PE = m * g_n * (Hb0[3,4] - Hb0_init[3,4]);implementation_end;
+      AdHb1 672 128
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power in p0 [6,1];
+         power out pB [6,1];
+         signal out Hb0 [4,4];
+        restrictions
+         causality constraint not_equal p0 pB;
+       end;
+       icon bg ellipse right
+        figures
+         text 'MTF' 672 128 color 0 18 bold;
+       end;
+       implementation eq
 parameters
 	real global Lf;
+	real global mf;
 	real Hb0_init[4,4] = homogeneous(eye(3),[0;0;Lf/2]);		// frame's frame(coordinate) is at center of frame, same initial position as rotor
 variables
 	real AdH[6,6];
+	real PE;
 equations
 	Hb0 = int(Hb0 * tilde(pB.f),Hb0_init);
 	AdH = Adjoint(Hb0);
 	p0.f = AdH * pB.f;
-	pB.e = transpose(AdH) * p0.e;implementation_end;
-   AdHj1 376 384
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power out pj [6,1];
-      power in p0 [6,1];
-      signal in Hb0 [4,4];
-     restrictions
-      causality constraint not_equal pj p0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MTF' 376 384 color 0 18 bold;
-    end;
-    implementation eq
+	pB.e = transpose(AdH) * p0.e;
+	PE = mf * g_n * (Hb0[3,4] - Hb0_init[3,4]);implementation_end;
+      AdHj1 376 384
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power out pj [6,1];
+         power in p0 [6,1];
+         signal in Hb0 [4,4];
+        restrictions
+         causality constraint not_equal pj p0;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MTF' 376 384 color 0 18 bold;
+       end;
+       implementation eq
 // 0 frame to joint frame
 parameters
 	real pj_b[3] = [0; 0; 0];		// joint frame is at rotor body frame
@@ -94,21 +114,21 @@ equations
 	pj.f = AdH0j * p0.f;
 	p0.e = transpose(AdH0j) * pj.e;
 implementation_end;
-   AdHj2 736 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power in pj [6,1];
-      power out p0 [6,1];
-      signal in Hb0 [4,4];
-     restrictions
-      causality constraint not_equal pj p0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MTF' 736 248 color 0 18 bold;
-    end;
-    implementation eq
+      AdHj2 736 248
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power in pj [6,1];
+         power out p0 [6,1];
+         signal in Hb0 [4,4];
+        restrictions
+         causality constraint not_equal pj p0;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MTF' 736 248 color 0 18 bold;
+       end;
+       implementation eq
 parameters
 	real global Lf;
 	real pj_b[3] = [0; 0; -Lf/2];
@@ -122,21 +142,21 @@ equations
 	p0.f = AdHj0 * pj.f;
 	pj.e = transpose(AdHj0) * p0.e;
 implementation_end;
-   AdHk0 192 320
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power in pK [6,1];
-      power out p0 [6,1];
-      signal in Hb0 [4,4];
-     restrictions
-      causality constraint not_equal pK p0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MTF' 192 320 color 0 18 bold;
-    end;
-    implementation eq
+      AdHk0 192 320
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power in pK [6,1];
+         power out p0 [6,1];
+         signal in Hb0 [4,4];
+        restrictions
+         causality constraint not_equal pK p0;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MTF' 192 320 color 0 18 bold;
+       end;
+       implementation eq
 // Assume k-frame (at where forces are applied) is same position as rotor body frame with no orientation (z-axis upward)
 // Coordinate transformer from k frame to 0 frame
 variables
@@ -148,21 +168,21 @@ equations
 	pK.f = AdH0k * p0.f;
 	p0.e = transpose(AdH0k) * pK.e;
 implementation_end;
-   AdHk1 600 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MTF
-     ports
-      power in pK [6,1];
-      power out p0 [6,1];
-      signal in Hb0 [4,4];
-     restrictions
-      causality constraint not_equal pK p0;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MTF' 600 248 color 0 18 bold;
-    end;
-    implementation eq
+      AdHk1 600 248
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MTF.emx</LibraryPath><TimeStamp>2011-11-29 16:15:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MTF
+        ports
+         power in pK [6,1];
+         power out p0 [6,1];
+         signal in Hb0 [4,4];
+        restrictions
+         causality constraint not_equal pK p0;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MTF' 600 248 color 0 18 bold;
+       end;
+       implementation eq
 variables
 	real AdH0k[6,6];
 	real H0k[4,4];
@@ -172,51 +192,51 @@ equations
 	pK.f = AdH0k * p0.f;
 	p0.e = transpose(AdH0k) * pK.e;
 implementation_end;
-   EJS 320 128
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MGY.emx</LibraryPath><TimeStamp>2011-11-29 16:03:53</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MGYR
-     ports
-      power in p [6,1];
-      signal in P [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MGY' 320 128 color 0 18 bold;
-    end;
-    implementation eq
+      EJS 320 72
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MGY.emx</LibraryPath><TimeStamp>2011-11-29 16:03:53</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MGYR
+        ports
+         power in p [6,1];
+         signal in P [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MGY' 320 72 color 0 18 bold;
+       end;
+       implementation eq
 // This actually represent coriolis
 // This comes from dual map of wench in body frame to wench in 0 frame
 equations					
 	p.e = -transpose(adjoint(p.f))*P;
 	implementation_end;
-   EJS1 728 56
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MGY.emx</LibraryPath><TimeStamp>2011-11-29 16:03:53</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type MGYR
-     ports
-      power in p [6,1];
-      signal in P [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MGY' 728 56 color 0 18 bold;
-    end;
-    implementation eq
+      EJS1 728 0
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\MGY.emx</LibraryPath><TimeStamp>2011-11-29 16:03:53</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type MGYR
+        ports
+         power in p [6,1];
+         signal in P [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MGY' 728 0 color 0 18 bold;
+       end;
+       implementation eq
 equations					
 	p.e = -transpose(adjoint(p.f))*P;
 	implementation_end;
-   FixedBase 864 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Sf.emx</LibraryPath><TimeStamp>2011-11-29 16:38:03</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type Sf
-     ports
-      power out p [6,1];
-     restrictions
-      causality fixed in p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Sf' 864 248 color 0 18 bold;
-    end;
-    implementation eq
+      FixedBase 864 248
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Sf.emx</LibraryPath><TimeStamp>2011-11-29 16:38:03</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Sf
+        ports
+         power out p [6,1];
+        restrictions
+         causality fixed in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Sf' 864 248 color 0 18 bold;
+       end;
+       implementation eq
 // Fixed support so the base
 parameters
 	real flow = 0;
@@ -226,49 +246,50 @@ equations
 	p.f = flow;
 	effort = p.e;
 implementation_end;
-   FrameGravity 504 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type Se
-     ports
-      power out p [6,1];
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 504 248 color 0 18 bold;
-    end;
-    implementation eq
+      FrameGravity 504 248
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Se
+        ports
+         power out p [6,1];
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 504 248 color 0 18 bold;
+       end;
+       implementation eq
 parameters
 	real global mf;
 variables
 	real flow[6];
 equations
 	p.e = [0;0;0;0;0;-g_n*mf];
+	//p.e = [0;0;0;0;0;0];
 	flow = p.f;
 implementation_end;
-   I_frame 616 56
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type I
-     ports
-      power in p [6,1];
-      signal out state [6,1];
-     restrictions
-      causality preferred in p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'I' 616 56 color 0 18 bold;
-    end;
-    implementation eq
+      I_frame 616 0
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type I
+        ports
+         power in p [6,1];
+         signal out state [6,1];
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 616 0 color 0 18 bold;
+       end;
+       implementation eq
 // frame consist of a rod (along local z axis) and two rings connected at both ends
 parameters
-	real global mrod = 0.05;
+	real global mrod = 0.1;
 	real global Rrod = 0.007;		// radius of rod
 	real global Lf = 0.2;			// length of frame (rod)
 	
 	real global mring = 0.03;
-	real global Rring = Lf/2 - 0.03;
+	real global Rring = Lf/2 - 0.025;
 	real global mf = mrod + 2*mring;
 	
 	// rod
@@ -278,109 +299,98 @@ parameters
 
 	real J[3] = Jrod + Jring_xz + Jring_yz;
 	real i[6] = transpose([J[1],J[2],J[3],mf,mf,mf]);
+	
+variables
+	real KE;
 equations
-    state = int(p.e);
-    p.f = state ./ i;
+   state = int(p.e);
+   p.f = state ./ i;
+	KE = (1/2) * transpose(state) * p.f;
 implementation_end;
-   I_rotor 208 128
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type I
-     ports
-      power in p [6,1];
-      signal out state [6,1];
-     restrictions
-      causality preferred in p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'I' 208 128 color 0 18 bold;
-    end;
-    implementation eq
+      I_rotor 208 72
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type I
+        ports
+         power in p [6,1];
+         signal out state [6,1];
+        restrictions
+         causality preferred in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'I' 208 72 color 0 18 bold;
+       end;
+       implementation eq
 parameters
-	real global m = 0.3;		// mass
-	real global R = 0.05;	// radius
+	real global m = 0.6;		// mass
+	real global R = 0.07;	// radius
 	real global L = 0.01;		// length
-	real w0 = 40 * 6.28; // rps to rad/s
+	real w0 = 20 * 6.28; // rps to rad/s
 	real J[3] = [(1/12)*m*(3*R^2+L^2); (1/12)*m*(3*R^2+L^2); (1/2)*m*R^2];
 	real i[6] = transpose([J[1],J[2],J[3],m,m,m]);
 	real p_init[6] = i .* [0; 0; w0; 0; 0; 0];
+variables
+	real KE;
 equations
-    state = int(p.e, p_init);		// momentum
-    p.f = state ./ i;				// twist = P * M^-1
+   state = int(p.e, p_init);		// momentum
+   p.f = state ./ i;				// twist = P * M^-1
+	KE = (1/2) * transpose(state) * p.f;
 implementation_end;
-   OneJunction 376 456
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
-</Description>
-</Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 376 456 color 0 18 bold;
-    end;
-    implementation eq
+      Joint1Constraints 432 456
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type R
+        ports
+         power in p [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'RC' 432 456 color 0 18 bold;
+       end;
+       implementation eq
+// rotor-frame joint model (only z-axis is allowed to rotate)
+// so the bearing. assume perfect constraints to 5 constraints
+parameters
+	real r = 1e4;	// damping - physically constraint viscos friction etc...
+	real k = 1e6;	// stiffness
+variables
+	real q[6];
+	real E_dissipated;
+	real E_spring;
 equations
-	sum (direct (p.e)) = 0;
-	equal (collect (p.f));
-	flow = first (p.f);
-implementation_end;
-   OneJunction6 800 304
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
-</Description>
-</Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 800 304 color 0 18 bold;
-    end;
-    implementation eq
+	q = int(p.f);
+	p.e = [r;r;0;r;r;r] .* p.f + [k;k;0;k;k;k] .* q;	// wench = r*twist + k*pose
+	E_dissipated = int(transpose(p.e) * p.f);
+	E_spring = (1/2) * transpose(q) * ([k;k;0;k;k;k] .* q);implementation_end;
+      Joint1Friction 312 456
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type R
+        ports
+         power in p [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 312 456 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real rv = 0.0001;		// viscus
+	real rc = 0.00005;		// coulumb
+	real eps = 0.00005;
 equations
-	sum (direct (p.e)) = 0;
-	equal (collect (p.f));
-	flow = first (p.f);
+	p.e = rv * p.f + rc * tanh(p.f / eps);
+	
 implementation_end;
-   R 800 360
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\R.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
-</Description>
-</Information>';
-    type R
-     ports
-      power in p [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'RC' 800 360 color 0 18 bold;
-    end;
-    implementation eq
+      Joint2Constraints 800 360
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type R
+        ports
+         power in p [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'RC' 800 360 color 0 18 bold;
+       end;
+       implementation eq
 // 3DOF at frame-base joint
 parameters
 	real r = 1e2;
@@ -388,103 +398,161 @@ parameters
 variables
 	real q[6];
 	real E_dissipated;
+	real E_spring;
 equations
 	q = int(p.f);
 	p.e = [0;0;0;r;r;r] .* p.f + [0;0;0;k;k;k] .* q;
-	E_dissipated = int(transpose(p.e) * p.f);implementation_end;
-   R1 432 456
-    description '<Information>
+	E_dissipated = int(transpose(p.e) * p.f);
+	E_spring = (1/2) * transpose(q) * ([0;0;0;k;k;k] .* q);implementation_end;
+      Joint2Friction 856 304
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\R.emx</LibraryPath><TimeStamp>2011-11-29 16:35:37</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type R
+        ports
+         power in p [6,1];
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 856 304 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real rv = 0.00002;		// viscus
+	real rc = 0.000005;		// coulumb
+	real eps = 0.000005;
+equations
+	p.e = rv * p.f + rc * tanh(p.f / eps);implementation_end;
+      OneJunction 376 456
+       description '<Information>
  <Description>
     <Version>4.2</Version>
 <IsMainModel>1</IsMainModel>
   <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\R.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
 </Description>
 </Information>';
-    type R
-     ports
-      power in p [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'RC' 432 456 color 0 18 bold;
-    end;
-    implementation eq
-// rotor-frame joint model (only z-axis is allowed to rotate)
-parameters
-	real r = 1e5;	// damping
-	real k = 1e7;	// stiffness
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 376 456 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      OneJunction6 800 304
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\OneJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:17:51</TimeStamp>
+</Description>
+</Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 800 304 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.e)) = 0;
+	equal (collect (p.f));
+	flow = first (p.f);
+implementation_end;
+      PowerSensor 264 256
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\PowerSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:29:42</TimeStamp>
+</Description>
+</Information>';
+       knot PowerSensor
+        ports
+         power knot in p1 [6,1];
+         power knot out p2 [6,1];
+         signal knot out P [6,1] {W} ;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 257.1 248.8 270.9 263.2 color 0 fill 16777215;
+         text 'P' 264.5 255.8 color 0;
+       end;
+       implementation eq
 variables
-	real q[6];
-	real E_dissipated;
+	real p_total;
 equations
-	q = int(p.f);
-	p.e = [r;r;0;r;r;r] .* p.f + [k;k;0;k;k;k] .* q;	// wench = r*twist + k*pose
-	E_dissipated = int(transpose(p.e) * p.f);implementation_end;
-   R2 856 304
-    description '<Information>
+	p2.e = p1.e;
+	p1.f = p2.f;
+	P = p1.e .* p1.f;
+	p_total = transpose(p1.e) * p1.f;
+implementation_end;
+      PowerSensor1 672 168
+       description '<Information>
  <Description>
     <Version>4.2</Version>
 <IsMainModel>1</IsMainModel>
   <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\R.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+    <LibraryPath>Bond Graph\PowerSensor.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:29:42</TimeStamp>
 </Description>
 </Information>';
-    type R
-     ports
-      power in p [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'R' 856 304 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real r = 0.0005;
+       knot PowerSensor
+        ports
+         power knot in p1 [6,1];
+         power knot out p2 [6,1];
+         signal knot out P [6,1] {W} ;
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 665.1 160.8 678.9 175.2 color 0 fill 16777215;
+         text 'P' 672.5 167.8 color 0;
+       end;
+       implementation eq
+variables
+	real p_total;
 equations
-	p.e = r * p.f;
-implementation_end;
-   R3 312 456
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\R.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
-</Description>
-</Information>';
-    type R
-     ports
-      power in p [6,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'R' 312 456 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real r = 0.00002;
-equations
-	p.e = r * p.f;
-implementation_end;
-   RotorDisturbance 128 208
-    description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
-    type 'Submodel-Equation'
-     ports
-      power out p [6,1];
-     restrictions
-      causality fixed out p;
-    end;
-    implementation eq
+	p2.e = p1.e;
+	p1.f = p2.f;
+	P = p1.e .* p1.f;
+	p_total = transpose(p1.e) * p1.f;implementation_end;
+      RotorDisturbance 128 152
+       description '<Information><Description><Version>4.0</Version><LibraryPath>Template\Submodel-Equation.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2007-11-1 22:32:1</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
+       type 'Submodel-Equation'
+        ports
+         power out p [6,1];
+        restrictions
+         causality fixed out p;
+       end;
+       implementation eq
 // disturbance in rotor body frame
 parameters
-	real t0 = 0.5;       // start time
-	real duration = 0.02;
+	real t0 = 2;       // start time
+	real duration = 0.5;
    real tau_d = 0.001;
-	real force_d = 0.001;
+	real force_d = 10;
 
 equations
    if time >= t0 and time <= t0 + duration then
@@ -492,19 +560,19 @@ equations
    else
       p.e = [0; 0; 0; 0; 0; 0];
    end;implementation_end;
-   RotorGravity 96 320
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    type Se
-     ports
-      power out p [6,1];
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 96 320 color 0 18 bold;
-    end;
-    implementation eq
+      RotorGravity 96 320
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\Se.emx</LibraryPath><TimeStamp>2011-11-29 16:36:49</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Se
+        ports
+         power out p [6,1];
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'Se' 96 320 color 0 18 bold;
+       end;
+       implementation eq
 // expressed in k-frame that is at rotor body with no rotation frame (z-axis is upward)
 parameters
 	real global m;
@@ -512,133 +580,134 @@ variables
 	real flow[6];
 equations
 	p.e = [0;0;0;0;0;-g_n*m];
+	//p.e = [0;0;0;0;0;0];
 	flow = p.f;
 implementation_end;
-   Splitter1 608 184
-    description '<Description><Version>4.0</Version>
+      Splitter1 608 128
+       description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
 <IsMainModel>1</IsMainModel>
  <KeepParameterValues>False</KeepParameterValues>
 </Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [4,4];
-      signal knot in input [4,4];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 604.8 180.8 611.2 187.2 color -1 fill 0;
-      ellipse 603.7 179.7 612.3 188.3 color -1;
-     terminals
-      input 608 184 fixed;
-    end;
-    implementation eq
+       knot Splitter
+        ports
+         signal knot duplicatable out output [4,4];
+         signal knot in input [4,4];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 604.8 124.8 611.2 131.2 color -1 fill 0;
+         ellipse 603.7 123.7 612.3 132.3 color -1;
+        terminals
+         input 608 128 fixed;
+       end;
+       implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   Splitter2 192 256
-    description '<Description><Version>4.0</Version>
+      Splitter2 192 200
+       description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
   <TimeStamp>2008-01-17 11:28:29</TimeStamp>
 <IsMainModel>1</IsMainModel>
  <KeepParameterValues>False</KeepParameterValues>
 </Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [4,4];
-      signal knot in input [4,4];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 188.8 252.8 195.2 259.2 color -1 fill 0;
-      ellipse 187.7 251.7 196.3 260.3 color -1;
-     terminals
-      input 192 256 fixed;
-    end;
-    implementation eq
+       knot Splitter
+        ports
+         signal knot duplicatable out output [4,4];
+         signal knot in input [4,4];
+       end;
+       icon bg ellipse
+        figures
+         ellipse 188.8 196.8 195.2 203.2 color -1 fill 0;
+         ellipse 187.7 195.7 196.3 204.3 color -1;
+        terminals
+         input 192 200 fixed;
+       end;
+       implementation eq
 equations
     collect (output) = input;
 implementation_end;
-   TB00 264 320
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 264 320 color 0 18 bold;
-    end;
-    implementation eq
+      TB00 264 320
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 320 color 0 18 bold;
+       end;
+       implementation eq
 equations
 	sum (direct (p.e)) = 0;
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   Tb0b 264 208
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 264 208 color 0 18 bold;
-    end;
-    implementation eq
+      Tb0b 264 152
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 264 152 color 0 18 bold;
+       end;
+       implementation eq
 // P_dot + ad*_T P = W_external -> M T_dot + ad*_T (MT) = W_reaction + W_disturbances
 equations
 	sum (direct (p.e)) = 0;
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   Tb0b1 672 136
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 672 136 color 0 18 bold;
-    end;
-    implementation eq
+      Tb0b1 672 80
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 672 80 color 0 18 bold;
+       end;
+       implementation eq
 equations
 	sum (direct (p.e)) = 0;
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   TB1 672 248
-    description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
-    knot OneJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out flow [6,1];
-     restrictions
-      causality constraint one_out p;
-    end;
-    icon bg ellipse
-     figures
-      text '1' 672 248 color 0 18 bold;
-    end;
-    implementation eq
+      TB1 672 248
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\OneJunction.emx</LibraryPath><TimeStamp>2011-11-29 16:17:51</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot OneJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out flow [6,1];
+        restrictions
+         causality constraint one_out p;
+       end;
+       icon bg ellipse
+        figures
+         text '1' 672 248 color 0 18 bold;
+       end;
+       implementation eq
 equations
 	sum (direct (p.e)) = 0;
 	equal (collect (p.f));
 	flow = first (p.f);
 implementation_end;
-   ZeroJunction 376 320
-    description '<Information>
+      ZeroJunction 376 320
+       description '<Information>
  <Description>
     <Version>4.2</Version>
 <IsMainModel>1</IsMainModel>
@@ -647,25 +716,25 @@ implementation_end;
   <TimeStamp>2011-11-29 16:45:16</TimeStamp>
 </Description>
 </Information>';
-    knot ZeroJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out effort [6,1];
-     restrictions
-      causality constraint one_in p;
-    end;
-    icon bg ellipse
-     figures
-      text '0' 376 320 color 0 18 bold;
-    end;
-    implementation eq
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out effort [6,1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 376 320 color 0 18 bold;
+       end;
+       implementation eq
 equations
 	sum (direct (p.f)) = 0;
 	equal (collect (p.e));
 	effort = first (p.e);
 implementation_end;
-   ZeroJunction1 800 248
-    description '<Information>
+      ZeroJunction1 800 248
+       description '<Information>
  <Description>
     <Version>4.2</Version>
 <IsMainModel>1</IsMainModel>
@@ -674,58 +743,64 @@ implementation_end;
   <TimeStamp>2011-11-29 16:45:16</TimeStamp>
 </Description>
 </Information>';
-    knot ZeroJunction
-     ports
-      power knot duplicatable none p [6,1];
-      signal knot out effort [6,1];
-     restrictions
-      causality constraint one_in p;
-    end;
-    icon bg ellipse
-     figures
-      text '0' 800 248 color 0 18 bold;
-    end;
-    implementation eq
+       knot ZeroJunction
+        ports
+         power knot duplicatable none p [6,1];
+         signal knot out effort [6,1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 800 248 color 0 18 bold;
+       end;
+       implementation eq
 equations
 	sum (direct (p.f)) = 0;
 	equal (collect (p.e));
 	effort = first (p.e);
 implementation_end;
+     end;
+     connections
+      AdHb0\Hb0 -> Splitter2\input;
+      AdHb0\pB => Tb0b\p;
+      AdHb1\Hb0 -> Splitter1\input;
+      AdHb1\pB => Tb0b1\p;
+      AdHj1\pj => OneJunction\p;
+      AdHj2\p0 => TB1\p;
+      AdHk0\p0 => TB00\p;
+      AdHk1\p0 => TB1\p;
+      FixedBase\p => ZeroJunction1\p;
+      FrameGravity\p => AdHk1\pK;
+      I_frame\state -> EJS1\P;
+      I_rotor\state -> EJS\P;
+      OneJunction\p => Joint1Constraints\p;
+      OneJunction\p => Joint1Friction\p;
+      OneJunction6\p => Joint2Constraints\p;
+      OneJunction6\p => Joint2Friction\p;
+      PowerSensor\p2 => AdHb0\p0;
+      PowerSensor1\p2 => AdHb1\p0;
+      RotorDisturbance\p => Tb0b\p;
+      RotorGravity\p => AdHk0\pK;
+      Splitter1\output -> AdHj2\Hb0;
+      Splitter1\output -> AdHk1\Hb0 600 184;
+      Splitter2\output -> AdHj1\Hb0;
+      Splitter2\output -> AdHk0\Hb0 'ReactionWench';
+      TB00\p => PowerSensor\p1;
+      TB00\p => ZeroJunction\p;
+      Tb0b\p => EJS\p;
+      Tb0b\p => I_rotor\p;
+      Tb0b1\p => EJS1\p;
+      Tb0b1\p => I_frame\p;
+      TB1\p => PowerSensor1\p1;
+      ZeroJunction\p => AdHj1\p0;
+      ZeroJunction\p => TB1\p 616 320;
+      ZeroJunction1\p => AdHj2\pj;
+      ZeroJunction1\p => OneJunction6\p;
+     end;
+    implementation_end;
   end;
   connections
-   AdHb0\Hb0 -> Splitter2\input;
-   AdHb0\pB => Tb0b\p;
-   AdHb1\Hb0 -> Splitter1\input;
-   AdHb1\pB => Tb0b1\p;
-   AdHj1\pj => OneJunction\p;
-   AdHj2\p0 => TB1\p;
-   AdHk0\p0 => TB00\p;
-   AdHk1\p0 => TB1\p;
-   FixedBase\p => ZeroJunction1\p;
-   FrameGravity\p => AdHk1\pK;
-   I_frame\state -> EJS1\P;
-   I_rotor\state -> EJS\P;
-   OneJunction\p => R1\p;
-   OneJunction\p => R3\p;
-   OneJunction6\p => R\p;
-   OneJunction6\p => R2\p;
-   RotorDisturbance\p => Tb0b\p;
-   RotorGravity\p => AdHk0\pK;
-   Splitter1\output -> AdHj2\Hb0;
-   Splitter1\output -> AdHk1\Hb0 600 184;
-   Splitter2\output -> AdHj1\Hb0;
-   Splitter2\output -> AdHk0\Hb0 'ReactionWench';
-   TB00\p => AdHb0\p0;
-   TB00\p => ZeroJunction\p;
-   Tb0b\p => EJS\p;
-   Tb0b\p => I_rotor\p;
-   Tb0b1\p => EJS1\p;
-   Tb0b1\p => I_frame\p;
-   TB1\p => AdHb1\p0;
-   ZeroJunction\p => AdHj1\p0;
-   ZeroJunction\p => TB1\p 616 320;
-   ZeroJunction1\p => AdHj2\pj;
-   ZeroJunction1\p => OneJunction6\p;
   end;
  implementation_end;
 ]]></Sidops>
@@ -746,7 +821,11 @@ implementation_end;
   </Constants>
   <Parameters>
    <Variable>
-    <Name>AdHj1\Hj_b</Name>
+    <Name>mf</Name>
+    <Value>0.16</Value>
+   </Variable>
+   <Variable>
+    <Name>model\AdHj1\Hj_b</Name>
     <Rows>4</Rows>
     <Columns>4</Columns>
     <Value>1.0 0.0 0.0 0.0
@@ -755,7 +834,7 @@ implementation_end;
 0.0 0.0 0.0 1.0</Value>
    </Variable>
    <Variable>
-    <Name>AdHj2\Hj_b</Name>
+    <Name>model\AdHj2\Hj_b</Name>
     <Rows>4</Rows>
     <Columns>4</Columns>
     <Value>1.0 0.0 0.0 0.0
@@ -764,71 +843,66 @@ implementation_end;
 0.0 0.0 0.0 1.0</Value>
    </Variable>
    <Variable>
-    <Name>AdHj2\pj_b</Name>
+    <Name>model\AdHj2\pj_b</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 -0.1</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\i</Name>
+    <Name>model\I_frame\i</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
-    <Value>3.877791666666668e-4 3.8777916666666673e-4 1.4822500000000004e-4 0.11 0.11 0.11</Value>
+    <Value>5.876833333333335e-4 5.876833333333335e-4 1.7120000000000004e-4 0.16 0.16 0.16</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\J</Name>
+    <Name>model\I_frame\J</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>3.877791666666668e-4 3.8777916666666673e-4 1.4822500000000004e-4</Value>
+    <Value>5.876833333333335e-4 5.876833333333335e-4 1.7120000000000004e-4</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\Jring_xz</Name>
+    <Name>model\I_frame\Jring_xz</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>7.350000000000001e-5 1.4700000000000002e-4 7.350000000000001e-5</Value>
+    <Value>8.437500000000002e-5 1.6875000000000004e-4 8.437500000000002e-5</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\Jring_yz</Name>
+    <Name>model\I_frame\Jring_yz</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>1.4700000000000002e-4 7.350000000000001e-5 7.350000000000001e-5</Value>
+    <Value>1.6875000000000004e-4 8.437500000000002e-5 8.437500000000002e-5</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\Jrod</Name>
+    <Name>model\I_frame\Jrod</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>1.672791666666667e-4 1.672791666666667e-4 1.2250000000000001e-6</Value>
+    <Value>3.345583333333334e-4 3.345583333333334e-4 2.4500000000000003e-6</Value>
    </Variable>
    <Variable>
-    <Name>I_rotor\i</Name>
+    <Name>model\I_rotor\i</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
-    <Value>1.9000000000000004e-4 1.9000000000000004e-4 3.7500000000000006e-4 0.3 0.3 0.3</Value>
+    <Value>7.4e-4 7.4e-4 0.0014700000000000002 0.6 0.6 0.6</Value>
    </Variable>
    <Variable>
-    <Name>I_rotor\J</Name>
+    <Name>model\I_rotor\J</Name>
     <Rows>3</Rows>
     <Columns>1</Columns>
-    <Value>1.9000000000000004e-4 1.9000000000000004e-4 3.7500000000000006e-4</Value>
+    <Value>7.4e-4 7.4e-4 0.0014700000000000002</Value>
    </Variable>
    <Variable>
-    <Name>I_rotor\w0</Name>
+    <Name>model\I_rotor\w0</Name>
     <Description><![CDATA[rps to rad/s]]></Description>
-    <Value>251.20000000000002</Value>
-   </Variable>
-   <Variable>
-    <Name>mf</Name>
-    <Description><![CDATA[rod]]></Description>
-    <Value>0.11</Value>
+    <Value>125.60000000000001</Value>
    </Variable>
    <Variable>
     <Name>Rring</Name>
-    <Value>0.07</Value>
+    <Value>0.07500000000000001</Value>
    </Variable>
   </Parameters>
   <Initials>
    <Variable>
-    <Name>AdHb0\Hb0_init</Name>
+    <Name>model\AdHb0\Hb0_init</Name>
     <Rows>4</Rows>
     <Columns>4</Columns>
     <Description><![CDATA[rotor is at the middle of frame height]]></Description>
@@ -838,7 +912,7 @@ implementation_end;
 0.0 0.0 0.0 1.0</Value>
    </Variable>
    <Variable>
-    <Name>AdHb1\Hb0_init</Name>
+    <Name>model\AdHb1\Hb0_init</Name>
     <Rows>4</Rows>
     <Columns>4</Columns>
     <Description><![CDATA[frame's frame(coordinate) is at center of frame, same initial position as rotor]]></Description>
@@ -848,33 +922,33 @@ implementation_end;
 0.0 0.0 0.0 1.0</Value>
    </Variable>
    <Variable>
-    <Name>I_frame\state_initial</Name>
+    <Name>model\I_frame\state_initial</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0 0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>I_rotor\p_init</Name>
+    <Name>model\I_rotor\p_init</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
-    <Value>0.0 0.0 0.09420000000000002 0.0 0.0 0.0</Value>
+    <Value>0.0 0.0 0.18463200000000005 0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>R\E_dissipated_initial</Name>
+    <Name>model\Joint1Constraints\E_dissipated_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>R\q_initial</Name>
+    <Name>model\Joint1Constraints\q_initial</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0 0.0 0.0 0.0</Value>
    </Variable>
    <Variable>
-    <Name>R1\E_dissipated_initial</Name>
+    <Name>model\Joint2Constraints\E_dissipated_initial</Name>
     <Value>0.0</Value>
    </Variable>
    <Variable>
-    <Name>R1\q_initial</Name>
+    <Name>model\Joint2Constraints\q_initial</Name>
     <Rows>6</Rows>
     <Columns>1</Columns>
     <Value>0.0 0.0 0.0 0.0 0.0 0.0</Value>
@@ -884,28 +958,58 @@ implementation_end;
  <PlotSpecs>
   <VarNames>
    <VarName>time</VarName>
-   <VarName>AdHb0\Hb0[1,4]</VarName>
-   <VarName>AdHb0\Hb0[2,4]</VarName>
-   <VarName>AdHb0\Hb0[3,4]</VarName>
-   <VarName>AdHb0\Hb0[1,3]</VarName>
-   <VarName>AdHb0\Hb0[2,3]</VarName>
-   <VarName>AdHb0\Hb0[3,3]</VarName>
-   <VarName>AdHb0\Hb0[1,2]</VarName>
-   <VarName>AdHb0\Hb0[2,2]</VarName>
-   <VarName>AdHb0\Hb0[3,2]</VarName>
-   <VarName>AdHb1\Hb0[1,4]</VarName>
-   <VarName>AdHb1\Hb0[2,4]</VarName>
-   <VarName>AdHb1\Hb0[3,4]</VarName>
-   <VarName>AdHb1\Hb0[1,3]</VarName>
-   <VarName>AdHb1\Hb0[2,3]</VarName>
-   <VarName>AdHb1\Hb0[3,3]</VarName>
-   <VarName>AdHb1\Hb0[1,2]</VarName>
-   <VarName>AdHb1\Hb0[2,2]</VarName>
-   <VarName>AdHb1\Hb0[3,2]</VarName>
-   <VarName>I_rotor\p.f[3]</VarName>
-   <VarName>I_frame\p.f[1]</VarName>
-   <VarName>I_frame\p.f[2]</VarName>
-   <VarName>I_frame\p.f[3]</VarName>
+   <VarName>model\AdHb0\Hb0[1,4]</VarName>
+   <VarName>model\AdHb0\Hb0[2,4]</VarName>
+   <VarName>model\AdHb0\Hb0[3,4]</VarName>
+   <VarName>model\AdHb0\Hb0[1,3]</VarName>
+   <VarName>model\AdHb0\Hb0[2,3]</VarName>
+   <VarName>model\AdHb0\Hb0[3,3]</VarName>
+   <VarName>model\AdHb0\Hb0[1,2]</VarName>
+   <VarName>model\AdHb0\Hb0[2,2]</VarName>
+   <VarName>model\AdHb0\Hb0[3,2]</VarName>
+   <VarName>model\AdHb1\Hb0[1,4]</VarName>
+   <VarName>model\AdHb1\Hb0[2,4]</VarName>
+   <VarName>model\AdHb1\Hb0[3,4]</VarName>
+   <VarName>model\AdHb1\Hb0[1,3]</VarName>
+   <VarName>model\AdHb1\Hb0[2,3]</VarName>
+   <VarName>model\AdHb1\Hb0[3,3]</VarName>
+   <VarName>model\AdHb1\Hb0[1,2]</VarName>
+   <VarName>model\AdHb1\Hb0[2,2]</VarName>
+   <VarName>model\AdHb1\Hb0[3,2]</VarName>
+   <VarName>model\I_rotor\p.f[3]</VarName>
+   <VarName>model\I_frame\p.f[1]</VarName>
+   <VarName>model\I_frame\p.f[2]</VarName>
+   <VarName>model\I_frame\p.f[3]</VarName>
+   <VarName>model\AdHj1\p0.e[1]</VarName>
+   <VarName>model\AdHj1\p0.e[2]</VarName>
+   <VarName>model\AdHj1\p0.e[3]</VarName>
+   <VarName>model\AdHj1\p0.e[4]</VarName>
+   <VarName>model\AdHj1\p0.e[5]</VarName>
+   <VarName>model\AdHj1\pj.e[6]</VarName>
+   <VarName>model\I_rotor\state[1]</VarName>
+   <VarName>model\I_rotor\state[2]</VarName>
+   <VarName>model\I_rotor\state[3]</VarName>
+   <VarName>model\I_frame\state[1]</VarName>
+   <VarName>model\I_frame\state[2]</VarName>
+   <VarName>model\I_frame\state[3]</VarName>
+   <VarName>model\AdHb0\p0.e[1]</VarName>
+   <VarName>model\AdHb0\p0.e[2]</VarName>
+   <VarName>model\AdHb0\p0.e[3]</VarName>
+   <VarName>model\AdHb0\p0.e[4]</VarName>
+   <VarName>model\AdHb0\p0.e[5]</VarName>
+   <VarName>model\AdHb0\p0.e[6]</VarName>
+   <VarName>model\PowerSensor\p_total</VarName>
+   <VarName>model\PowerSensor1\p_total</VarName>
+   <VarName>model\PowerSensor\P[3]</VarName>
+   <VarName>model\PowerSensor1\P[3]</VarName>
+   <VarName>model\AdHb0\PE</VarName>
+   <VarName>model\AdHb1\PE</VarName>
+   <VarName>model\I_rotor\KE</VarName>
+   <VarName>model\I_frame\KE</VarName>
+   <VarName>model\Joint1Constraints\E_spring</VarName>
+   <VarName>model\Joint2Constraints\E_spring</VarName>
+   <VarName>model\Joint1Constraints\E_dissipated</VarName>
+   <VarName>model\Joint2Constraints\E_dissipated</VarName>
   </VarNames>
   <Plots>
    <Plot>
@@ -1519,36 +1623,36 @@ implementation_end;
           <Name>Camera Looking at Origin</Name>
           <Position>
            <X>
-            <Value>0.405046479882388</Value>
+            <Value>0.526693769505599</Value>
            </X>
            <Y>
-            <Value>0.777071551172404</Value>
+            <Value>-0.566311234252043</Value>
            </Y>
            <Z>
-            <Value>-0.00878488128022311</Value>
+            <Value>0.310003306067212</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.462199989001548</Value>
+             <Value>-0.632136136436122</Value>
             </X>
             <Y>
-             <Value>-0.886719053818093</Value>
+             <Value>0.679684905109691</Value>
             </Y>
             <Z>
-             <Value>0.0100244582354488</Value>
+             <Value>-0.372064960427132</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.00463353703171912</Value>
+             <Value>-0.253387213345973</Value>
             </X>
             <Y>
-             <Value>0.00888932461517299</Value>
+             <Value>0.27244678653389</Value>
             </Y>
             <Z>
-             <Value>0.999949753858894</Value>
+             <Value>0.92820669498777</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -1791,45 +1895,45 @@ implementation_end;
           <Name>Rotor</Name>
           <Position>
            <X>
-            <VariableName>AdHb0\Hb0[1,4]</VariableName>
-            <Value>0.08544864081220634</Value>
+            <VariableName>model\AdHb0\Hb0[1,4]</VariableName>
+            <Value>-0.06144158618828348</Value>
            </X>
            <Y>
-            <VariableName>AdHb0\Hb0[2,4]</VariableName>
-            <Value>-0.014339510169525902</Value>
+            <VariableName>model\AdHb0\Hb0[2,4]</VariableName>
+            <Value>0.034740865434109765</Value>
            </Y>
            <Z>
-            <VariableName>AdHb0\Hb0[3,4]</VariableName>
-            <Value>-0.049992171896318806</Value>
+            <VariableName>model\AdHb0\Hb0[3,4]</VariableName>
+            <Value>0.0680571445303786</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>AdHb0\Hb0[1,3]</VariableName>
-             <Value>0.8744102716445923</Value>
+             <VariableName>model\AdHb0\Hb0[1,3]</VariableName>
+             <Value>-0.6208304762840271</Value>
             </X>
             <Y>
-             <VariableName>AdHb0\Hb0[2,3]</VariableName>
-             <Value>-0.15580512583255768</Value>
+             <VariableName>model\AdHb0\Hb0[2,3]</VariableName>
+             <Value>0.350595086812973</Value>
             </Y>
             <Z>
-             <VariableName>AdHb0\Hb0[3,3]</VariableName>
-             <Value>-0.45949044823646545</Value>
+             <VariableName>model\AdHb0\Hb0[3,3]</VariableName>
+             <Value>0.7011795043945312</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>AdHb0\Hb0[1,2]</VariableName>
-             <Value>-0.3236240744590759</Value>
+             <VariableName>model\AdHb0\Hb0[1,2]</VariableName>
+             <Value>0.5855482816696167</Value>
             </X>
             <Y>
-             <VariableName>AdHb0\Hb0[2,2]</VariableName>
-             <Value>-0.8928820490837097</Value>
+             <VariableName>model\AdHb0\Hb0[2,2]</VariableName>
+             <Value>0.802091658115387</Value>
             </Y>
             <Z>
-             <VariableName>AdHb0\Hb0[3,2]</VariableName>
-             <Value>-0.3130960166454315</Value>
+             <VariableName>model\AdHb0\Hb0[3,2]</VariableName>
+             <Value>0.11739763617515564</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -1843,8 +1947,8 @@ implementation_end;
           <Childs>
            <Cylinder>
             <CircleElements>16</CircleElements>
-            <LowerRadius>0.05</LowerRadius>
-            <UpperRadius>0.05</UpperRadius>
+            <LowerRadius>0.07</LowerRadius>
+            <UpperRadius>0.07</UpperRadius>
             <Height>0.01</Height>
             <Closed>true</Closed>
             <LowerClosed>true</LowerClosed>
@@ -1943,45 +2047,45 @@ implementation_end;
           <Name>Frame</Name>
           <Position>
            <X>
-            <VariableName>AdHb1\Hb0[1,4]</VariableName>
-            <Value>0.08717549636836444</Value>
+            <VariableName>model\AdHb1\Hb0[1,4]</VariableName>
+            <Value>-0.06143747911419017</Value>
            </X>
            <Y>
-            <VariableName>AdHb1\Hb0[2,4]</VariableName>
-            <Value>-0.018560057952871255</Value>
+            <VariableName>model\AdHb1\Hb0[2,4]</VariableName>
+            <Value>0.03474390313684256</Value>
            </Y>
            <Z>
-            <VariableName>AdHb1\Hb0[3,4]</VariableName>
-            <Value>-0.04536456497667794</Value>
+            <VariableName>model\AdHb1\Hb0[3,4]</VariableName>
+            <Value>0.06805824814295029</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <VariableName>AdHb1\Hb0[1,3]</VariableName>
-             <Value>0.8717710375785828</Value>
+             <VariableName>model\AdHb1\Hb0[1,3]</VariableName>
+             <Value>-0.620901346206665</Value>
             </X>
             <Y>
-             <VariableName>AdHb1\Hb0[2,3]</VariableName>
-             <Value>-0.1851063072681427</Value>
+             <VariableName>model\AdHb1\Hb0[2,3]</VariableName>
+             <Value>0.35063639283180237</Value>
             </Y>
             <Z>
-             <VariableName>AdHb1\Hb0[3,3]</VariableName>
-             <Value>-0.45359787344932556</Value>
+             <VariableName>model\AdHb1\Hb0[3,3]</VariableName>
+             <Value>0.7010961174964905</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <VariableName>AdHb1\Hb0[1,2]</VariableName>
-             <Value>-0.057432398200035095</Value>
+             <VariableName>model\AdHb1\Hb0[1,2]</VariableName>
+             <Value>0.753025233745575</Value>
             </X>
             <Y>
-             <VariableName>AdHb1\Hb0[2,2]</VariableName>
-             <Value>-0.958102822303772</Value>
+             <VariableName>model\AdHb1\Hb0[2,2]</VariableName>
+             <Value>0.01830221712589264</Value>
             </Y>
             <Z>
-             <VariableName>AdHb1\Hb0[3,2]</VariableName>
-             <Value>0.2806074917316437</Value>
+             <VariableName>model\AdHb1\Hb0[3,2]</VariableName>
+             <Value>0.657737135887146</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -2078,8 +2182,8 @@ implementation_end;
             </Childs>
            </Cylinder>
            <Torus>
-            <TorusRadius>0.07</TorusRadius>
-            <TubeRadius>0.005</TubeRadius>
+            <TorusRadius>0.075</TorusRadius>
+            <TubeRadius>0.004</TubeRadius>
             <Segments>50</Segments>
             <PointsPerSegment>16</PointsPerSegment>
             <CenterInOrigin>true</CenterInOrigin>
@@ -2160,8 +2264,8 @@ implementation_end;
             </Childs>
            </Torus>
            <Torus>
-            <TorusRadius>0.07</TorusRadius>
-            <TubeRadius>0.005</TubeRadius>
+            <TorusRadius>0.075</TorusRadius>
+            <TubeRadius>0.004</TubeRadius>
             <Segments>50</Segments>
             <PointsPerSegment>16</PointsPerSegment>
             <CenterInOrigin>true</CenterInOrigin>
@@ -2329,8 +2433,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.25</Minimum>
-      <Maximum>0.25</Maximum>
+      <Minimum>-0.08</Minimum>
+      <Maximum>0.12000000000000001</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Rotor x</Label>
@@ -2369,7 +2473,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb0\Hb0[1,4]</VarName>
+       <VarName>model\AdHb0\Hb0[1,4]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2388,7 +2492,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb0\Hb0[2,4]</VarName>
+       <VarName>model\AdHb0\Hb0[2,4]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2407,7 +2511,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb0\Hb0[3,4]</VarName>
+       <VarName>model\AdHb0\Hb0[3,4]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -2497,8 +2601,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-50.0</Minimum>
-      <Maximum>450.0</Maximum>
+      <Minimum>-40.0</Minimum>
+      <Maximum>160.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Rotor - Angular Velocity z</Label>
@@ -2544,7 +2648,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>I_rotor\p.f[3]</VarName>
+       <VarName>model\I_rotor\p.f[3]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2563,7 +2667,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>I_frame\p.f[1]</VarName>
+       <VarName>model\I_frame\p.f[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2582,7 +2686,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>I_frame\p.f[2]</VarName>
+       <VarName>model\I_frame\p.f[2]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2601,7 +2705,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>I_frame\p.f[3]</VarName>
+       <VarName>model\I_frame\p.f[3]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -2691,8 +2795,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-2.5</Minimum>
-      <Maximum>2.5</Maximum>
+      <Minimum>-0.7999999999999998</Minimum>
+      <Maximum>1.2000000000000002</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
       <Label>Frame Orientation z-x</Label>
@@ -2731,7 +2835,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[1,3]</VarName>
+       <VarName>model\AdHb1\Hb0[1,3]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2750,7 +2854,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[2,3]</VarName>
+       <VarName>model\AdHb1\Hb0[2,3]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2769,7 +2873,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[3,3]</VarName>
+       <VarName>model\AdHb1\Hb0[3,3]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
@@ -2801,7 +2905,7 @@ implementation_end;
     <PlotBGColor>16777215</PlotBGColor>
     <ShowPlotTitle>true</ShowPlotTitle>
     <TitlePosition>1</TitlePosition>
-    <PlotTitle>FrameStates</PlotTitle>
+    <PlotTitle>FramePositions</PlotTitle>
     <ShowXValues>true</ShowXValues>
     <Fonts>
      <TitleFont>
@@ -2859,8 +2963,8 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.25</Minimum>
-      <Maximum>0.25</Maximum>
+      <Minimum>-0.08</Minimum>
+      <Maximum>0.12000000000000001</Maximum>
       <Linear>true</Linear>
       <Scaling>1</Scaling>
       <Label>Frame x</Label>
@@ -2899,7 +3003,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[1,4]</VarName>
+       <VarName>model\AdHb1\Hb0[1,4]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2918,7 +3022,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[2,4]</VarName>
+       <VarName>model\AdHb1\Hb0[2,4]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -2937,12 +3041,1246 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>AdHb1\Hb0[3,4]</VarName>
+       <VarName>model\AdHb1\Hb0[3,4]</VarName>
       </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
      <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>6</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>false</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>ReactionWench</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-12.0</Minimum>
+      <Maximum>8.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - w_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0820230339577702</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - w_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0820230339577702</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - w_z</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0820230339577702</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - f_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0820230339577702</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - f_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0820230339577702</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Joint1 - f_z</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\p0.e[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\p0.e[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\p0.e[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\p0.e[4]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\p0.e[5]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHj1\pj.e[6]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>7</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Momentum</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.15000000000000002</Minimum>
+      <Maximum>0.35</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor L_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.06</Minimum>
+      <Maximum>0.14</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor L_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.06</Minimum>
+      <Maximum>0.14</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor L_z</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.06</Minimum>
+      <Maximum>0.14</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame L_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.06</Minimum>
+      <Maximum>0.14</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame L_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-0.06</Minimum>
+      <Maximum>0.14</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame L_z</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_rotor\state[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_rotor\state[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_rotor\state[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_frame\state[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_frame\state[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_frame\state[3]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>8</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Rotor-FrameReaction</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-10.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F tau_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F tau_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F tau_z</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F f_x</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F f_y</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-5.0</Minimum>
+      <Maximum>5.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F f_z</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[4]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[5]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\p0.e[6]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>10</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Power</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-25.0</Minimum>
+      <Maximum>25.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor P3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-250.0</Minimum>
+      <Maximum>250.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame P3</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-250.0</Minimum>
+      <Maximum>250.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor Power</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-250.0</Minimum>
+      <Maximum>250.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame Power</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\PowerSensor\P[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\PowerSensor1\P[3]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\PowerSensor\p_total</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\PowerSensor1\p_total</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>9</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>Energy</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>20.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor KE</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame KE</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Rotor PE</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>Frame PE</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F E_s</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>F-B E_s</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>R-F E_d</Label>
+     </Axis>
+     <Axis>
+      <Minimum>-4.0</Minimum>
+      <Maximum>16.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label>F-B E_d</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_rotor\KE</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\I_frame\KE</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb0\PE</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15086320</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15086320</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\AdHb1\PE</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>15790150</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>15790150</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\Joint1Constraints\E_spring</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>1696255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>1696255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\Joint2Constraints\E_spring</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>4089775</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>4089775</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\Joint1Constraints\E_dissipated</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>10724259</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>10724259</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>false</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>model\Joint2Constraints\E_dissipated</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <Position>
+      <X>0.8215488215488216</X>
+      <Y>0.2655942488519571</Y>
+     </Position>
      <BorderPenColor>0</BorderPenColor>
      <BackgroundColor>16777215</BackgroundColor>
     </Legenda>
@@ -2959,6 +4297,11 @@ implementation_end;
      <PlotId>5</PlotId>
      <PlotId>4</PlotId>
      <PlotId>3</PlotId>
+     <PlotId>8</PlotId>
+     <PlotId>7</PlotId>
+     <PlotId>10</PlotId>
+     <PlotId>9</PlotId>
+     <PlotId>6</PlotId>
      <PlotId>1</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
@@ -2966,14 +4309,14 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="3840" virtualDesktopHeight="1080">
    <WindowRectangle monitor="1" left="1920" top="0" right="3840" bottom="1080" plotpanelid="1">
-0 0.0037037 0.997917 0.956481
+0.171875 0.062037 0.965625 0.897222
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
  <RunSpecs>
   <SimulatorSettings>
    <StartTime>0.0</StartTime>
-   <FinishTime>10.0</FinishTime>
+   <FinishTime>20.0</FinishTime>
    <AllowPassFinishTime>false</AllowPassFinishTime>
    <Warp>false</Warp>
    <SimulationMode>0</SimulationMode>
@@ -3095,7 +4438,7 @@ implementation_end;
   <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
   <MultipleRunVariables>
    <MultipleRunVariable>
-    <Name>R1\k</Name>
+    <Name>model\Joint1Constraints\k</Name>
     <Minimum>1000.0</Minimum>
     <Maximum>1.0e8</Maximum>
     <SweepMethod>Linear</SweepMethod>
@@ -3106,7 +4449,7 @@ implementation_end;
     <Nominal>100000.0</Nominal>
    </MultipleRunVariable>
    <MultipleRunVariable>
-    <Name>R1\r</Name>
+    <Name>model\Joint1Constraints\r</Name>
     <Minimum>10.0</Minimum>
     <Maximum>100000.0</Maximum>
     <SweepMethod>Linear</SweepMethod>
