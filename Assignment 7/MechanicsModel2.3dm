@@ -110,6 +110,9 @@
      <ID>Obj3</ID>
      <Name>Camera</Name>
      <Position>
+      <X>
+       <Value>-0.300000011920929</Value>
+      </X>
       <Z>
        <Value>10</Value>
       </Z>
@@ -158,37 +161,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>1.35294831276155</Value>
+       <Value>-4.02048661633365</Value>
       </X>
       <Y>
-       <Value>-7.36624159078546</Value>
+       <Value>-2.6810522447747</Value>
       </Y>
       <Z>
-       <Value>4.54869673790051</Value>
+       <Value>3.68284193180914</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>-0.1544008693224</Value>
+         <Value>0.65402159385549</Value>
         </X>
         <Y>
-         <Value>0.840648586718607</Value>
+         <Value>0.529351451086413</Value>
         </Y>
         <Z>
-         <Value>-0.519105312244534</Value>
+         <Value>-0.540409840772199</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>-0.0937748269055855</Value>
+         <Value>0.420060498110124</Value>
         </X>
         <Y>
-         <Value>0.510564968144094</Value>
+         <Value>0.339988217832959</Value>
         </Y>
         <Z>
-         <Value>0.854710298956815</Value>
+         <Value>0.841401919217114</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -205,6 +208,15 @@
      <BottomPlane>-10</BottomPlane>
      <UseLookAt>true</UseLookAt>
      <lookAtPosition>
+      <X>
+       <Value>-0.321226355619729</Value>
+      </X>
+      <Y>
+       <Value>0.313051921781152</Value>
+      </Y>
+      <Z>
+       <Value>0.626189544796944</Value>
+      </Z>
      </lookAtPosition>
      <AlwaysUseUp>true</AlwaysUseUp>
      <AlwaysUpVector>
@@ -220,7 +232,7 @@
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body4</ID>
-     <Name>Reference Frame</Name>
+     <Name>World</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>
@@ -277,7 +289,7 @@
             <Frame3D>
              <ShowCOMOnSelection>true</ShowCOMOnSelection>
              <ID>Body0</ID>
-             <Name>Body1</Name>
+             <Name>Base</Name>
              <Orientation>
               <OriBryant>
               </OriBryant>
@@ -317,13 +329,13 @@
                </MeshScale>
                <ColorValue>
                 <Red>
-                 <Value>0.188235294117647</Value>
+                 <Value>0.192156862745098</Value>
                 </Red>
                 <Green>
                  <Value>0.803921568627451</Value>
                 </Green>
                 <Blue>
-                 <Value>0.188235294117647</Value>
+                 <Value>0.192156862745098</Value>
                 </Blue>
                 <Alpha>
                  <Value>1</Value>
@@ -349,7 +361,6 @@
                <LowerRadius>0.5</LowerRadius>
                <UpperRadius>0.5</UpperRadius>
                <Height>1</Height>
-               <CenterInOrigin>false</CenterInOrigin>
                <ShowInnerSide>false</ShowInnerSide>
                <ShowOuterSide>true</ShowOuterSide>
               </Cylinder3D>
@@ -358,22 +369,11 @@
                <Name>Frame</Name>
                <Position>
                 <Z>
-                 <Value>0.3</Value>
+                 <Value>0.2</Value>
                 </Z>
                </Position>
                <Orientation>
                 <OriBryant>
-                 <Angles>
-                  <X>
-                   <Value>-3.14159265358979</Value>
-                  </X>
-                  <Y>
-                   <Value>3.23108914886517e-15</Value>
-                  </Y>
-                  <Z>
-                   <Value>-3.14159265358979</Value>
-                  </Z>
-                 </Angles>
                 </OriBryant>
                </Orientation>
                <LockX>true</LockX>
@@ -549,7 +549,12 @@
                     <Frame3D>
                      <ShowCOMOnSelection>true</ShowCOMOnSelection>
                      <ID>Body1</ID>
-                     <Name>Body2</Name>
+                     <Name>Vertical</Name>
+                     <Position>
+                      <Z>
+                       <Value>0.75</Value>
+                      </Z>
+                     </Position>
                      <Orientation>
                       <OriBryant>
                       </OriBryant>
@@ -561,21 +566,11 @@
                      <LockYYaw>true</LockYYaw>
                      <LockZRoll>true</LockZRoll>
                      <ChildObjects3D>
-                      <Cube3D>
+                      <Cylinder3D>
                        <ID>Body1_Sub0</ID>
                        <Name>Body</Name>
-                       <Position>
-                        <Z>
-                         <Value>-0.2</Value>
-                        </Z>
-                       </Position>
                        <Orientation>
                         <OriBryant>
-                         <Angles>
-                          <Y>
-                           <Value>3.14159265358979</Value>
-                          </Y>
-                         </Angles>
                         </OriBryant>
                        </Orientation>
                        <LockX>true</LockX>
@@ -588,24 +583,24 @@
                        </ChildObjects3D>
                        <MeshScale>
                         <X>
-                         <Value>0.5</Value>
+                         <Value>0.2</Value>
                         </X>
                         <Y>
-                         <Value>0.5</Value>
+                         <Value>0.2</Value>
                         </Y>
                         <Z>
-                         <Value>1</Value>
+                         <Value>1.5</Value>
                         </Z>
                        </MeshScale>
                        <ColorValue>
                         <Red>
-                         <Value>0.180392156862745</Value>
+                         <Value>0.192156862745098</Value>
                         </Red>
                         <Green>
                          <Value>0.803921568627451</Value>
                         </Green>
                         <Blue>
-                         <Value>0.180392156862745</Value>
+                         <Value>0.192156862745098</Value>
                         </Blue>
                         <Alpha>
                          <Value>1</Value>
@@ -627,32 +622,26 @@
                        <ShininessPower>
                         <Value>15</Value>
                        </ShininessPower>
-                       <CubeCenter>Bottom</CubeCenter>
-                       <RibLength>1</RibLength>
-                       <Accuracy>4</Accuracy>
-                       <ShowInnerSide>true</ShowInnerSide>
-                      </Cube3D>
+                       <Accuracy>16</Accuracy>
+                       <LowerRadius>0.5</LowerRadius>
+                       <UpperRadius>0.5</UpperRadius>
+                       <Height>1</Height>
+                       <ShowInnerSide>false</ShowInnerSide>
+                       <ShowOuterSide>true</ShowOuterSide>
+                      </Cylinder3D>
                       <Frame3D>
                        <ID>KP1\Hinge0</ID>
                        <Name>Frame</Name>
                        <Position>
-                        <Y>
-                         <Value>0.45</Value>
-                        </Y>
+                        <X>
+                         <Value>0.1</Value>
+                        </X>
                         <Z>
-                         <Value>-0.95</Value>
+                         <Value>0.75</Value>
                         </Z>
                        </Position>
                        <Orientation>
                         <OriBryant>
-                         <Angles>
-                          <Y>
-                           <Value>-1.5707963267949</Value>
-                          </Y>
-                          <Z>
-                           <Value>-3.14159265358979</Value>
-                          </Z>
-                         </Angles>
                         </OriBryant>
                        </Orientation>
                        <LockX>true</LockX>
@@ -666,16 +655,16 @@
                          <ID>KP1\Hinge0_Sub0</ID>
                          <Name>Cylinder</Name>
                          <Position>
-                          <Y>
+                          <X>
                            <Value>-0.1</Value>
-                          </Y>
+                          </X>
                          </Position>
                          <Orientation>
                           <OriBryant>
                            <Angles>
-                            <X>
+                            <Y>
                              <Value>1.5707963267949</Value>
-                            </X>
+                            </Y>
                            </Angles>
                           </OriBryant>
                          </Orientation>
@@ -700,10 +689,10 @@
                          </MeshScale>
                          <ColorValue>
                           <Red>
-                           <Value>0.596078431372549</Value>
+                           <Value>0.984313725490196</Value>
                           </Red>
                           <Green>
-                           <Value>0.984313725490196</Value>
+                           <Value>0.596078431372549</Value>
                           </Green>
                           <Blue>
                            <Value>0.596078431372549</Value>
@@ -745,7 +734,7 @@
                          <LockX>true</LockX>
                          <LockY>true</LockY>
                          <LockZ>true</LockZ>
-                         <LockXPitch>true</LockXPitch>
+                         <LockYYaw>true</LockYYaw>
                          <LockZRoll>true</LockZRoll>
                          <ChildObjects3D>
                           <Frame3D>
@@ -766,16 +755,16 @@
                              <ID>KP1\Hinge1_Sub0</ID>
                              <Name>Cylinder</Name>
                              <Position>
-                              <Y>
+                              <X>
                                <Value>0.1</Value>
-                              </Y>
+                              </X>
                              </Position>
                              <Orientation>
                               <OriBryant>
                                <Angles>
-                                <X>
+                                <Y>
                                  <Value>1.5707963267949</Value>
-                                </X>
+                                </Y>
                                </Angles>
                               </OriBryant>
                              </Orientation>
@@ -838,7 +827,15 @@
                             <Frame3D>
                              <ShowCOMOnSelection>true</ShowCOMOnSelection>
                              <ID>Body2</ID>
-                             <Name>Body3</Name>
+                             <Name>Horizontal1</Name>
+                             <Position>
+                              <X>
+                               <Value>0.1</Value>
+                              </X>
+                              <Y>
+                               <Value>0.75</Value>
+                              </Y>
+                             </Position>
                              <Orientation>
                               <OriBryant>
                               </OriBryant>
@@ -850,19 +847,16 @@
                              <LockYYaw>true</LockYYaw>
                              <LockZRoll>true</LockZRoll>
                              <ChildObjects3D>
-                              <Cube3D>
+                              <Cylinder3D>
                                <ID>Body2_Sub0</ID>
                                <Name>Body</Name>
-                               <Position>
-                                <Y>
-                                 <Value>-0.45</Value>
-                                </Y>
-                                <Z>
-                                 <Value>-0.25</Value>
-                                </Z>
-                               </Position>
                                <Orientation>
                                 <OriBryant>
+                                 <Angles>
+                                  <X>
+                                   <Value>1.5707963267949</Value>
+                                  </X>
+                                 </Angles>
                                 </OriBryant>
                                </Orientation>
                                <LockX>true</LockX>
@@ -875,24 +869,24 @@
                                </ChildObjects3D>
                                <MeshScale>
                                 <X>
-                                 <Value>0.5</Value>
+                                 <Value>0.2</Value>
                                 </X>
                                 <Y>
-                                 <Value>0.5</Value>
+                                 <Value>0.2</Value>
                                 </Y>
                                 <Z>
-                                 <Value>2</Value>
+                                 <Value>1.5</Value>
                                 </Z>
                                </MeshScale>
                                <ColorValue>
                                 <Red>
-                                 <Value>0.192156862745098</Value>
+                                 <Value>0.184313725490196</Value>
                                 </Red>
                                 <Green>
                                  <Value>0.803921568627451</Value>
                                 </Green>
                                 <Blue>
-                                 <Value>0.192156862745098</Value>
+                                 <Value>0.184313725490196</Value>
                                 </Blue>
                                 <Alpha>
                                  <Value>1</Value>
@@ -914,32 +908,23 @@
                                <ShininessPower>
                                 <Value>15</Value>
                                </ShininessPower>
-                               <CubeCenter>Bottom</CubeCenter>
-                               <RibLength>1</RibLength>
-                               <Accuracy>4</Accuracy>
-                               <ShowInnerSide>true</ShowInnerSide>
-                              </Cube3D>
+                               <Accuracy>16</Accuracy>
+                               <LowerRadius>0.5</LowerRadius>
+                               <UpperRadius>0.5</UpperRadius>
+                               <Height>1</Height>
+                               <ShowInnerSide>false</ShowInnerSide>
+                               <ShowOuterSide>true</ShowOuterSide>
+                              </Cylinder3D>
                               <Frame3D>
                                <ID>KP2\Hinge0</ID>
                                <Name>Frame</Name>
                                <Position>
-                                <Z>
-                                 <Value>1.5</Value>
-                                </Z>
+                                <Y>
+                                 <Value>0.75</Value>
+                                </Y>
                                </Position>
                                <Orientation>
                                 <OriBryant>
-                                 <Angles>
-                                  <X>
-                                   <Value>-1.22464679914735e-16</Value>
-                                  </X>
-                                  <Y>
-                                   <Value>1.22464679914735e-16</Value>
-                                  </Y>
-                                  <Z>
-                                   <Value>-3.14159265358979</Value>
-                                  </Z>
-                                 </Angles>
                                 </OriBryant>
                                </Orientation>
                                <LockX>true</LockX>
@@ -953,16 +938,16 @@
                                  <ID>KP2\Hinge0_Sub0</ID>
                                  <Name>Cylinder</Name>
                                  <Position>
-                                  <Y>
+                                  <X>
                                    <Value>-0.1</Value>
-                                  </Y>
+                                  </X>
                                  </Position>
                                  <Orientation>
                                   <OriBryant>
                                    <Angles>
-                                    <X>
+                                    <Y>
                                      <Value>1.5707963267949</Value>
-                                    </X>
+                                    </Y>
                                    </Angles>
                                   </OriBryant>
                                  </Orientation>
@@ -987,10 +972,10 @@
                                  </MeshScale>
                                  <ColorValue>
                                   <Red>
-                                   <Value>0.596078431372549</Value>
+                                   <Value>0.984313725490196</Value>
                                   </Red>
                                   <Green>
-                                   <Value>0.984313725490196</Value>
+                                   <Value>0.596078431372549</Value>
                                   </Green>
                                   <Blue>
                                    <Value>0.596078431372549</Value>
@@ -1032,7 +1017,7 @@
                                  <LockX>true</LockX>
                                  <LockY>true</LockY>
                                  <LockZ>true</LockZ>
-                                 <LockXPitch>true</LockXPitch>
+                                 <LockYYaw>true</LockYYaw>
                                  <LockZRoll>true</LockZRoll>
                                  <ChildObjects3D>
                                   <Frame3D>
@@ -1053,16 +1038,16 @@
                                      <ID>KP2\Hinge1_Sub0</ID>
                                      <Name>Cylinder</Name>
                                      <Position>
-                                      <Y>
+                                      <X>
                                        <Value>0.1</Value>
-                                      </Y>
+                                      </X>
                                      </Position>
                                      <Orientation>
                                       <OriBryant>
                                        <Angles>
-                    <X>
+                    <Y>
                      <Value>1.5707963267949</Value>
-                    </X>
+                    </Y>
                                        </Angles>
                                       </OriBryant>
                                      </Orientation>
@@ -1125,7 +1110,12 @@
                                     <Frame3D>
                                      <ShowCOMOnSelection>true</ShowCOMOnSelection>
                                      <ID>Body3</ID>
-                                     <Name>Body4</Name>
+                                     <Name>Horizontal2</Name>
+                                     <Position>
+                                      <Y>
+                                       <Value>0.75</Value>
+                                      </Y>
+                                     </Position>
                                      <Orientation>
                                       <OriBryant>
                                       </OriBryant>
@@ -1137,19 +1127,16 @@
                                      <LockYYaw>true</LockYYaw>
                                      <LockZRoll>true</LockZRoll>
                                      <ChildObjects3D>
-                                      <Cube3D>
+                                      <Cylinder3D>
                                        <ID>Body3_Sub0</ID>
                                        <Name>Body</Name>
-                                       <Position>
-                    <Y>
-                     <Value>-0.45</Value>
-                    </Y>
-                    <Z>
-                     <Value>-0.25</Value>
-                    </Z>
-                                       </Position>
                                        <Orientation>
                     <OriBryant>
+                     <Angles>
+                      <X>
+                       <Value>1.5707963267949</Value>
+                      </X>
+                     </Angles>
                     </OriBryant>
                                        </Orientation>
                                        <LockX>true</LockX>
@@ -1162,24 +1149,24 @@
                                        </ChildObjects3D>
                                        <MeshScale>
                     <X>
-                     <Value>0.5</Value>
+                     <Value>0.2</Value>
                     </X>
                     <Y>
-                     <Value>0.5</Value>
+                     <Value>0.2</Value>
                     </Y>
                     <Z>
-                     <Value>2</Value>
+                     <Value>1.5</Value>
                     </Z>
                                        </MeshScale>
                                        <ColorValue>
                     <Red>
-                     <Value>0.192156862745098</Value>
+                     <Value>0.184313725490196</Value>
                     </Red>
                     <Green>
                      <Value>0.803921568627451</Value>
                     </Green>
                     <Blue>
-                     <Value>0.192156862745098</Value>
+                     <Value>0.184313725490196</Value>
                     </Blue>
                     <Alpha>
                      <Value>1</Value>
@@ -1201,11 +1188,13 @@
                                        <ShininessPower>
                     <Value>15</Value>
                                        </ShininessPower>
-                                       <CubeCenter>Bottom</CubeCenter>
-                                       <RibLength>1</RibLength>
-                                       <Accuracy>4</Accuracy>
-                                       <ShowInnerSide>true</ShowInnerSide>
-                                      </Cube3D>
+                                       <Accuracy>16</Accuracy>
+                                       <LowerRadius>0.5</LowerRadius>
+                                       <UpperRadius>0.5</UpperRadius>
+                                       <Height>1</Height>
+                                       <ShowInnerSide>false</ShowInnerSide>
+                                       <ShowOuterSide>true</ShowOuterSide>
+                                      </Cylinder3D>
                                      </ChildObjects3D>
                                     </Frame3D>
                                    </ChildObjects3D>
@@ -1252,11 +1241,11 @@
   <InputGravityType>1</InputGravityType>
   <AngleType>1</AngleType>
   <ConstraintSolverAccuracy>1.0e-5</ConstraintSolverAccuracy>
-  <PowerPortType>1</PowerPortType>
+  <PowerPortType>0</PowerPortType>
   <Bodies>
    <Body>
     <ID>Body0</ID>
-    <Name>Body1</Name>
+    <Name>Base</Name>
     <Description></Description>
     <Inertia>
      <Ixx>0.1</Ixx>
@@ -1276,7 +1265,7 @@
    </Body>
    <Body>
     <ID>Body1</ID>
-    <Name>Body2</Name>
+    <Name>Vertical</Name>
     <Description></Description>
     <Inertia>
      <Ixx>0.1</Ixx>
@@ -1290,7 +1279,7 @@
    </Body>
    <Body>
     <ID>Body2</ID>
-    <Name>Body3</Name>
+    <Name>Horizontal1</Name>
     <Description></Description>
     <Inertia>
      <Ixx>0.1</Ixx>
@@ -1304,7 +1293,7 @@
    </Body>
    <Body>
     <ID>Body3</ID>
-    <Name>Body4</Name>
+    <Name>Horizontal2</Name>
     <Description></Description>
     <Inertia>
      <Ixx>0.1</Ixx>
@@ -1344,7 +1333,7 @@
   <KinematicPairs>
    <Joint3D>
     <ID>KP0</ID>
-    <Name>RotationJointZ2</Name>
+    <Name>RotationJointZ1</Name>
     <Description></Description>
     <HingePointConnections>
      <HingePoints>
@@ -1354,16 +1343,11 @@
        <Description></Description>
        <Position>
         <Z>
-         <Value>0.3</Value>
+         <Value>0.2</Value>
         </Z>
        </Position>
        <Orientation>
         <OriBryant>
-         <Angles>
-          <Y>
-           <Value>3.14159265358979</Value>
-          </Y>
-         </Angles>
         </OriBryant>
        </Orientation>
        <GeneratePort>false</GeneratePort>
@@ -1376,6 +1360,9 @@
        <Name>ConnectionPoint2</Name>
        <Description></Description>
        <Position>
+        <Z>
+         <Value>-0.75</Value>
+        </Z>
        </Position>
        <Orientation>
         <OriBryant>
@@ -1404,7 +1391,7 @@
    </Joint3D>
    <Joint3D>
     <ID>KP1</ID>
-    <Name>RotationJointY1</Name>
+    <Name>RotationJointX1</Name>
     <Description></Description>
     <HingePointConnections>
      <HingePoints>
@@ -1413,23 +1400,15 @@
        <Name>ConnectionPoint1</Name>
        <Description></Description>
        <Position>
-        <Y>
-         <Value>0.45</Value>
-        </Y>
+        <X>
+         <Value>0.1</Value>
+        </X>
         <Z>
-         <Value>-0.95</Value>
+         <Value>0.75</Value>
         </Z>
        </Position>
        <Orientation>
         <OriBryant>
-         <Angles>
-          <X>
-           <Value>3.14159265358979</Value>
-          </X>
-          <Y>
-           <Value>-1.5707963267949</Value>
-          </Y>
-         </Angles>
         </OriBryant>
        </Orientation>
        <GeneratePort>false</GeneratePort>
@@ -1442,6 +1421,12 @@
        <Name>ConnectionPoint2</Name>
        <Description></Description>
        <Position>
+        <X>
+         <Value>-0.1</Value>
+        </X>
+        <Y>
+         <Value>-0.75</Value>
+        </Y>
        </Position>
        <Orientation>
         <OriBryant>
@@ -1456,8 +1441,8 @@
     </HingePointConnections>
     <UserDirection>true</UserDirection>
     <JointType>PureRotation</JointType>
-    <MoveAxis1>1</MoveAxis1>
-    <MoveAxis2>1</MoveAxis2>
+    <MoveAxis1>0</MoveAxis1>
+    <MoveAxis2>0</MoveAxis2>
     <ConstraintJoint>false</ConstraintJoint>
     <UserConstraint>false</UserConstraint>
     <GeneratePort>true</GeneratePort>
@@ -1470,7 +1455,7 @@
    </Joint3D>
    <Joint3D>
     <ID>KP2</ID>
-    <Name>RotationJointY2</Name>
+    <Name>RotationJointX2</Name>
     <Description></Description>
     <HingePointConnections>
      <HingePoints>
@@ -1479,20 +1464,12 @@
        <Name>ConnectionPoint1</Name>
        <Description></Description>
        <Position>
-        <Z>
-         <Value>1.5</Value>
-        </Z>
+        <Y>
+         <Value>0.75</Value>
+        </Y>
        </Position>
        <Orientation>
         <OriBryant>
-         <Angles>
-          <X>
-           <Value>3.14159265358979</Value>
-          </X>
-          <Y>
-           <Value>3.14159265358979</Value>
-          </Y>
-         </Angles>
         </OriBryant>
        </Orientation>
        <GeneratePort>false</GeneratePort>
@@ -1505,6 +1482,9 @@
        <Name>ConnectionPoint2</Name>
        <Description></Description>
        <Position>
+        <Y>
+         <Value>-0.75</Value>
+        </Y>
        </Position>
        <Orientation>
         <OriBryant>
@@ -1519,8 +1499,8 @@
     </HingePointConnections>
     <UserDirection>true</UserDirection>
     <JointType>PureRotation</JointType>
-    <MoveAxis1>1</MoveAxis1>
-    <MoveAxis2>1</MoveAxis2>
+    <MoveAxis1>0</MoveAxis1>
+    <MoveAxis2>0</MoveAxis2>
     <ConstraintJoint>false</ConstraintJoint>
     <UserConstraint>false</UserConstraint>
     <GeneratePort>true</GeneratePort>
@@ -1533,7 +1513,7 @@
    </Joint3D>
    <Joint3D>
     <ID>KP3</ID>
-    <Name>Body1Weld</Name>
+    <Name>BaseWeld</Name>
     <Description></Description>
     <HingePointConnections>
      <HingePoints>
@@ -1590,15 +1570,15 @@
   </Ports>
   <Generate20SimModel>true</Generate20SimModel>
   <Generate20SimScenery>true</Generate20SimScenery>
-  <CurrentConfigAsInitial>true</CurrentConfigAsInitial>
-  <OutputPVector>true</OutputPVector>
-  <OutputPDotVector>true</OutputPDotVector>
-  <OutputThetaDotVector>true</OutputThetaDotVector>
+  <CurrentConfigAsInitial>false</CurrentConfigAsInitial>
+  <OutputPVector>false</OutputPVector>
+  <OutputPDotVector>false</OutputPDotVector>
+  <OutputThetaDotVector>false</OutputThetaDotVector>
   <OutputJMatrix>false</OutputJMatrix>
   <OutputCenterOfMass>false</OutputCenterOfMass>
-  <CodeOutputFileName><![CDATA[C:\Users\Aleksei\Downloads\MechanicsModel1.emx]]></CodeOutputFileName>
-  <SceneryOutputFileName><![CDATA[C:\Users\Aleksei\Downloads\MechanicsModel1.scn]]></SceneryOutputFileName>
-  <CodeSubmodelName>MechanicsModel1</CodeSubmodelName>
+  <CodeOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 7\MechanicsModel2.emx]]></CodeOutputFileName>
+  <SceneryOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 7\MechanicsModel2.scn]]></SceneryOutputFileName>
+  <CodeSubmodelName>MechanicsModel2</CodeSubmodelName>
   <NoJointSceneryObjectGeneration>false</NoJointSceneryObjectGeneration>
   <GenerateSpringDampersForConstraintJoints>true</GenerateSpringDampersForConstraintJoints>
   <IconOutputFileName></IconOutputFileName>
