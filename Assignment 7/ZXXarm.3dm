@@ -158,37 +158,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>8.66346165325175</Value>
+       <Value>5.51557716575767</Value>
       </X>
       <Y>
-       <Value>4.25692157888724</Value>
+       <Value>8.973176887408</Value>
       </Y>
       <Z>
-       <Value>3.19449929641929</Value>
+       <Value>4.23810531038693</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>-0.943545172030541</Value>
+         <Value>-0.652656551256135</Value>
         </X>
         <Y>
-         <Value>-0.258201883392854</Value>
+         <Value>-0.694020445947139</Value>
         </Y>
         <Z>
-         <Value>-0.207495290910996</Value>
+         <Value>-0.30393263515092</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>-0.200136963537393</Value>
+         <Value>-0.20821347609036</Value>
         </X>
         <Y>
-         <Value>-0.0547676374698072</Value>
+         <Value>-0.221409562926075</Value>
         </Y>
         <Z>
-         <Value>0.978236015341905</Value>
+         <Value>0.952693525652008</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -227,9 +227,57 @@
      <CameraIsActive>true</CameraIsActive>
     </Camera3D>
     <Frame3D>
+     <ID>Obj9</ID>
+     <Name>Frame</Name>
+     <Position>
+      <Y>
+       <Value>6</Value>
+      </Y>
+      <Z>
+       <Value>2</Value>
+      </Z>
+     </Position>
+     <Orientation>
+      <OriBryant>
+      </OriBryant>
+     </Orientation>
+     <LockX>true</LockX>
+     <LockY>true</LockY>
+     <LockZ>true</LockZ>
+     <LockXPitch>true</LockXPitch>
+     <LockYYaw>true</LockYYaw>
+     <LockZRoll>true</LockZRoll>
+     <ChildObjects3D>
+     </ChildObjects3D>
+    </Frame3D>
+    <Frame3D>
+     <ID>Obj10</ID>
+     <Name>Frame</Name>
+     <Position>
+      <Y>
+       <Value>6</Value>
+      </Y>
+      <Z>
+       <Value>2</Value>
+      </Z>
+     </Position>
+     <Orientation>
+      <OriBryant>
+      </OriBryant>
+     </Orientation>
+     <LockX>true</LockX>
+     <LockY>true</LockY>
+     <LockZ>true</LockZ>
+     <LockXPitch>true</LockXPitch>
+     <LockYYaw>true</LockYYaw>
+     <LockZRoll>true</LockZRoll>
+     <ChildObjects3D>
+     </ChildObjects3D>
+    </Frame3D>
+    <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body5</ID>
-     <Name>Reference Frame</Name>
+     <Name>World</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>
@@ -286,7 +334,7 @@
             <Frame3D>
              <ShowCOMOnSelection>true</ShowCOMOnSelection>
              <ID>Body0</ID>
-             <Name>Cube</Name>
+             <Name>Base</Name>
              <Orientation>
               <OriBryant>
               </OriBryant>
@@ -539,7 +587,7 @@
                     <Frame3D>
                      <ShowCOMOnSelection>true</ShowCOMOnSelection>
                      <ID>Body3</ID>
-                     <Name>Cube</Name>
+                     <Name>RotHinge</Name>
                      <Position>
                       <Z>
                        <Value>1</Value>
@@ -812,7 +860,7 @@
                             <Frame3D>
                              <ShowCOMOnSelection>true</ShowCOMOnSelection>
                              <ID>Body2</ID>
-                             <Name>Cube</Name>
+                             <Name>Arm1</Name>
                              <Position>
                               <Y>
                                <Value>2</Value>
@@ -1085,7 +1133,7 @@
                                     <Frame3D>
                                      <ShowCOMOnSelection>true</ShowCOMOnSelection>
                                      <ID>Body1</ID>
-                                     <Name>Cube</Name>
+                                     <Name>Arm2</Name>
                                      <Position>
                                       <Y>
                                        <Value>1</Value>
@@ -1291,7 +1339,7 @@
                          <ShowReferenceFrame>true</ShowReferenceFrame>
                          <ShowCOMOnSelection>true</ShowCOMOnSelection>
                          <ID>Body4</ID>
-                         <Name>Cube</Name>
+                         <Name>EE</Name>
                          <Orientation>
                           <OriBryant>
                           </OriBryant>
@@ -1364,178 +1412,504 @@
                            <Accuracy>4</Accuracy>
                            <ShowInnerSide>true</ShowInnerSide>
                           </Cube3D>
+                          <Frame3D>
+                           <ID>Port0\Hinge0</ID>
+                           <Name>Frame</Name>
+                           <Orientation>
+                            <OriBryant>
+                            </OriBryant>
+                           </Orientation>
+                           <LockX>true</LockX>
+                           <LockY>true</LockY>
+                           <LockZ>true</LockZ>
+                           <LockXPitch>true</LockXPitch>
+                           <LockYYaw>true</LockYYaw>
+                           <LockZRoll>true</LockZRoll>
+                           <ChildObjects3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub0</ID>
+                             <Name>Cylinder</Name>
+                             <Position>
+                              <X>
+                               <Value>0.3</Value>
+                              </X>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                               <Angles>
+                                <Y>
+                                 <Value>1.5707963267949</Value>
+                                </Y>
+                               </Angles>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.1</Value>
+                              </X>
+                              <Y>
+                               <Value>0.1</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.4</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0.5</LowerRadius>
+                             <UpperRadius>0.5</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>true</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                            <Frame3D>
+                             <ID>Port0</ID>
+                             <Name>Frame</Name>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                            </Frame3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub1</ID>
+                             <Name>Block</Name>
+                             <Position>
+                              <X>
+                               <Value>0.1</Value>
+                              </X>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                               <Angles>
+                                <Y>
+                                 <Value>-1.5707963267949</Value>
+                                </Y>
+                               </Angles>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.2</Value>
+                              </X>
+                              <Y>
+                               <Value>0.2</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.2</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0.5</LowerRadius>
+                             <UpperRadius>0</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>false</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub2</ID>
+                             <Name>Cylinder</Name>
+                             <Position>
+                              <Y>
+                               <Value>0.3</Value>
+                              </Y>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                               <Angles>
+                                <X>
+                                 <Value>-1.5707963267949</Value>
+                                </X>
+                               </Angles>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.1</Value>
+                              </X>
+                              <Y>
+                               <Value>0.1</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.4</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0.5</LowerRadius>
+                             <UpperRadius>0.5</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>true</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                            <Frame3D>
+                             <ID>Obj11</ID>
+                             <Name>Frame</Name>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                            </Frame3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub3</ID>
+                             <Name>Block</Name>
+                             <Position>
+                              <Y>
+                               <Value>0.1</Value>
+                              </Y>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                               <Angles>
+                                <X>
+                                 <Value>1.5707963267949</Value>
+                                </X>
+                               </Angles>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.2</Value>
+                              </X>
+                              <Y>
+                               <Value>0.2</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.2</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0.5</LowerRadius>
+                             <UpperRadius>0</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>false</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub4</ID>
+                             <Name>Cylinder</Name>
+                             <Position>
+                              <Z>
+                               <Value>0.3</Value>
+                              </Z>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.1</Value>
+                              </X>
+                              <Y>
+                               <Value>0.1</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.4</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0.5</LowerRadius>
+                             <UpperRadius>0.5</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>true</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                            <Frame3D>
+                             <ID>Obj12</ID>
+                             <Name>Frame</Name>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                            </Frame3D>
+                            <Cylinder3D>
+                             <ID>Port0\Hinge0_Sub5</ID>
+                             <Name>Block</Name>
+                             <Position>
+                              <Z>
+                               <Value>0.1</Value>
+                              </Z>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                             <MeshScale>
+                              <X>
+                               <Value>0.2</Value>
+                              </X>
+                              <Y>
+                               <Value>0.2</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.2</Value>
+                              </Z>
+                             </MeshScale>
+                             <ColorValue>
+                              <Red>
+                               <Value>1</Value>
+                              </Red>
+                              <Green>
+                               <Value>0</Value>
+                              </Green>
+                              <Blue>
+                               <Value>0</Value>
+                              </Blue>
+                              <Alpha>
+                               <Value>1</Value>
+                              </Alpha>
+                             </ColorValue>
+                             <SpecularColor>
+                              <X>
+                               <Value>0.5</Value>
+                              </X>
+                              <Y>
+                               <Value>0.5</Value>
+                              </Y>
+                              <Z>
+                               <Value>0.5</Value>
+                              </Z>
+                             </SpecularColor>
+                             <EmissiveColor>
+                             </EmissiveColor>
+                             <ShininessPower>
+                              <Value>15</Value>
+                             </ShininessPower>
+                             <Accuracy>16</Accuracy>
+                             <LowerRadius>0</LowerRadius>
+                             <UpperRadius>0.5</UpperRadius>
+                             <Height>1</Height>
+                             <ShowInnerSide>false</ShowInnerSide>
+                             <ShowOuterSide>true</ShowOuterSide>
+                            </Cylinder3D>
+                           </ChildObjects3D>
+                          </Frame3D>
                          </ChildObjects3D>
                         </Frame3D>
                        </ChildObjects3D>
                       </Frame3D>
                      </ChildObjects3D>
                     </Frame3D>
-                                       </ChildObjects3D>
-                                      </Frame3D>
-                                      <Frame3D>
-                                       <ID>Port2\Hinge0</ID>
-                                       <Name>Frame</Name>
-                                       <Orientation>
-                    <OriBryant>
-                    </OriBryant>
-                                       </Orientation>
-                                       <LockX>true</LockX>
-                                       <LockY>true</LockY>
-                                       <LockZ>true</LockZ>
-                                       <LockXPitch>true</LockXPitch>
-                                       <LockYYaw>true</LockYYaw>
-                                       <LockZRoll>true</LockZRoll>
-                                       <ChildObjects3D>
-                    <Cylinder3D>
-                     <ID>Port2\Hinge0_Sub0</ID>
-                     <Name>Cylinder</Name>
-                     <Position>
-                      <Z>
-                       <Value>0.2</Value>
-                      </Z>
-                     </Position>
-                     <Orientation>
-                      <OriBryant>
-                      </OriBryant>
-                     </Orientation>
-                     <LockX>true</LockX>
-                     <LockY>true</LockY>
-                     <LockZ>true</LockZ>
-                     <LockXPitch>true</LockXPitch>
-                     <LockYYaw>true</LockYYaw>
-                     <LockZRoll>true</LockZRoll>
-                     <ChildObjects3D>
-                     </ChildObjects3D>
-                     <MeshScale>
-                      <X>
-                       <Value>0.1</Value>
-                      </X>
-                      <Y>
-                       <Value>0.1</Value>
-                      </Y>
-                      <Z>
-                       <Value>0.4</Value>
-                      </Z>
-                     </MeshScale>
-                     <ColorValue>
-                      <Red>
-                       <Value>0</Value>
-                      </Red>
-                      <Green>
-                       <Value>0</Value>
-                      </Green>
-                      <Blue>
-                       <Value>1</Value>
-                      </Blue>
-                      <Alpha>
-                       <Value>1</Value>
-                      </Alpha>
-                     </ColorValue>
-                     <SpecularColor>
-                      <X>
-                       <Value>0.5</Value>
-                      </X>
-                      <Y>
-                       <Value>0.5</Value>
-                      </Y>
-                      <Z>
-                       <Value>0.5</Value>
-                      </Z>
-                     </SpecularColor>
-                     <EmissiveColor>
-                     </EmissiveColor>
-                     <ShininessPower>
-                      <Value>15</Value>
-                     </ShininessPower>
-                     <Accuracy>16</Accuracy>
-                     <LowerRadius>0.5</LowerRadius>
-                     <UpperRadius>0.5</UpperRadius>
-                     <Height>1</Height>
-                     <ShowInnerSide>true</ShowInnerSide>
-                     <ShowOuterSide>true</ShowOuterSide>
-                    </Cylinder3D>
-                    <Frame3D>
-                     <ID>Port2</ID>
-                     <Name>Frame</Name>
-                     <Orientation>
-                      <OriBryant>
-                      </OriBryant>
-                     </Orientation>
-                     <LockX>true</LockX>
-                     <LockY>true</LockY>
-                     <LockZ>true</LockZ>
-                     <LockXPitch>true</LockXPitch>
-                     <LockYYaw>true</LockYYaw>
-                     <LockZRoll>true</LockZRoll>
-                     <ChildObjects3D>
-                     </ChildObjects3D>
-                    </Frame3D>
-                    <Cube3D>
-                     <ID>Port2\Hinge0_Sub1</ID>
-                     <Name>Block</Name>
-                     <Position>
-                      <Z>
-                       <Value>0.4</Value>
-                      </Z>
-                     </Position>
-                     <Orientation>
-                      <OriBryant>
-                      </OriBryant>
-                     </Orientation>
-                     <LockX>true</LockX>
-                     <LockY>true</LockY>
-                     <LockZ>true</LockZ>
-                     <LockXPitch>true</LockXPitch>
-                     <LockYYaw>true</LockYYaw>
-                     <LockZRoll>true</LockZRoll>
-                     <ChildObjects3D>
-                     </ChildObjects3D>
-                     <MeshScale>
-                      <X>
-                       <Value>0.2</Value>
-                      </X>
-                      <Y>
-                       <Value>0.2</Value>
-                      </Y>
-                      <Z>
-                       <Value>0.2</Value>
-                      </Z>
-                     </MeshScale>
-                     <ColorValue>
-                      <Red>
-                       <Value>0</Value>
-                      </Red>
-                      <Green>
-                       <Value>0</Value>
-                      </Green>
-                      <Blue>
-                       <Value>1</Value>
-                      </Blue>
-                      <Alpha>
-                       <Value>1</Value>
-                      </Alpha>
-                     </ColorValue>
-                     <SpecularColor>
-                      <X>
-                       <Value>0.5</Value>
-                      </X>
-                      <Y>
-                       <Value>0.5</Value>
-                      </Y>
-                      <Z>
-                       <Value>0.5</Value>
-                      </Z>
-                     </SpecularColor>
-                     <EmissiveColor>
-                     </EmissiveColor>
-                     <ShininessPower>
-                      <Value>15</Value>
-                     </ShininessPower>
-                     <CubeCenter>Center</CubeCenter>
-                     <RibLength>1</RibLength>
-                     <Accuracy>4</Accuracy>
-                     <ShowInnerSide>false</ShowInnerSide>
-                    </Cube3D>
                                        </ChildObjects3D>
                                       </Frame3D>
                                      </ChildObjects3D>
@@ -1546,344 +1920,12 @@
                                 </Frame3D>
                                </ChildObjects3D>
                               </Frame3D>
-                              <Frame3D>
-                               <ID>Port1\Hinge0</ID>
-                               <Name>Frame</Name>
-                               <Orientation>
-                                <OriBryant>
-                                </OriBryant>
-                               </Orientation>
-                               <LockX>true</LockX>
-                               <LockY>true</LockY>
-                               <LockZ>true</LockZ>
-                               <LockXPitch>true</LockXPitch>
-                               <LockYYaw>true</LockYYaw>
-                               <LockZRoll>true</LockZRoll>
-                               <ChildObjects3D>
-                                <Cylinder3D>
-                                 <ID>Port1\Hinge0_Sub0</ID>
-                                 <Name>Cylinder</Name>
-                                 <Position>
-                                  <Z>
-                                   <Value>0.2</Value>
-                                  </Z>
-                                 </Position>
-                                 <Orientation>
-                                  <OriBryant>
-                                  </OriBryant>
-                                 </Orientation>
-                                 <LockX>true</LockX>
-                                 <LockY>true</LockY>
-                                 <LockZ>true</LockZ>
-                                 <LockXPitch>true</LockXPitch>
-                                 <LockYYaw>true</LockYYaw>
-                                 <LockZRoll>true</LockZRoll>
-                                 <ChildObjects3D>
-                                 </ChildObjects3D>
-                                 <MeshScale>
-                                  <X>
-                                   <Value>0.1</Value>
-                                  </X>
-                                  <Y>
-                                   <Value>0.1</Value>
-                                  </Y>
-                                  <Z>
-                                   <Value>0.4</Value>
-                                  </Z>
-                                 </MeshScale>
-                                 <ColorValue>
-                                  <Red>
-                                   <Value>0</Value>
-                                  </Red>
-                                  <Green>
-                                   <Value>0</Value>
-                                  </Green>
-                                  <Blue>
-                                   <Value>1</Value>
-                                  </Blue>
-                                  <Alpha>
-                                   <Value>1</Value>
-                                  </Alpha>
-                                 </ColorValue>
-                                 <SpecularColor>
-                                  <X>
-                                   <Value>0.5</Value>
-                                  </X>
-                                  <Y>
-                                   <Value>0.5</Value>
-                                  </Y>
-                                  <Z>
-                                   <Value>0.5</Value>
-                                  </Z>
-                                 </SpecularColor>
-                                 <EmissiveColor>
-                                 </EmissiveColor>
-                                 <ShininessPower>
-                                  <Value>15</Value>
-                                 </ShininessPower>
-                                 <Accuracy>16</Accuracy>
-                                 <LowerRadius>0.5</LowerRadius>
-                                 <UpperRadius>0.5</UpperRadius>
-                                 <Height>1</Height>
-                                 <ShowInnerSide>true</ShowInnerSide>
-                                 <ShowOuterSide>true</ShowOuterSide>
-                                </Cylinder3D>
-                                <Frame3D>
-                                 <ID>Port1</ID>
-                                 <Name>Frame</Name>
-                                 <Orientation>
-                                  <OriBryant>
-                                  </OriBryant>
-                                 </Orientation>
-                                 <LockX>true</LockX>
-                                 <LockY>true</LockY>
-                                 <LockZ>true</LockZ>
-                                 <LockXPitch>true</LockXPitch>
-                                 <LockYYaw>true</LockYYaw>
-                                 <LockZRoll>true</LockZRoll>
-                                 <ChildObjects3D>
-                                 </ChildObjects3D>
-                                </Frame3D>
-                                <Cube3D>
-                                 <ID>Port1\Hinge0_Sub1</ID>
-                                 <Name>Block</Name>
-                                 <Position>
-                                  <Z>
-                                   <Value>0.4</Value>
-                                  </Z>
-                                 </Position>
-                                 <Orientation>
-                                  <OriBryant>
-                                  </OriBryant>
-                                 </Orientation>
-                                 <LockX>true</LockX>
-                                 <LockY>true</LockY>
-                                 <LockZ>true</LockZ>
-                                 <LockXPitch>true</LockXPitch>
-                                 <LockYYaw>true</LockYYaw>
-                                 <LockZRoll>true</LockZRoll>
-                                 <ChildObjects3D>
-                                 </ChildObjects3D>
-                                 <MeshScale>
-                                  <X>
-                                   <Value>0.2</Value>
-                                  </X>
-                                  <Y>
-                                   <Value>0.2</Value>
-                                  </Y>
-                                  <Z>
-                                   <Value>0.2</Value>
-                                  </Z>
-                                 </MeshScale>
-                                 <ColorValue>
-                                  <Red>
-                                   <Value>0</Value>
-                                  </Red>
-                                  <Green>
-                                   <Value>0</Value>
-                                  </Green>
-                                  <Blue>
-                                   <Value>1</Value>
-                                  </Blue>
-                                  <Alpha>
-                                   <Value>1</Value>
-                                  </Alpha>
-                                 </ColorValue>
-                                 <SpecularColor>
-                                  <X>
-                                   <Value>0.5</Value>
-                                  </X>
-                                  <Y>
-                                   <Value>0.5</Value>
-                                  </Y>
-                                  <Z>
-                                   <Value>0.5</Value>
-                                  </Z>
-                                 </SpecularColor>
-                                 <EmissiveColor>
-                                 </EmissiveColor>
-                                 <ShininessPower>
-                                  <Value>15</Value>
-                                 </ShininessPower>
-                                 <CubeCenter>Center</CubeCenter>
-                                 <RibLength>1</RibLength>
-                                 <Accuracy>4</Accuracy>
-                                 <ShowInnerSide>false</ShowInnerSide>
-                                </Cube3D>
-                               </ChildObjects3D>
-                              </Frame3D>
                              </ChildObjects3D>
                             </Frame3D>
                            </ChildObjects3D>
                           </Frame3D>
                          </ChildObjects3D>
                         </Frame3D>
-                       </ChildObjects3D>
-                      </Frame3D>
-                      <Frame3D>
-                       <ID>Port0\Hinge0</ID>
-                       <Name>Frame</Name>
-                       <Orientation>
-                        <OriBryant>
-                        </OriBryant>
-                       </Orientation>
-                       <LockX>true</LockX>
-                       <LockY>true</LockY>
-                       <LockZ>true</LockZ>
-                       <LockXPitch>true</LockXPitch>
-                       <LockYYaw>true</LockYYaw>
-                       <LockZRoll>true</LockZRoll>
-                       <ChildObjects3D>
-                        <Cylinder3D>
-                         <ID>Port0\Hinge0_Sub0</ID>
-                         <Name>Cylinder</Name>
-                         <Position>
-                          <Z>
-                           <Value>0.2</Value>
-                          </Z>
-                         </Position>
-                         <Orientation>
-                          <OriBryant>
-                          </OriBryant>
-                         </Orientation>
-                         <LockX>true</LockX>
-                         <LockY>true</LockY>
-                         <LockZ>true</LockZ>
-                         <LockXPitch>true</LockXPitch>
-                         <LockYYaw>true</LockYYaw>
-                         <LockZRoll>true</LockZRoll>
-                         <ChildObjects3D>
-                         </ChildObjects3D>
-                         <MeshScale>
-                          <X>
-                           <Value>0.1</Value>
-                          </X>
-                          <Y>
-                           <Value>0.1</Value>
-                          </Y>
-                          <Z>
-                           <Value>0.4</Value>
-                          </Z>
-                         </MeshScale>
-                         <ColorValue>
-                          <Red>
-                           <Value>0</Value>
-                          </Red>
-                          <Green>
-                           <Value>0</Value>
-                          </Green>
-                          <Blue>
-                           <Value>1</Value>
-                          </Blue>
-                          <Alpha>
-                           <Value>1</Value>
-                          </Alpha>
-                         </ColorValue>
-                         <SpecularColor>
-                          <X>
-                           <Value>0.5</Value>
-                          </X>
-                          <Y>
-                           <Value>0.5</Value>
-                          </Y>
-                          <Z>
-                           <Value>0.5</Value>
-                          </Z>
-                         </SpecularColor>
-                         <EmissiveColor>
-                         </EmissiveColor>
-                         <ShininessPower>
-                          <Value>15</Value>
-                         </ShininessPower>
-                         <Accuracy>16</Accuracy>
-                         <LowerRadius>0.5</LowerRadius>
-                         <UpperRadius>0.5</UpperRadius>
-                         <Height>1</Height>
-                         <ShowInnerSide>true</ShowInnerSide>
-                         <ShowOuterSide>true</ShowOuterSide>
-                        </Cylinder3D>
-                        <Frame3D>
-                         <ID>Port0</ID>
-                         <Name>Frame</Name>
-                         <Orientation>
-                          <OriBryant>
-                          </OriBryant>
-                         </Orientation>
-                         <LockX>true</LockX>
-                         <LockY>true</LockY>
-                         <LockZ>true</LockZ>
-                         <LockXPitch>true</LockXPitch>
-                         <LockYYaw>true</LockYYaw>
-                         <LockZRoll>true</LockZRoll>
-                         <ChildObjects3D>
-                         </ChildObjects3D>
-                        </Frame3D>
-                        <Cube3D>
-                         <ID>Port0\Hinge0_Sub1</ID>
-                         <Name>Block</Name>
-                         <Position>
-                          <Z>
-                           <Value>0.4</Value>
-                          </Z>
-                         </Position>
-                         <Orientation>
-                          <OriBryant>
-                          </OriBryant>
-                         </Orientation>
-                         <LockX>true</LockX>
-                         <LockY>true</LockY>
-                         <LockZ>true</LockZ>
-                         <LockXPitch>true</LockXPitch>
-                         <LockYYaw>true</LockYYaw>
-                         <LockZRoll>true</LockZRoll>
-                         <ChildObjects3D>
-                         </ChildObjects3D>
-                         <MeshScale>
-                          <X>
-                           <Value>0.2</Value>
-                          </X>
-                          <Y>
-                           <Value>0.2</Value>
-                          </Y>
-                          <Z>
-                           <Value>0.2</Value>
-                          </Z>
-                         </MeshScale>
-                         <ColorValue>
-                          <Red>
-                           <Value>0</Value>
-                          </Red>
-                          <Green>
-                           <Value>0</Value>
-                          </Green>
-                          <Blue>
-                           <Value>1</Value>
-                          </Blue>
-                          <Alpha>
-                           <Value>1</Value>
-                          </Alpha>
-                         </ColorValue>
-                         <SpecularColor>
-                          <X>
-                           <Value>0.5</Value>
-                          </X>
-                          <Y>
-                           <Value>0.5</Value>
-                          </Y>
-                          <Z>
-                           <Value>0.5</Value>
-                          </Z>
-                         </SpecularColor>
-                         <EmissiveColor>
-                         </EmissiveColor>
-                         <ShininessPower>
-                          <Value>15</Value>
-                         </ShininessPower>
-                         <CubeCenter>Center</CubeCenter>
-                         <RibLength>1</RibLength>
-                         <Accuracy>4</Accuracy>
-                         <ShowInnerSide>false</ShowInnerSide>
-                        </Cube3D>
                        </ChildObjects3D>
                       </Frame3D>
                      </ChildObjects3D>
@@ -1985,10 +2027,10 @@
     <Name>EE</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.1</Ixx>
-     <Iyy>0.1</Iyy>
-     <Izz>0.1</Izz>
-     <Mass>1.0</Mass>
+     <Ixx>0.001</Ixx>
+     <Iyy>0.001</Iyy>
+     <Izz>0.001</Izz>
+     <Mass>0.001</Mass>
      <GenerateGlobalParam>false</GenerateGlobalParam>
     </Inertia>
     <IsFixedWorld>false</IsFixedWorld>
@@ -2071,8 +2113,8 @@
     <ConstraintJoint>false</ConstraintJoint>
     <UserConstraint>false</UserConstraint>
     <GeneratePort>true</GeneratePort>
-    <OutputPosition>false</OutputPosition>
-    <OutputVelocity>false</OutputVelocity>
+    <OutputPosition>true</OutputPosition>
+    <OutputVelocity>true</OutputVelocity>
     <OutputConstraintForces>false</OutputConstraintForces>
     <OverrideConstraintParameter>false</OverrideConstraintParameter>
     <InitialValue>0.0</InitialValue>
@@ -2129,8 +2171,8 @@
     <ConstraintJoint>false</ConstraintJoint>
     <UserConstraint>false</UserConstraint>
     <GeneratePort>true</GeneratePort>
-    <OutputPosition>false</OutputPosition>
-    <OutputVelocity>false</OutputVelocity>
+    <OutputPosition>true</OutputPosition>
+    <OutputVelocity>true</OutputVelocity>
     <OutputConstraintForces>false</OutputConstraintForces>
     <OverrideConstraintParameter>false</OverrideConstraintParameter>
     <InitialValue>0.0</InitialValue>
@@ -2184,8 +2226,8 @@
     <ConstraintJoint>false</ConstraintJoint>
     <UserConstraint>false</UserConstraint>
     <GeneratePort>true</GeneratePort>
-    <OutputPosition>false</OutputPosition>
-    <OutputVelocity>false</OutputVelocity>
+    <OutputPosition>true</OutputPosition>
+    <OutputVelocity>true</OutputVelocity>
     <OutputConstraintForces>false</OutputConstraintForces>
     <OverrideConstraintParameter>false</OverrideConstraintParameter>
     <InitialValue>0.0</InitialValue>
@@ -2303,7 +2345,7 @@
   <Ports>
    <Port3D>
     <ID>Port0</ID>
-    <Name>Rot_R</Name>
+    <Name>Force1</Name>
     <Description></Description>
     <HingePoints>
      <HingePoint>
@@ -2318,63 +2360,13 @@
       </Orientation>
       <GeneratePort>false</GeneratePort>
       <OutputAbsHMatrix>false</OutputAbsHMatrix>
-      <BodyID>Body3</BodyID>
+      <BodyID>Body4</BodyID>
       <PortID>Port0</PortID>
      </HingePoint>
     </HingePoints>
-    <PowerPort>false</PowerPort>
-    <PortType>OutputRotationMatrix</PortType>
-    <CoordinateType>1</CoordinateType>
-   </Port3D>
-   <Port3D>
-    <ID>Port1</ID>
-    <Name>Arm1_R</Name>
-    <Description></Description>
-    <HingePoints>
-     <HingePoint>
-      <ID>Port1\Hinge0</ID>
-      <Name>ConnectionPoint1</Name>
-      <Description></Description>
-      <Position>
-      </Position>
-      <Orientation>
-       <OriBryant>
-       </OriBryant>
-      </Orientation>
-      <GeneratePort>false</GeneratePort>
-      <OutputAbsHMatrix>false</OutputAbsHMatrix>
-      <BodyID>Body2</BodyID>
-      <PortID>Port1</PortID>
-     </HingePoint>
-    </HingePoints>
-    <PowerPort>false</PowerPort>
-    <PortType>OutputRotationMatrix</PortType>
-    <CoordinateType>1</CoordinateType>
-   </Port3D>
-   <Port3D>
-    <ID>Port2</ID>
-    <Name>Arm2_R</Name>
-    <Description></Description>
-    <HingePoints>
-     <HingePoint>
-      <ID>Port2\Hinge0</ID>
-      <Name>ConnectionPoint1</Name>
-      <Description></Description>
-      <Position>
-      </Position>
-      <Orientation>
-       <OriBryant>
-       </OriBryant>
-      </Orientation>
-      <GeneratePort>false</GeneratePort>
-      <OutputAbsHMatrix>false</OutputAbsHMatrix>
-      <BodyID>Body1</BodyID>
-      <PortID>Port2</PortID>
-     </HingePoint>
-    </HingePoints>
-    <PowerPort>false</PowerPort>
-    <PortType>OutputRotationMatrix</PortType>
-    <CoordinateType>1</CoordinateType>
+    <PowerPort>true</PowerPort>
+    <PortType>InputWrenchTranslation</PortType>
+    <CoordinateType>2</CoordinateType>
    </Port3D>
   </Ports>
   <Generate20SimModel>true</Generate20SimModel>
@@ -2385,9 +2377,9 @@
   <OutputThetaDotVector>false</OutputThetaDotVector>
   <OutputJMatrix>false</OutputJMatrix>
   <OutputCenterOfMass>false</OutputCenterOfMass>
-  <CodeOutputFileName></CodeOutputFileName>
-  <SceneryOutputFileName></SceneryOutputFileName>
-  <CodeSubmodelName></CodeSubmodelName>
+  <CodeOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 7\ZXXarm.emx]]></CodeOutputFileName>
+  <SceneryOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 7\ZXXarm.scn]]></SceneryOutputFileName>
+  <CodeSubmodelName>ZXXarm</CodeSubmodelName>
   <NoJointSceneryObjectGeneration>false</NoJointSceneryObjectGeneration>
   <GenerateSpringDampersForConstraintJoints>true</GenerateSpringDampersForConstraintJoints>
   <IconOutputFileName></IconOutputFileName>
