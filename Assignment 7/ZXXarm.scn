@@ -391,32 +391,38 @@
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
   <Childs>
- <Cube>
-  <Center>Center</Center>
-  <RibLength>1.0</RibLength>
-  <ShowInnerSide>true</ShowInnerSide>
-  <Accuracy>4</Accuracy>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
   <ScaleValue>
    <X>
     <Value>0.2</Value>
    </X>
    <Y>
-    <Value>2</Value>
+    <Value>0.2</Value>
    </Y>
    <Z>
-    <Value>0.2</Value>
+    <Value>2</Value>
    </Z>
   </ScaleValue>
   <OverrideColor>true</OverrideColor>
   <MeshColor>
    <X>
-    <Value>0.188235294117647</Value>
+    <Value>0.184313725490196</Value>
    </X>
    <Y>
     <Value>0.803921568627451</Value>
    </Y>
    <Z>
-    <Value>0.188235294117647</Value>
+    <Value>0.184313725490196</Value>
    </Z>
   </MeshColor>
   <Alpha>1.0</Alpha>
@@ -458,14 +464,20 @@
   </Position>
   <Orientation>
    <ZAxis>
+    <Y>
+     <Value>-1</Value>
+    </Y>
     <Z>
-     <Value>1</Value>
+     <Value>6.12323399573677e-17</Value>
     </Z>
    </ZAxis>
    <YAxis>
     <Y>
-     <Value>1</Value>
+     <Value>6.12323399573677e-17</Value>
     </Y>
+    <Z>
+     <Value>1</Value>
+    </Z>
    </YAxis>
    <OrientationType>Direct3D</OrientationType>
   </Orientation>
@@ -475,7 +487,7 @@
   <LockXPitch>true</LockXPitch>
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
- </Cube>
+ </Cylinder>
  <Frame>
   <ScaleValue>
    <X>
@@ -811,32 +823,38 @@
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
   <Childs>
- <Cube>
-  <Center>Center</Center>
-  <RibLength>1.0</RibLength>
-  <ShowInnerSide>true</ShowInnerSide>
-  <Accuracy>4</Accuracy>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
   <ScaleValue>
    <X>
-    <Value>0.15</Value>
+    <Value>0.2</Value>
    </X>
    <Y>
-    <Value>4</Value>
+    <Value>0.2</Value>
    </Y>
    <Z>
-    <Value>0.15</Value>
+    <Value>4</Value>
    </Z>
   </ScaleValue>
   <OverrideColor>true</OverrideColor>
   <MeshColor>
    <X>
-    <Value>0.184313725490196</Value>
+    <Value>0.180392156862745</Value>
    </X>
    <Y>
     <Value>0.803921568627451</Value>
    </Y>
    <Z>
-    <Value>0.184313725490196</Value>
+    <Value>0.180392156862745</Value>
    </Z>
   </MeshColor>
   <Alpha>1.0</Alpha>
@@ -878,14 +896,20 @@
   </Position>
   <Orientation>
    <ZAxis>
+    <Y>
+     <Value>-1</Value>
+    </Y>
     <Z>
-     <Value>1</Value>
+     <Value>6.12323399573677e-17</Value>
     </Z>
    </ZAxis>
    <YAxis>
     <Y>
-     <Value>1</Value>
+     <Value>6.12323399573677e-17</Value>
     </Y>
+    <Z>
+     <Value>1</Value>
+    </Z>
    </YAxis>
    <OrientationType>Direct3D</OrientationType>
   </Orientation>
@@ -895,7 +919,7 @@
   <LockXPitch>true</LockXPitch>
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
- </Cube>
+ </Cylinder>
  <Frame>
   <ScaleValue>
    <X>
@@ -1243,17 +1267,23 @@
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
   <Childs>
- <Cube>
-  <Center>Center</Center>
-  <RibLength>1.0</RibLength>
-  <ShowInnerSide>true</ShowInnerSide>
-  <Accuracy>4</Accuracy>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
   <ScaleValue>
    <X>
-    <Value>0.15</Value>
+    <Value>0.2</Value>
    </X>
    <Y>
-    <Value>0.15</Value>
+    <Value>0.2</Value>
    </Y>
    <Z>
     <Value>2</Value>
@@ -1262,13 +1292,13 @@
   <OverrideColor>true</OverrideColor>
   <MeshColor>
    <X>
-    <Value>0.184313725490196</Value>
+    <Value>0.180392156862745</Value>
    </X>
    <Y>
     <Value>0.803921568627451</Value>
    </Y>
    <Z>
-    <Value>0.184313725490196</Value>
+    <Value>0.180392156862745</Value>
    </Z>
   </MeshColor>
   <Alpha>1.0</Alpha>
@@ -1327,7 +1357,7 @@
   <LockXPitch>true</LockXPitch>
   <LockYYaw>true</LockYYaw>
   <LockZRoll>true</LockZRoll>
- </Cube>
+ </Cylinder>
  <Frame>
   <ScaleValue>
    <X>
@@ -1947,36 +1977,36 @@
    <Name>Camera</Name>
    <Position>
     <X>
-     <Value>5.51557716575767</Value>
+     <Value>6.78884804579427</Value>
     </X>
     <Y>
-     <Value>8.973176887408</Value>
+     <Value>4.41197816145015</Value>
     </Y>
     <Z>
-     <Value>4.23810531038693</Value>
+     <Value>7.18758318440435</Value>
     </Z>
    </Position>
    <Orientation>
     <ZAxis>
      <X>
-      <Value>-0.652656551256135</Value>
+      <Value>-0.770317378020918</Value>
      </X>
      <Y>
-      <Value>-0.694020445947139</Value>
+      <Value>-0.272530654682144</Value>
      </Y>
      <Z>
-      <Value>-0.30393263515092</Value>
+      <Value>-0.576487796382109</Value>
      </Z>
     </ZAxis>
     <YAxis>
      <X>
-      <Value>-0.20821347609036</Value>
+      <Value>-0.543477434558845</Value>
      </X>
      <Y>
-      <Value>-0.221409562926075</Value>
+      <Value>-0.192276930638272</Value>
      </Y>
      <Z>
-      <Value>0.952693525652008</Value>
+      <Value>0.817105782668108</Value>
      </Z>
     </YAxis>
     <OrientationType>Direct3D</OrientationType>
