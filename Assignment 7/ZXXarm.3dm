@@ -158,37 +158,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>6.78884804579427</Value>
+       <Value>6.39112740136647</Value>
       </X>
       <Y>
-       <Value>4.41197816145015</Value>
+       <Value>8.43933426401105</Value>
       </Y>
       <Z>
-       <Value>7.18758318440435</Value>
+       <Value>3.27652831606532</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>-0.770317378020918</Value>
+         <Value>-0.733564870601496</Value>
         </X>
         <Y>
-         <Value>-0.272530654682144</Value>
+         <Value>-0.644689880062875</Value>
         </Y>
         <Z>
-         <Value>-0.576487796382109</Value>
+         <Value>-0.215075659161901</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>-0.543477434558845</Value>
+         <Value>-0.161552697745088</Value>
         </X>
         <Y>
-         <Value>-0.192276930638272</Value>
+         <Value>-0.141979805994256</Value>
         </Y>
         <Z>
-         <Value>0.817105782668108</Value>
+         <Value>0.976597389173818</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -2018,7 +2018,7 @@
      <Ixx>2.66</Ixx>
      <Iyy>0.04</Iyy>
      <Izz>2.66</Izz>
-     <Mass>1.0</Mass>
+     <Mass>2.0</Mass>
      <GenerateGlobalParam>false</GenerateGlobalParam>
     </Inertia>
     <IsFixedWorld>false</IsFixedWorld>
