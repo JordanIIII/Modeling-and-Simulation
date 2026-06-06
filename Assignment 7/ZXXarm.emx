@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 7\ZXXarm.emx</LibraryPath>
-    <TimeStamp>2026-6-6 00:15:27</TimeStamp>
+    <TimeStamp>2026-6-6 12:52:37</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -74,6 +74,50 @@ equations
       line 156.9 195.6 178.9 195.6 color 16711680 width 2;
       line 154.2 206.7 179.9 206.7 color 0;
       line 156.5 190.7 156.5 209 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0;		// output value
+equations
+	output = C;
+     implementation_end;
+   Constant4 928 280
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 912.1 264 943.9 296 color 0 fill 15132390;
+      line 916.9 275.6 938.9 275.6 color 16711680 width 2;
+      line 914.2 286.7 939.9 286.7 color 0;
+      line 916.5 270.7 916.5 289 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0;		// output value
+equations
+	output = C;
+     implementation_end;
+   Constant5 928 416
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 912.1 400 943.9 432 color 0 fill 15132390;
+      line 916.9 411.6 938.9 411.6 color 16711680 width 2;
+      line 914.2 422.7 939.9 422.7 color 0;
+      line 916.5 406.7 916.5 425 color 0;
     end;
     implementation eq
 parameters
@@ -409,8 +453,8 @@ equations
 parameters
 	real global grav = 9.8;		// m/s^2
 	real global L[3] = [2;4;2];
-	real global m[3] = [1;1;1];
-	real K_imp[3,3] = [18,0,0; 0,18,0; 0,0,18];
+	real global m[3] = [1;2;1];
+	real K_imp[3,3] = [21,0,0; 0,21,0; 0,0,21];
 	real b_imp[3,3] = [14,0,0; 0,14,0; 0,0,14];
 	
 variables
@@ -455,6 +499,34 @@ equations
 
 	
 	implementation_end;
+   MSe 808 344
+    description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+    type MSe
+     ports
+      power out p [3,1];
+      signal in effort [3,1];
+     restrictions
+      causality fixed out p;
+    end;
+    icon bg ellipse bottom
+     figures
+      text 'MSe' 808 344 color 0 18 bold;
+    end;
+    implementation eq
+ variables
+	real flow[3];
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
    MSe1 464 288
     description '<Information>
  <Description>
@@ -596,6 +668,297 @@ specification_end;
    input2 200 344 fixed;
    input3 200 352 fixed;
    output 200 344 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3];implementation_end;
+specification_end;
+				specification 'inputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal out output [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 32 fixed;
+   input4 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4];implementation_end;
+specification_end;
+				specification 'inputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal out output [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   output 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5];implementation_end;
+specification_end;
+				specification 'inputs_6'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal out output [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '6' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 40 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6];implementation_end;
+specification_end;
+				specification 'inputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal out output [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   output 0 32 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7];implementation_end;
+specification_end;
+				specification 'inputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal out output [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 48 fixed;
+   input6 0 56 fixed;
+   input7 0 64 fixed;
+   input8 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8];implementation_end;
+specification_end;
+				specification 'inputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal in input4;
+   signal in input5;
+   signal in input6;
+   signal in input7;
+   signal in input8;
+   signal in input9;
+   signal out output [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   input2 0 16 fixed;
+   input3 0 24 fixed;
+   input4 0 32 fixed;
+   input5 0 40 fixed;
+   input6 0 48 fixed;
+   input7 0 56 fixed;
+   input8 0 64 fixed;
+   input9 0 72 fixed;
+   output 0 40 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
+specification_end;
+			end;
+   Mux1 863 344
+			specifications active 'inputs_3'
+				specification 'inputs_2'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal out output [2,1];
+   signal in input2;
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 color 0 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '2' 6 26 color 8421504 8;
+  terminals
+   input1 0 8 fixed;
+   output 0 16 fixed;
+   input2 0 24 fixed;
+ end;
+ implementation eq
+equations
+	output = [input1; input2];implementation_end;
+specification_end;
+				specification 'inputs_3'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Mux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Mux
+  ports
+   signal in input1;
+   signal in input2;
+   signal in input3;
+   signal out output [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 856 328 856 360 color 0 width 2;
+   rectangle 856 328 872 360 color -1;
+   text '3' 862 354 color 8421504 8;
+  terminals
+   input1 856 336 fixed;
+   input2 856 344 fixed;
+   input3 856 352 fixed;
+   output 856 344 fixed;
  end;
  implementation eq
 equations
@@ -1178,6 +1541,38 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
+   Pulse 928 344
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Pulse.emx</LibraryPath>
+  <TimeStamp>2007-9-27 16:1:38</TimeStamp>
+</Description>';
+    type 'SignalGenerator-Pulse'
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 912.1 328 943.9 360 color 0 fill 15132390;
+      line 923.7 342.4 929.4 342.4 color 16711680 width 2;
+      line 915 354.2 941 354.2 color 0;
+      line 918 354.1 923.6 354.1 923.6 342.5 color 16711680 width 2;
+      line 918 336.6 918 357 color 0;
+      line 938.2 354.2 929.4 354.1 929.4 342.5 color 16711680 width 2;
+    end;
+    implementation eq
+parameters
+	real start_time = 4.0 {s};
+	real stop_time = 6.0 {s};
+	real amplitude = -50 {none};
+variables
+	boolean hidden change;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+
+	"calculate the block signal"
+	output = amplitude * (step (start_time) - step (stop_time));
+implementation_end;
    Splitter 240 344
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
@@ -1492,7 +1887,7 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
-   WaveGenerator1 104 480
+   WaveGenerator1 96 464
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
   <TimeStamp>2007-9-27 16:12:6</TimeStamp>
@@ -1504,10 +1899,10 @@ specification_end;
     icon bg bottom
      figures
       group
-       rectangle 88 464 120 496 color 0 fill 15132390;
-       line 92.5 470.4 92.5 489.6 color 0;
-       line 118.1 480 89.3 480 color 0;
-       spline 92.9 479.9 96.1 471.8 99.3 479.9 102.6 488 105.7 479.9 108.8 471.8 112.1 479.9 115.6 488.2 118.8 480.2 color 16711680;
+       rectangle 80 448 112 480 color 0 fill 15132390;
+       line 84.5 454.4 84.5 473.6 color 0;
+       line 110.1 464 81.3 464 color 0;
+       spline 84.9 463.9 88.1 455.8 91.3 463.9 94.6 472 97.7 463.9 100.8 455.8 104.1 463.9 107.6 472.2 110.8 464.2 color 16711680;
       end;
     end;
     implementation eq
@@ -1590,35 +1985,6 @@ equations
 
 	"calculate the sine wave"
 	output = amplitude * sin ( omega * time);
-implementation_end;
-   World_frame_force 792 344
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\Se.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:36:49</TimeStamp>
-</Description>
-</Information>';
-    type Se
-     ports
-      power out p [3,1];
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'Se' 792 344 color 0 18 bold;
-    end;
-    implementation eq
-parameters
-	real effort[3] = [0;0;0];
-variables
-	real flow[3];
-equations
-	p.e = effort;
-	flow = p.f;
 implementation_end;
    ZXXarm 660 343
     description '<Description>
@@ -2035,6 +2401,8 @@ implementation_end;
    Constant1\output -> PlusMinus2\plus;
    Constant2\output -> PlusMinus1\plus;
    Constant3\output -> PlusMinus3\plus;
+   Constant4\output -> Mux1\input1;
+   Constant5\output -> Mux1\input3;
    Demux\output1 -> MSe1\effort;
    Demux\output2 -> MSe2\effort;
    Demux\output3 -> MSe3\effort;
@@ -2044,10 +2412,12 @@ implementation_end;
    MSe2\p => ZXXarm\Rot_Arm1;
    MSe3\p => ZXXarm\Arm1_Arm2 584 400;
    Mux\output -> Splitter\input;
+   Mux1\output -> MSe\effort;
    PlusMinus1\output -> Mux\input3;
    PlusMinus2\output -> Mux\input2;
    PlusMinus3\output -> Mux\input1;
    Position\output -> Imp_contr\q 824 296 824 256 336 256;
+   Pulse\output -> Mux1\input2;
    Splitter\output -> Differentiate\input 240 416;
    Splitter\output -> Imp_contr\pos_des 240 272 296 272;
    Velocity\output -> Imp_contr\dq 824 392 824 432 336 432;
@@ -2058,7 +2428,7 @@ implementation_end;
    ZXXarm\Arm1_Arm2_phi -> Position\input3;
    ZXXarm\Base_Rot_omega -> Velocity\input1;
    ZXXarm\Base_Rot_phi -> Position\input1;
-   ZXXarm\Force1 <= World_frame_force\p;
+   ZXXarm\Force1 <= MSe\p;
    ZXXarm\Rot_Arm1_omega -> Velocity\input2;
    ZXXarm\Rot_Arm1_phi -> Position\input2;
   end;
@@ -2182,7 +2552,7 @@ implementation_end;
      <PlotId>1</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
-     <PlotIsVisible>true</PlotIsVisible>
+     <PlotIsVisible>false</PlotIsVisible>
      <Solo>false</Solo>
     </BasePlot>
     <Grid>
@@ -2248,7 +2618,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>15.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -3581,44 +3951,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\Arm2\AbsH[1,4]</VariableName>
-            <Value>0.9105510536298732</Value>
+            <Value>0.5896914127275992</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\Arm2\AbsH[2,4]</VariableName>
-            <Value>3.824533037262545</Value>
+            <Value>3.3951881729388074</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\Arm2\AbsH[3,4]</VariableName>
-            <Value>1.7147783548729836</Value>
+            <Value>0.07989972392894462</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,3]</VariableName>
-             <Value>-0.22932069003582</Value>
+             <Value>-0.14317329227924347</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9632019400596619</Value>
+             <Value>-0.8243298530578613</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.14019285142421722</Value>
+             <Value>0.5477058291435242</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,2]</VariableName>
-             <Value>0.03246979042887688</Value>
+             <Value>0.093724824488163</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.1363808959722519</Value>
+             <Value>0.5396270155906677</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9901242256164551</Value>
+             <Value>0.836670994758606</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -4007,44 +4377,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\Arm1\AbsH[1,4]</VariableName>
-            <Value>0.4390406339543532</Value>
+            <Value>0.247983292263081</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\Arm1\AbsH[2,4]</VariableName>
-            <Value>1.8440760708203603</Value>
+            <Value>1.427780569304252</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\Arm1\AbsH[3,4]</VariableName>
-            <Value>1.3623270691297131</Value>
+            <Value>0.621614374467149</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,3]</VariableName>
-             <Value>0.07384507358074188</Value>
+             <Value>0.11793644726276398</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.3101670444011688</Value>
+             <Value>0.6790270805358887</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.9478097558021545</Value>
+             <Value>0.7245780229568481</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,2]</VariableName>
-             <Value>0.21952034533023834</Value>
+             <Value>0.12399163097143173</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.9220380783081055</Value>
+             <Value>0.7138902544975281</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.3188364803791046</Value>
+             <Value>-0.6891927719116211</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -4474,11 +4844,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>ZXXarm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>0.23160800337791443</Value>
+             <Value>0.17112256586551666</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9728091955184937</Value>
+             <Value>0.9852497577667236</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\RotHinge\AbsH[3,2]</VariableName>
@@ -4880,44 +5250,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\EE\AbsH[1,4]</VariableName>
-            <Value>0.94302083935104</Value>
+            <Value>0.6834162409290364</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\EE\AbsH[2,4]</VariableName>
-            <Value>3.960913932884369</Value>
+            <Value>3.9348152072691107</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\EE\AbsH[3,4]</VariableName>
-            <Value>2.704902571486541</Value>
+            <Value>0.9165706989235913</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,3]</VariableName>
-             <Value>-0.22932069003582</Value>
+             <Value>-0.14317329227924347</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9632019400596619</Value>
+             <Value>-0.8243298530578613</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,3]</VariableName>
-             <Value>0.14019285142421722</Value>
+             <Value>0.5477058291435242</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,2]</VariableName>
-             <Value>0.03246979042887688</Value>
+             <Value>0.093724824488163</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,2]</VariableName>
-             <Value>0.1363808959722519</Value>
+             <Value>0.5396270155906677</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9901242256164551</Value>
+             <Value>0.836670994758606</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -5662,44 +6032,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\Arm2\AbsH[1,4]</VariableName>
-            <Value>0.9105510536298732</Value>
+            <Value>0.5896914127275992</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\Arm2\AbsH[2,4]</VariableName>
-            <Value>3.824533037262545</Value>
+            <Value>3.3951881729388074</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\Arm2\AbsH[3,4]</VariableName>
-            <Value>1.7147783548729836</Value>
+            <Value>0.07989972392894462</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,3]</VariableName>
-             <Value>-0.22932069003582</Value>
+             <Value>-0.14317329227924347</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9632019400596619</Value>
+             <Value>-0.8243298530578613</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.14019285142421722</Value>
+             <Value>0.5477058291435242</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,2]</VariableName>
-             <Value>0.03246979042887688</Value>
+             <Value>0.093724824488163</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.1363808959722519</Value>
+             <Value>0.5396270155906677</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9901242256164551</Value>
+             <Value>0.836670994758606</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -6100,44 +6470,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\Arm1\AbsH[1,4]</VariableName>
-            <Value>0.4390406339543532</Value>
+            <Value>0.247983292263081</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\Arm1\AbsH[2,4]</VariableName>
-            <Value>1.8440760708203603</Value>
+            <Value>1.427780569304252</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\Arm1\AbsH[3,4]</VariableName>
-            <Value>1.3623270691297131</Value>
+            <Value>0.621614374467149</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,3]</VariableName>
-             <Value>0.07384507358074188</Value>
+             <Value>0.11793644726276398</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.3101670444011688</Value>
+             <Value>0.6790270805358887</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.9478097558021545</Value>
+             <Value>0.7245780229568481</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,2]</VariableName>
-             <Value>0.21952034533023834</Value>
+             <Value>0.12399163097143173</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.9220380783081055</Value>
+             <Value>0.7138902544975281</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.3188364803791046</Value>
+             <Value>-0.6891927719116211</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -6579,11 +6949,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>ZXXarm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>0.23160800337791443</Value>
+             <Value>0.17112256586551666</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9728091955184937</Value>
+             <Value>0.9852497577667236</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\RotHinge\AbsH[3,2]</VariableName>
@@ -6991,44 +7361,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>ZXXarm\EE\AbsH[1,4]</VariableName>
-            <Value>0.94302083935104</Value>
+            <Value>0.6834162409290364</Value>
            </X>
            <Y>
             <VariableName>ZXXarm\EE\AbsH[2,4]</VariableName>
-            <Value>3.960913932884369</Value>
+            <Value>3.9348152072691107</Value>
            </Y>
            <Z>
             <VariableName>ZXXarm\EE\AbsH[3,4]</VariableName>
-            <Value>2.704902571486541</Value>
+            <Value>0.9165706989235913</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,3]</VariableName>
-             <Value>-0.22932069003582</Value>
+             <Value>-0.14317329227924347</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9632019400596619</Value>
+             <Value>-0.8243298530578613</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,3]</VariableName>
-             <Value>0.14019285142421722</Value>
+             <Value>0.5477058291435242</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,2]</VariableName>
-             <Value>0.03246979042887688</Value>
+             <Value>0.093724824488163</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,2]</VariableName>
-             <Value>0.1363808959722519</Value>
+             <Value>0.5396270155906677</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9901242256164551</Value>
+             <Value>0.836670994758606</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -7321,36 +7691,36 @@ implementation_end;
           <Name>Camera</Name>
           <Position>
            <X>
-            <Value>0.061682010088274</Value>
+            <Value>7.65044018180789</Value>
            </X>
            <Y>
-            <Value>1.55519177121025</Value>
+            <Value>8.65318288368477</Value>
            </Y>
            <Z>
-            <Value>12.8388818655973</Value>
+            <Value>3.71794553784656</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.134091033890006</Value>
+             <Value>-0.766562523629042</Value>
             </X>
             <Y>
-             <Value>-0.00770339785183167</Value>
+             <Value>-0.599273146896327</Value>
             </Y>
             <Z>
-             <Value>-0.990939075973819</Value>
+             <Value>-0.23076739972632</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.989307871086024</Value>
+             <Value>-0.181804746585632</Value>
             </X>
             <Y>
-             <Value>-0.0568347602519797</Value>
+             <Value>-0.14212890899775</Value>
             </Y>
             <Z>
-             <Value>0.134312122440007</Value>
+             <Value>0.973008945152121</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -7472,7 +7842,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>15.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -7718,7 +8088,7 @@ implementation_end;
     <XAxes>
      <Axis>
       <Minimum>0.0</Minimum>
-      <Maximum>20.0</Maximum>
+      <Maximum>15.0</Maximum>
       <Linear>true</Linear>
       <Scaling>3</Scaling>
       <Label>time</Label>
@@ -7730,42 +8100,42 @@ implementation_end;
       <Maximum>7.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[1]</Label>
+      <Label>x</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.158827055578073</Minimum>
-      <Maximum>0.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[2]</Label>
+      <Label>y</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.158827055578073</Minimum>
-      <Maximum>0.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[3]</Label>
+      <Label>z</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.158827055578073</Minimum>
-      <Maximum>0.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos_des[1]</Label>
+      <Label>x_des</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.158827055578073</Minimum>
-      <Maximum>0.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos_des[2]</Label>
+      <Label>y_des {m}</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.158827055578073</Minimum>
-      <Maximum>0.0</Maximum>
+      <Minimum>-2.0</Minimum>
+      <Maximum>8.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos_des[3]</Label>
+      <Label>z_des</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -7778,7 +8148,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7797,7 +8167,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7816,7 +8186,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7835,7 +8205,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7854,7 +8224,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7873,7 +8243,7 @@ implementation_end;
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
+      <LineThickness>4</LineThickness>
       <LineOrder>1</LineOrder>
       <ShowYValues>true</ShowYValues>
       <XCurveData>
@@ -7917,7 +8287,7 @@ implementation_end;
  <RunSpecs>
   <SimulatorSettings>
    <StartTime>0.0</StartTime>
-   <FinishTime>20.0</FinishTime>
+   <FinishTime>15.0</FinishTime>
    <AllowPassFinishTime>false</AllowPassFinishTime>
    <Warp>false</Warp>
    <SimulationMode>0</SimulationMode>
