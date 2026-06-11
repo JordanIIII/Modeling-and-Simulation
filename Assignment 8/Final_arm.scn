@@ -1977,36 +1977,36 @@
    <Name>Camera</Name>
    <Position>
     <X>
-     <Value>1.54384414279133</Value>
+     <Value>1.65483097429868</Value>
     </X>
     <Y>
-     <Value>0.660467042950942</Value>
+     <Value>0.129202707306702</Value>
     </Y>
     <Z>
-     <Value>0.572671579120993</Value>
+     <Value>-0.626470158236207</Value>
     </Z>
    </Position>
    <Orientation>
     <ZAxis>
      <X>
-      <Value>-0.870185842709901</Value>
+      <Value>-0.932743504308367</Value>
      </X>
      <Y>
-      <Value>-0.372271444377702</Value>
+      <Value>-0.0728249514701385</Value>
      </Y>
      <Z>
-      <Value>-0.322785642258448</Value>
+      <Value>0.353109163877008</Value>
      </Z>
     </ZAxis>
     <YAxis>
      <X>
-      <Value>-0.296768896340559</Value>
+      <Value>0.352037781978968</Value>
      </X>
      <Y>
-      <Value>-0.126959765421958</Value>
+      <Value>0.0274857294883138</Value>
      </Y>
      <Z>
-      <Value>0.946472102139734</Value>
+      <Value>0.935582136818475</Value>
      </Z>
     </YAxis>
     <OrientationType>Direct3D</OrientationType>

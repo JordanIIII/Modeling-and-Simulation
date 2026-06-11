@@ -158,37 +158,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>1.64973390510991</Value>
+       <Value>1.65483097429868</Value>
       </X>
       <Y>
-       <Value>0.182163933383773</Value>
+       <Value>0.129202707306702</Value>
       </Y>
       <Z>
-       <Value>-0.626752036732137</Value>
+       <Value>-0.626470158236207</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>-0.929870550079071</Value>
+         <Value>-0.932743504308367</Value>
         </X>
         <Y>
-         <Value>-0.102676481473947</Value>
+         <Value>-0.0728249514701385</Value>
         </Y>
         <Z>
-         <Value>0.353268028906915</Value>
+         <Value>0.353109163877008</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>0.35113389204035</Value>
+         <Value>0.352037781978968</Value>
         </X>
         <Y>
-         <Value>0.0387722695410129</Value>
+         <Value>0.0274857294883138</Value>
         </Y>
         <Z>
-         <Value>0.935522154187294</Value>
+         <Value>0.935582136818475</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -220,7 +220,7 @@
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body5</ID>
-     <Name>Reference Frame</Name>
+     <Name>World</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>
@@ -1938,7 +1938,7 @@
     <ExpressionVariable>
      <Name>p</Name>
      <Type>1</Type>
-     <Value>1240.0</Value>
+     <Value>2700.0</Value>
     </ExpressionVariable>
    </ExpressionVariables>
   </Expressions>
@@ -1977,10 +1977,10 @@
     <Name>RotHinge</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>2.2490858156590173e-4</Ixx>
-     <Iyy>2.2490858156590173e-4</Iyy>
-     <Izz>2.0634373247859454e-4</Izz>
-     <Mass>0.14608405839192534</Mass>
+     <Ixx>4.89720298570915e-4</Ixx>
+     <Iyy>4.89720298570915e-4</Iyy>
+     <Izz>4.492968368485526e-4</Izz>
+     <Mass>0.3180862561759664</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l1*p</MassExpression>
      <IxxExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IyyExpression>
@@ -1995,10 +1995,10 @@
     <Name>Arm1</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.0011802374550914302</Ixx>
-     <Iyy>4.126874649571891e-4</Iyy>
-     <Izz>0.0011802374550914302</Izz>
-     <Mass>0.2921681167838507</Mass>
+     <Ixx>0.002569871878021663</Ixx>
+     <Iyy>8.985936736971052e-4</Iyy>
+     <Izz>0.002569871878021663</Izz>
+     <Mass>0.6361725123519328</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l2*p</MassExpression>
      <IxxExpression>pi*l2*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l2^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>(1/2)*pi*l2*p*(r_ext^4 - r_int^4)</IyyExpression>
@@ -2013,10 +2013,10 @@
     <Name>Arm2</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.0011802374550914302</Ixx>
-     <Iyy>4.126874649571891e-4</Iyy>
-     <Izz>0.0011802374550914302</Izz>
-     <Mass>0.2921681167838507</Mass>
+     <Ixx>0.002569871878021663</Ixx>
+     <Iyy>8.985936736971052e-4</Iyy>
+     <Izz>0.002569871878021663</Izz>
+     <Mass>0.6361725123519328</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l3*p</MassExpression>
      <IxxExpression>pi*l3*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l3^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>(1/2)*pi*l3*p*(r_ext^4 - r_int^4)</IyyExpression>
