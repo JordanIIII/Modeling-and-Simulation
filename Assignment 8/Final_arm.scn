@@ -350,7 +350,7 @@
    </Y>
    <Z>
     <VariableName>Final_arm\RotHinge\AbsH[3,4]</VariableName>
-    <Value>0.05</Value>
+    <Value>0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -499,7 +499,7 @@
   <Name>Frame</Name>
   <Position>
    <Z>
-    <Value>-0.05</Value>
+    <Value>-0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -635,7 +635,7 @@
   <Name>Frame</Name>
   <Position>
    <Z>
-    <Value>0.05</Value>
+    <Value>0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -757,6 +757,142 @@
  </Cylinder>
   </Childs>
  </Frame>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP4\Hinge0</ID>
+  <Name>Frame</Name>
+  <Position>
+   <Z>
+    <Value>0.1</Value>
+   </Z>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
+  <ScaleValue>
+   <X>
+    <Value>0.01</Value>
+   </X>
+   <Y>
+    <Value>0.01</Value>
+   </Y>
+   <Z>
+    <Value>0.1</Value>
+   </Z>
+  </ScaleValue>
+  <OverrideColor>true</OverrideColor>
+  <MeshColor>
+   <X>
+    <Value>0.686274509803922</Value>
+   </X>
+   <Y>
+    <Value>0.925490196078431</Value>
+   </Y>
+   <Z>
+    <Value>0.925490196078431</Value>
+   </Z>
+  </MeshColor>
+  <Alpha>1.0</Alpha>
+  <MeshColorMultipliers>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </MeshColorMultipliers>
+  <MeshColorOffsets>
+  </MeshColorOffsets>
+  <Direct3DColorRange>true</Direct3DColorRange>
+  <SpecularColor>
+   <X>
+    <Value>0.5</Value>
+   </X>
+   <Y>
+    <Value>0.5</Value>
+   </Y>
+   <Z>
+    <Value>0.5</Value>
+   </Z>
+  </SpecularColor>
+  <EmissiveColor>
+  </EmissiveColor>
+  <ShininessPower>
+   <Value>15</Value>
+  </ShininessPower>
+  <OverrideQuality>false</OverrideQuality>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP4\Hinge0_Sub0</ID>
+  <Name>Cylinder</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <Value>1</Value>
+    </X>
+    <Z>
+     <Value>-3.49148133884313e-15</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Cylinder>
+  </Childs>
+ </Frame>
   </Childs>
  </Frame>
  <Frame>
@@ -781,11 +917,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-    <Value>0.1</Value>
+    <Value>0.2</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-    <Value>0.1</Value>
+    <Value>0.2</Value>
    </Z>
   </Position>
   <Orientation>
@@ -940,7 +1076,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>-0.1</Value>
+    <Value>-0.2</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1079,7 +1215,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>0.1</Value>
+    <Value>0.2</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1201,6 +1337,142 @@
  </Cylinder>
   </Childs>
  </Frame>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP5\Hinge0</ID>
+  <Name>Frame</Name>
+  <Position>
+   <Y>
+    <Value>0.2</Value>
+   </Y>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
+  <ScaleValue>
+   <X>
+    <Value>0.01</Value>
+   </X>
+   <Y>
+    <Value>0.01</Value>
+   </Y>
+   <Z>
+    <Value>0.1</Value>
+   </Z>
+  </ScaleValue>
+  <OverrideColor>true</OverrideColor>
+  <MeshColor>
+   <X>
+    <Value>0.686274509803922</Value>
+   </X>
+   <Y>
+    <Value>0.929411764705882</Value>
+   </Y>
+   <Z>
+    <Value>0.929411764705882</Value>
+   </Z>
+  </MeshColor>
+  <Alpha>1.0</Alpha>
+  <MeshColorMultipliers>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </MeshColorMultipliers>
+  <MeshColorOffsets>
+  </MeshColorOffsets>
+  <Direct3DColorRange>true</Direct3DColorRange>
+  <SpecularColor>
+   <X>
+    <Value>0.5</Value>
+   </X>
+   <Y>
+    <Value>0.5</Value>
+   </Y>
+   <Z>
+    <Value>0.5</Value>
+   </Z>
+  </SpecularColor>
+  <EmissiveColor>
+  </EmissiveColor>
+  <ShininessPower>
+   <Value>15</Value>
+  </ShininessPower>
+  <OverrideQuality>false</OverrideQuality>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP5\Hinge0_Sub0</ID>
+  <Name>Cylinder</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <Value>1</Value>
+    </X>
+    <Z>
+     <Value>6.12323399573677e-17</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Cylinder>
+  </Childs>
+ </Frame>
   </Childs>
  </Frame>
  <Frame>
@@ -1225,11 +1497,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-    <Value>0.30000000000000004</Value>
+    <Value>0.5</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-    <Value>0.1</Value>
+    <Value>0.2</Value>
    </Z>
   </Position>
   <Orientation>
@@ -1657,11 +1929,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-    <Value>0.4</Value>
+    <Value>0.6</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-    <Value>0.1</Value>
+    <Value>0.2</Value>
    </Z>
   </Position>
   <Orientation>
@@ -1878,6 +2150,493 @@
    </Z>
   </ScaleValue>
   <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>Body5</ID>
+  <Name>M1</Name>
+  <Position>
+   <X>
+    <VariableName>Final_arm\M1\AbsH[1,4]</VariableName>
+    <Value>-0.04</Value>
+   </X>
+   <Y>
+    <VariableName>Final_arm\M1\AbsH[2,4]</VariableName>
+    <Value>0.0</Value>
+   </Y>
+   <Z>
+    <VariableName>Final_arm\M1\AbsH[3,4]</VariableName>
+    <Value>0.19999999999999987</Value>
+   </Z>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <VariableName>Final_arm\M1\AbsH[1,3]</VariableName>
+     <Value>-1.0</Value>
+    </X>
+    <Y>
+     <VariableName>Final_arm\M1\AbsH[2,3]</VariableName>
+     <Value>0.0</Value>
+    </Y>
+    <Z>
+     <VariableName>Final_arm\M1\AbsH[3,3]</VariableName>
+     <Value>3.391901413832837e-15</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <X>
+     <VariableName>Final_arm\M1\AbsH[1,2]</VariableName>
+     <Value>0.0</Value>
+    </X>
+    <Y>
+     <VariableName>Final_arm\M1\AbsH[2,2]</VariableName>
+     <Value>1.0</Value>
+    </Y>
+    <Z>
+     <VariableName>Final_arm\M1\AbsH[3,2]</VariableName>
+     <Value>0.0</Value>
+    </Z>
+   </YAxis>
+   <OrientationType>Matrix</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
+  <ScaleValue>
+   <X>
+    <Value>0.04</Value>
+   </X>
+   <Y>
+    <Value>0.04</Value>
+   </Y>
+   <Z>
+    <Value>0.05</Value>
+   </Z>
+  </ScaleValue>
+  <OverrideColor>true</OverrideColor>
+  <MeshColor>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>0.67843137254902</Value>
+   </Y>
+   <Z>
+    <Value>0.356862745098039</Value>
+   </Z>
+  </MeshColor>
+  <Alpha>1.0</Alpha>
+  <MeshColorMultipliers>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </MeshColorMultipliers>
+  <MeshColorOffsets>
+  </MeshColorOffsets>
+  <Direct3DColorRange>true</Direct3DColorRange>
+  <SpecularColor>
+   <X>
+    <Value>0.5</Value>
+   </X>
+   <Y>
+    <Value>0.5</Value>
+   </Y>
+   <Z>
+    <Value>0.5</Value>
+   </Z>
+  </SpecularColor>
+  <EmissiveColor>
+  </EmissiveColor>
+  <ShininessPower>
+   <Value>15</Value>
+  </ShininessPower>
+  <OverrideQuality>false</OverrideQuality>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>Body5_Sub0</ID>
+  <Name>Body</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Cylinder>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP4\Hinge1</ID>
+  <Name>Frame</Name>
+  <Position>
+   <X>
+    <Value>2.75335310107039e-16</Value>
+   </X>
+   <Z>
+    <Value>-0.04</Value>
+   </Z>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <Value>1</Value>
+    </X>
+    <Z>
+     <Value>3.39190141383284e-15</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP4\Hinge1_Sub0</ID>
+  <Name>Cylinder</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Frame>
+  </Childs>
+ </Frame>
+  </Childs>
+ </Frame>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>Body6</ID>
+  <Name>M2</Name>
+  <Position>
+   <X>
+    <VariableName>Final_arm\M2\AbsH[1,4]</VariableName>
+    <Value>-0.04</Value>
+   </X>
+   <Y>
+    <VariableName>Final_arm\M2\AbsH[2,4]</VariableName>
+    <Value>0.4</Value>
+   </Y>
+   <Z>
+    <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
+    <Value>0.2</Value>
+   </Z>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <VariableName>Final_arm\M2\AbsH[1,3]</VariableName>
+     <Value>-1.0</Value>
+    </X>
+    <Y>
+     <VariableName>Final_arm\M2\AbsH[2,3]</VariableName>
+     <Value>0.0</Value>
+    </Y>
+    <Z>
+     <VariableName>Final_arm\M2\AbsH[3,3]</VariableName>
+     <Value>6.123233995736766e-17</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <X>
+     <VariableName>Final_arm\M2\AbsH[1,2]</VariableName>
+     <Value>0.0</Value>
+    </X>
+    <Y>
+     <VariableName>Final_arm\M2\AbsH[2,2]</VariableName>
+     <Value>1.0</Value>
+    </Y>
+    <Z>
+     <VariableName>Final_arm\M2\AbsH[3,2]</VariableName>
+     <Value>0.0</Value>
+    </Z>
+   </YAxis>
+   <OrientationType>Matrix</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Cylinder>
+  <CircleElements>16</CircleElements>
+  <LowerRadius>0.5</LowerRadius>
+  <UpperRadius>0.5</UpperRadius>
+  <Height>1.0</Height>
+  <Closed>true</Closed>
+  <LowerClosed>true</LowerClosed>
+  <UpperClosed>true</UpperClosed>
+  <CenterInOrigin>true</CenterInOrigin>
+  <ShowInnerSide>false</ShowInnerSide>
+  <ShowOuterSide>true</ShowOuterSide>
+  <ScaleValue>
+   <X>
+    <Value>0.04</Value>
+   </X>
+   <Y>
+    <Value>0.04</Value>
+   </Y>
+   <Z>
+    <Value>0.05</Value>
+   </Z>
+  </ScaleValue>
+  <OverrideColor>true</OverrideColor>
+  <MeshColor>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>0.67843137254902</Value>
+   </Y>
+   <Z>
+    <Value>0.356862745098039</Value>
+   </Z>
+  </MeshColor>
+  <Alpha>1.0</Alpha>
+  <MeshColorMultipliers>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </MeshColorMultipliers>
+  <MeshColorOffsets>
+  </MeshColorOffsets>
+  <Direct3DColorRange>true</Direct3DColorRange>
+  <SpecularColor>
+   <X>
+    <Value>0.5</Value>
+   </X>
+   <Y>
+    <Value>0.5</Value>
+   </Y>
+   <Z>
+    <Value>0.5</Value>
+   </Z>
+  </SpecularColor>
+  <EmissiveColor>
+  </EmissiveColor>
+  <ShininessPower>
+   <Value>15</Value>
+  </ShininessPower>
+  <OverrideQuality>false</OverrideQuality>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>Body6_Sub0</ID>
+  <Name>Body</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Cylinder>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP5\Hinge1</ID>
+  <Name>Frame</Name>
+  <Position>
+   <Z>
+    <Value>-0.04</Value>
+   </Z>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <X>
+     <Value>1</Value>
+    </X>
+    <Z>
+     <Value>6.12323399573677e-17</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+  <Childs>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
+  <ID>KP5\Hinge1_Sub0</ID>
+  <Name>Cylinder</Name>
+  <Position>
+  </Position>
+  <Orientation>
+   <ZAxis>
+    <Z>
+     <Value>1</Value>
+    </Z>
+   </ZAxis>
+   <YAxis>
+    <Y>
+     <Value>1</Value>
+    </Y>
+   </YAxis>
+   <OrientationType>Direct3D</OrientationType>
+  </Orientation>
+  <LockX>true</LockX>
+  <LockY>true</LockY>
+  <LockZ>true</LockZ>
+  <LockXPitch>true</LockXPitch>
+  <LockYYaw>true</LockYYaw>
+  <LockZRoll>true</LockZRoll>
+ </Frame>
+  </Childs>
+ </Frame>
+  </Childs>
+ </Frame>
+ <Frame>
+  <ScaleValue>
+   <X>
+    <Value>1</Value>
+   </X>
+   <Y>
+    <Value>1</Value>
+   </Y>
+   <Z>
+    <Value>1</Value>
+   </Z>
+  </ScaleValue>
+  <ShowReferenceFrame>false</ShowReferenceFrame>
   <ID>World</ID>
   <Name>World</Name>
   <Position>
@@ -1977,36 +2736,36 @@
    <Name>Camera</Name>
    <Position>
     <X>
-     <Value>1.65483097429868</Value>
+     <Value>-1.22570237549827</Value>
     </X>
     <Y>
-     <Value>0.129202707306702</Value>
+     <Value>0.262388143515783</Value>
     </Y>
     <Z>
-     <Value>-0.626470158236207</Value>
+     <Value>0.787287638522487</Value>
     </Z>
    </Position>
    <Orientation>
     <ZAxis>
      <X>
-      <Value>-0.932743504308367</Value>
+      <Value>0.828060935149212</Value>
      </X>
      <Y>
-      <Value>-0.0728249514701385</Value>
+      <Value>-0.177264364744812</Value>
      </Y>
      <Z>
-      <Value>0.353109163877008</Value>
+      <Value>-0.531876332121885</Value>
      </Z>
     </ZAxis>
     <YAxis>
      <X>
-      <Value>0.352037781978968</Value>
+      <Value>0.520092729479302</Value>
      </X>
      <Y>
-      <Value>0.0274857294883138</Value>
+      <Value>-0.11133710603634</Value>
      </Y>
      <Z>
-      <Value>0.935582136818475</Value>
+      <Value>0.846822060153266</Value>
      </Z>
     </YAxis>
     <OrientationType>Direct3D</OrientationType>

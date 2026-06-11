@@ -158,37 +158,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>1.65483097429868</Value>
+       <Value>-1.22570237549827</Value>
       </X>
       <Y>
-       <Value>0.129202707306702</Value>
+       <Value>0.262388143515783</Value>
       </Y>
       <Z>
-       <Value>-0.626470158236207</Value>
+       <Value>0.787287638522487</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>-0.932743504308367</Value>
+         <Value>0.828060935149212</Value>
         </X>
         <Y>
-         <Value>-0.0728249514701385</Value>
+         <Value>-0.177264364744812</Value>
         </Y>
         <Z>
-         <Value>0.353109163877008</Value>
+         <Value>-0.531876332121885</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>0.352037781978968</Value>
+         <Value>0.520092729479302</Value>
         </X>
         <Y>
-         <Value>0.0274857294883138</Value>
+         <Value>-0.11133710603634</Value>
         </Y>
         <Z>
-         <Value>0.935582136818475</Value>
+         <Value>0.846822060153266</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -219,7 +219,7 @@
     </Camera3D>
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
-     <ID>Body5</ID>
+     <ID>Body7</ID>
      <Name>World</Name>
      <Orientation>
       <OriBryant>
@@ -233,7 +233,7 @@
      <LockZRoll>true</LockZRoll>
      <ChildObjects3D>
       <Frame3D>
-       <ID>KP4\Hinge0</ID>
+       <ID>KP6\Hinge0</ID>
        <Name>Reference Frame</Name>
        <Orientation>
         <OriBryant>
@@ -247,7 +247,7 @@
        <LockZRoll>true</LockZRoll>
        <ChildObjects3D>
         <Frame3D>
-         <ID>KP4</ID>
+         <ID>KP6</ID>
          <Name>Reference Frame</Name>
          <Orientation>
           <OriBryant>
@@ -261,7 +261,7 @@
          <LockZRoll>true</LockZRoll>
          <ChildObjects3D>
           <Frame3D>
-           <ID>KP4\Hinge1</ID>
+           <ID>KP6\Hinge1</ID>
            <Name>Reference Frame</Name>
            <Orientation>
             <OriBryant>
@@ -533,7 +533,7 @@
                      <Name>RotHinge</Name>
                      <Position>
                       <Z>
-                       <Value>0.05</Value>
+                       <Value>0.1</Value>
                       </Z>
                      </Position>
                      <Orientation>
@@ -615,7 +615,7 @@
                        <Name>Frame</Name>
                        <Position>
                         <Z>
-                         <Value>0.05</Value>
+                         <Value>0.1</Value>
                         </Z>
                        </Position>
                        <Orientation>
@@ -808,7 +808,7 @@
                              <Name>Arm1</Name>
                              <Position>
                               <Y>
-                               <Value>0.1</Value>
+                               <Value>0.2</Value>
                               </Y>
                              </Position>
                              <Orientation>
@@ -895,7 +895,7 @@
                                <Name>Frame</Name>
                                <Position>
                                 <Y>
-                                 <Value>0.1</Value>
+                                 <Value>0.2</Value>
                                 </Y>
                                </Position>
                                <Orientation>
@@ -1878,6 +1878,466 @@
                                 </Frame3D>
                                </ChildObjects3D>
                               </Frame3D>
+                              <Frame3D>
+                               <ID>KP5\Hinge0</ID>
+                               <Name>Frame</Name>
+                               <Position>
+                                <Y>
+                                 <Value>0.2</Value>
+                                </Y>
+                               </Position>
+                               <Orientation>
+                                <OriBryant>
+                                </OriBryant>
+                               </Orientation>
+                               <LockX>true</LockX>
+                               <LockY>true</LockY>
+                               <LockZ>true</LockZ>
+                               <LockXPitch>true</LockXPitch>
+                               <LockYYaw>true</LockYYaw>
+                               <LockZRoll>true</LockZRoll>
+                               <ChildObjects3D>
+                                <Cylinder3D>
+                                 <ID>KP5\Hinge0_Sub0</ID>
+                                 <Name>Cylinder</Name>
+                                 <Orientation>
+                                  <OriBryant>
+                                   <Angles>
+                                    <Y>
+                                     <Value>1.5707963267949</Value>
+                                    </Y>
+                                   </Angles>
+                                  </OriBryant>
+                                 </Orientation>
+                                 <LockX>true</LockX>
+                                 <LockY>true</LockY>
+                                 <LockZ>true</LockZ>
+                                 <LockXPitch>true</LockXPitch>
+                                 <LockYYaw>true</LockYYaw>
+                                 <LockZRoll>true</LockZRoll>
+                                 <ChildObjects3D>
+                                 </ChildObjects3D>
+                                 <MeshScale>
+                                  <X>
+                                   <Value>0.01</Value>
+                                  </X>
+                                  <Y>
+                                   <Value>0.01</Value>
+                                  </Y>
+                                  <Z>
+                                   <Value>0.1</Value>
+                                  </Z>
+                                 </MeshScale>
+                                 <ColorValue>
+                                  <Red>
+                                   <Value>0.686274509803922</Value>
+                                  </Red>
+                                  <Green>
+                                   <Value>0.929411764705882</Value>
+                                  </Green>
+                                  <Blue>
+                                   <Value>0.929411764705882</Value>
+                                  </Blue>
+                                  <Alpha>
+                                   <Value>1</Value>
+                                  </Alpha>
+                                 </ColorValue>
+                                 <SpecularColor>
+                                  <X>
+                                   <Value>0.5</Value>
+                                  </X>
+                                  <Y>
+                                   <Value>0.5</Value>
+                                  </Y>
+                                  <Z>
+                                   <Value>0.5</Value>
+                                  </Z>
+                                 </SpecularColor>
+                                 <EmissiveColor>
+                                 </EmissiveColor>
+                                 <ShininessPower>
+                                  <Value>15</Value>
+                                 </ShininessPower>
+                                 <Accuracy>16</Accuracy>
+                                 <LowerRadius>0.5</LowerRadius>
+                                 <UpperRadius>0.5</UpperRadius>
+                                 <Height>1</Height>
+                                 <ShowInnerSide>false</ShowInnerSide>
+                                 <ShowOuterSide>true</ShowOuterSide>
+                                </Cylinder3D>
+                                <Frame3D>
+                                 <ID>KP5</ID>
+                                 <Name>Frame</Name>
+                                 <Orientation>
+                                  <OriBryant>
+                                  </OriBryant>
+                                 </Orientation>
+                                 <LockX>true</LockX>
+                                 <LockY>true</LockY>
+                                 <LockZ>true</LockZ>
+                                 <LockXPitch>true</LockXPitch>
+                                 <LockYYaw>true</LockYYaw>
+                                 <LockZRoll>true</LockZRoll>
+                                 <ChildObjects3D>
+                                  <Frame3D>
+                                   <ID>KP5\Hinge1</ID>
+                                   <Name>Frame</Name>
+                                   <Orientation>
+                                    <OriBryant>
+                                    </OriBryant>
+                                   </Orientation>
+                                   <LockX>true</LockX>
+                                   <LockY>true</LockY>
+                                   <LockZ>true</LockZ>
+                                   <LockXPitch>true</LockXPitch>
+                                   <LockYYaw>true</LockYYaw>
+                                   <LockZRoll>true</LockZRoll>
+                                   <ChildObjects3D>
+                                    <Frame3D>
+                                     <ID>KP5\Hinge1_Sub0</ID>
+                                     <Name>Cylinder</Name>
+                                     <Orientation>
+                                      <OriBryant>
+                                      </OriBryant>
+                                     </Orientation>
+                                     <LockX>true</LockX>
+                                     <LockY>true</LockY>
+                                     <LockZ>true</LockZ>
+                                     <LockXPitch>true</LockXPitch>
+                                     <LockYYaw>true</LockYYaw>
+                                     <LockZRoll>true</LockZRoll>
+                                     <ChildObjects3D>
+                                     </ChildObjects3D>
+                                    </Frame3D>
+                                    <Frame3D>
+                                     <ShowCOMOnSelection>true</ShowCOMOnSelection>
+                                     <ID>Body6</ID>
+                                     <Name>M2</Name>
+                                     <Position>
+                                      <X>
+                                       <Value>-0.04</Value>
+                                      </X>
+                                      <Z>
+                                       <Value>2.44929359829471e-18</Value>
+                                      </Z>
+                                     </Position>
+                                     <Orientation>
+                                      <OriBryant>
+                                       <Angles>
+                    <Y>
+                     <Value>-1.5707963267949</Value>
+                    </Y>
+                                       </Angles>
+                                      </OriBryant>
+                                     </Orientation>
+                                     <LockX>true</LockX>
+                                     <LockY>true</LockY>
+                                     <LockZ>true</LockZ>
+                                     <LockXPitch>true</LockXPitch>
+                                     <LockYYaw>true</LockYYaw>
+                                     <LockZRoll>true</LockZRoll>
+                                     <ChildObjects3D>
+                                      <Cylinder3D>
+                                       <ID>Body6_Sub0</ID>
+                                       <Name>Body</Name>
+                                       <Orientation>
+                    <OriBryant>
+                    </OriBryant>
+                                       </Orientation>
+                                       <LockX>true</LockX>
+                                       <LockY>true</LockY>
+                                       <LockZ>true</LockZ>
+                                       <LockXPitch>true</LockXPitch>
+                                       <LockYYaw>true</LockYYaw>
+                                       <LockZRoll>true</LockZRoll>
+                                       <ChildObjects3D>
+                                       </ChildObjects3D>
+                                       <MeshScale>
+                    <X>
+                     <Value>0.04</Value>
+                    </X>
+                    <Y>
+                     <Value>0.04</Value>
+                    </Y>
+                    <Z>
+                     <Value>0.05</Value>
+                    </Z>
+                                       </MeshScale>
+                                       <ColorValue>
+                    <Red>
+                     <Value>1</Value>
+                    </Red>
+                    <Green>
+                     <Value>0.67843137254902</Value>
+                    </Green>
+                    <Blue>
+                     <Value>0.356862745098039</Value>
+                    </Blue>
+                    <Alpha>
+                     <Value>1</Value>
+                    </Alpha>
+                                       </ColorValue>
+                                       <SpecularColor>
+                    <X>
+                     <Value>0.5</Value>
+                    </X>
+                    <Y>
+                     <Value>0.5</Value>
+                    </Y>
+                    <Z>
+                     <Value>0.5</Value>
+                    </Z>
+                                       </SpecularColor>
+                                       <EmissiveColor>
+                                       </EmissiveColor>
+                                       <ShininessPower>
+                    <Value>15</Value>
+                                       </ShininessPower>
+                                       <Accuracy>16</Accuracy>
+                                       <LowerRadius>0.5</LowerRadius>
+                                       <UpperRadius>0.5</UpperRadius>
+                                       <Height>1</Height>
+                                       <ShowInnerSide>false</ShowInnerSide>
+                                       <ShowOuterSide>true</ShowOuterSide>
+                                      </Cylinder3D>
+                                     </ChildObjects3D>
+                                    </Frame3D>
+                                   </ChildObjects3D>
+                                  </Frame3D>
+                                 </ChildObjects3D>
+                                </Frame3D>
+                               </ChildObjects3D>
+                              </Frame3D>
+                             </ChildObjects3D>
+                            </Frame3D>
+                           </ChildObjects3D>
+                          </Frame3D>
+                         </ChildObjects3D>
+                        </Frame3D>
+                       </ChildObjects3D>
+                      </Frame3D>
+                      <Frame3D>
+                       <ID>KP4\Hinge0</ID>
+                       <Name>Frame</Name>
+                       <Position>
+                        <Z>
+                         <Value>0.1</Value>
+                        </Z>
+                       </Position>
+                       <Orientation>
+                        <OriBryant>
+                        </OriBryant>
+                       </Orientation>
+                       <LockX>true</LockX>
+                       <LockY>true</LockY>
+                       <LockZ>true</LockZ>
+                       <LockXPitch>true</LockXPitch>
+                       <LockYYaw>true</LockYYaw>
+                       <LockZRoll>true</LockZRoll>
+                       <ChildObjects3D>
+                        <Cylinder3D>
+                         <ID>KP4\Hinge0_Sub0</ID>
+                         <Name>Cylinder</Name>
+                         <Orientation>
+                          <OriBryant>
+                           <Angles>
+                            <Y>
+                             <Value>1.5707963267949</Value>
+                            </Y>
+                           </Angles>
+                          </OriBryant>
+                         </Orientation>
+                         <LockX>true</LockX>
+                         <LockY>true</LockY>
+                         <LockZ>true</LockZ>
+                         <LockXPitch>true</LockXPitch>
+                         <LockYYaw>true</LockYYaw>
+                         <LockZRoll>true</LockZRoll>
+                         <ChildObjects3D>
+                         </ChildObjects3D>
+                         <MeshScale>
+                          <X>
+                           <Value>0.01</Value>
+                          </X>
+                          <Y>
+                           <Value>0.01</Value>
+                          </Y>
+                          <Z>
+                           <Value>0.1</Value>
+                          </Z>
+                         </MeshScale>
+                         <ColorValue>
+                          <Red>
+                           <Value>0.686274509803922</Value>
+                          </Red>
+                          <Green>
+                           <Value>0.925490196078431</Value>
+                          </Green>
+                          <Blue>
+                           <Value>0.925490196078431</Value>
+                          </Blue>
+                          <Alpha>
+                           <Value>1</Value>
+                          </Alpha>
+                         </ColorValue>
+                         <SpecularColor>
+                          <X>
+                           <Value>0.5</Value>
+                          </X>
+                          <Y>
+                           <Value>0.5</Value>
+                          </Y>
+                          <Z>
+                           <Value>0.5</Value>
+                          </Z>
+                         </SpecularColor>
+                         <EmissiveColor>
+                         </EmissiveColor>
+                         <ShininessPower>
+                          <Value>15</Value>
+                         </ShininessPower>
+                         <Accuracy>16</Accuracy>
+                         <LowerRadius>0.5</LowerRadius>
+                         <UpperRadius>0.5</UpperRadius>
+                         <Height>1</Height>
+                         <ShowInnerSide>false</ShowInnerSide>
+                         <ShowOuterSide>true</ShowOuterSide>
+                        </Cylinder3D>
+                        <Frame3D>
+                         <ID>KP4</ID>
+                         <Name>Frame</Name>
+                         <Orientation>
+                          <OriBryant>
+                          </OriBryant>
+                         </Orientation>
+                         <LockX>true</LockX>
+                         <LockY>true</LockY>
+                         <LockZ>true</LockZ>
+                         <LockXPitch>true</LockXPitch>
+                         <LockYYaw>true</LockYYaw>
+                         <LockZRoll>true</LockZRoll>
+                         <ChildObjects3D>
+                          <Frame3D>
+                           <ID>KP4\Hinge1</ID>
+                           <Name>Frame</Name>
+                           <Orientation>
+                            <OriBryant>
+                            </OriBryant>
+                           </Orientation>
+                           <LockX>true</LockX>
+                           <LockY>true</LockY>
+                           <LockZ>true</LockZ>
+                           <LockXPitch>true</LockXPitch>
+                           <LockYYaw>true</LockYYaw>
+                           <LockZRoll>true</LockZRoll>
+                           <ChildObjects3D>
+                            <Frame3D>
+                             <ID>KP4\Hinge1_Sub0</ID>
+                             <Name>Cylinder</Name>
+                             <Orientation>
+                              <OriBryant>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                             </ChildObjects3D>
+                            </Frame3D>
+                            <Frame3D>
+                             <ShowCOMOnSelection>true</ShowCOMOnSelection>
+                             <ID>Body5</ID>
+                             <Name>M1</Name>
+                             <Position>
+                              <X>
+                               <Value>-0.04</Value>
+                              </X>
+                              <Z>
+                               <Value>-1.39659253553725e-16</Value>
+                              </Z>
+                             </Position>
+                             <Orientation>
+                              <OriBryant>
+                               <Angles>
+                                <Y>
+                                 <Value>-1.57079632679489</Value>
+                                </Y>
+                               </Angles>
+                              </OriBryant>
+                             </Orientation>
+                             <LockX>true</LockX>
+                             <LockY>true</LockY>
+                             <LockZ>true</LockZ>
+                             <LockXPitch>true</LockXPitch>
+                             <LockYYaw>true</LockYYaw>
+                             <LockZRoll>true</LockZRoll>
+                             <ChildObjects3D>
+                              <Cylinder3D>
+                               <ID>Body5_Sub0</ID>
+                               <Name>Body</Name>
+                               <Orientation>
+                                <OriBryant>
+                                </OriBryant>
+                               </Orientation>
+                               <LockX>true</LockX>
+                               <LockY>true</LockY>
+                               <LockZ>true</LockZ>
+                               <LockXPitch>true</LockXPitch>
+                               <LockYYaw>true</LockYYaw>
+                               <LockZRoll>true</LockZRoll>
+                               <ChildObjects3D>
+                               </ChildObjects3D>
+                               <MeshScale>
+                                <X>
+                                 <Value>0.04</Value>
+                                </X>
+                                <Y>
+                                 <Value>0.04</Value>
+                                </Y>
+                                <Z>
+                                 <Value>0.05</Value>
+                                </Z>
+                               </MeshScale>
+                               <ColorValue>
+                                <Red>
+                                 <Value>1</Value>
+                                </Red>
+                                <Green>
+                                 <Value>0.67843137254902</Value>
+                                </Green>
+                                <Blue>
+                                 <Value>0.356862745098039</Value>
+                                </Blue>
+                                <Alpha>
+                                 <Value>1</Value>
+                                </Alpha>
+                               </ColorValue>
+                               <SpecularColor>
+                                <X>
+                                 <Value>0.5</Value>
+                                </X>
+                                <Y>
+                                 <Value>0.5</Value>
+                                </Y>
+                                <Z>
+                                 <Value>0.5</Value>
+                                </Z>
+                               </SpecularColor>
+                               <EmissiveColor>
+                               </EmissiveColor>
+                               <ShininessPower>
+                                <Value>15</Value>
+                               </ShininessPower>
+                               <Accuracy>16</Accuracy>
+                               <LowerRadius>0.5</LowerRadius>
+                               <UpperRadius>0.5</UpperRadius>
+                               <Height>1</Height>
+                               <ShowInnerSide>false</ShowInnerSide>
+                               <ShowOuterSide>true</ShowOuterSide>
+                              </Cylinder3D>
                              </ChildObjects3D>
                             </Frame3D>
                            </ChildObjects3D>
@@ -1913,12 +2373,12 @@
     <ExpressionVariable>
      <Name>l1</Name>
      <Type>1</Type>
-     <Value>0.1</Value>
+     <Value>0.2</Value>
     </ExpressionVariable>
     <ExpressionVariable>
      <Name>l2</Name>
      <Type>1</Type>
-     <Value>0.2</Value>
+     <Value>0.4</Value>
     </ExpressionVariable>
     <ExpressionVariable>
      <Name>l3</Name>
@@ -1939,6 +2399,21 @@
      <Name>p</Name>
      <Type>1</Type>
      <Value>2700.0</Value>
+    </ExpressionVariable>
+    <ExpressionVariable>
+     <Name>Maxon_m</Name>
+     <Type>1</Type>
+     <Value>0.5</Value>
+    </ExpressionVariable>
+    <ExpressionVariable>
+     <Name>Maxon_l</Name>
+     <Type>1</Type>
+     <Value>0.11</Value>
+    </ExpressionVariable>
+    <ExpressionVariable>
+     <Name>Maxon_r</Name>
+     <Type>1</Type>
+     <Value>0.015</Value>
     </ExpressionVariable>
    </ExpressionVariables>
   </Expressions>
@@ -1977,10 +2452,10 @@
     <Name>RotHinge</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>4.89720298570915e-4</Ixx>
-     <Iyy>4.89720298570915e-4</Iyy>
-     <Izz>4.492968368485526e-4</Izz>
-     <Mass>0.3180862561759664</Mass>
+     <Ixx>0.002569871878021663</Ixx>
+     <Iyy>0.002569871878021663</Iyy>
+     <Izz>8.985936736971052e-4</Izz>
+     <Mass>0.6361725123519328</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l1*p</MassExpression>
      <IxxExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IyyExpression>
@@ -1995,10 +2470,10 @@
     <Name>Arm1</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.002569871878021663</Ixx>
-     <Iyy>8.985936736971052e-4</Iyy>
-     <Izz>0.002569871878021663</Izz>
-     <Mass>0.6361725123519328</Mass>
+     <Ixx>0.017863194003081985</Ixx>
+     <Iyy>0.0017971873473942104</Iyy>
+     <Izz>0.017863194003081985</Izz>
+     <Mass>1.2723450247038657</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l2*p</MassExpression>
      <IxxExpression>pi*l2*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l2^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>(1/2)*pi*l2*p*(r_ext^4 - r_int^4)</IyyExpression>
@@ -2042,6 +2517,42 @@
    </Body>
    <Body>
     <ID>Body5</ID>
+    <Name>M1</Name>
+    <Description></Description>
+    <Inertia>
+     <Ixx>5.322916666666667e-4</Ixx>
+     <Iyy>5.322916666666667e-4</Iyy>
+     <Izz>5.625e-5</Izz>
+     <Mass>0.5</Mass>
+     <MassExpression>Maxon_m</MassExpression>
+     <IxxExpression>(1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2</IxxExpression>
+     <IyyExpression>(1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2</IyyExpression>
+     <IzzExpression>(1/2)*Maxon_m*Maxon_r^2</IzzExpression>
+     <GenerateGlobalParam>false</GenerateGlobalParam>
+    </Inertia>
+    <IsFixedWorld>false</IsFixedWorld>
+    <BodyPosFixed>false</BodyPosFixed>
+   </Body>
+   <Body>
+    <ID>Body6</ID>
+    <Name>M2</Name>
+    <Description></Description>
+    <Inertia>
+     <Ixx>5.322916666666667e-4</Ixx>
+     <Iyy>5.322916666666667e-4</Iyy>
+     <Izz>5.625e-5</Izz>
+     <Mass>0.5</Mass>
+     <MassExpression>Maxon_m</MassExpression>
+     <IxxExpression>(1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2</IxxExpression>
+     <IyyExpression>(1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2</IyyExpression>
+     <IzzExpression>(1/2)*Maxon_m*Maxon_r^2</IzzExpression>
+     <GenerateGlobalParam>false</GenerateGlobalParam>
+    </Inertia>
+    <IsFixedWorld>false</IsFixedWorld>
+    <BodyPosFixed>false</BodyPosFixed>
+   </Body>
+   <Body>
+    <ID>Body7</ID>
     <Name>World</Name>
     <Description></Description>
     <Inertia>
@@ -2062,7 +2573,7 @@
     </Orientation>
    </Body>
    <AutoAdded>
-    <BodyID>Body5</BodyID>
+    <BodyID>Body7</BodyID>
    </AutoAdded>
   </Bodies>
   <KinematicPairs>
@@ -2094,7 +2605,7 @@
        <Position>
         <Z>
          <VariableName>-l1/2</VariableName>
-         <Value>-0.05</Value>
+         <Value>-0.1</Value>
         </Z>
        </Position>
        <Orientation>
@@ -2135,7 +2646,7 @@
        <Position>
         <Z>
          <VariableName>l1/2</VariableName>
-         <Value>0.05</Value>
+         <Value>0.1</Value>
         </Z>
        </Position>
        <Orientation>
@@ -2154,7 +2665,7 @@
        <Position>
         <Y>
          <VariableName>-l2/2</VariableName>
-         <Value>-0.1</Value>
+         <Value>-0.2</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2195,7 +2706,7 @@
        <Position>
         <Y>
          <VariableName>l2/2</VariableName>
-         <Value>0.1</Value>
+         <Value>0.2</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2299,12 +2810,138 @@
    </Joint3D>
    <Joint3D>
     <ID>KP4</ID>
-    <Name>BaseWeld</Name>
+    <Name>RotHinge_M1</Name>
     <Description></Description>
     <HingePointConnections>
      <HingePoints>
       <HingePoint>
        <ID>KP4\Hinge0</ID>
+       <Name>ConnectionPoint1</Name>
+       <Description></Description>
+       <Position>
+        <Z>
+         <VariableName>l1/2</VariableName>
+         <Value>0.1</Value>
+        </Z>
+       </Position>
+       <Orientation>
+        <OriBryant>
+        </OriBryant>
+       </Orientation>
+       <GeneratePort>false</GeneratePort>
+       <OutputAbsHMatrix>false</OutputAbsHMatrix>
+       <BodyID>Body1</BodyID>
+       <KPID>KP4</KPID>
+      </HingePoint>
+      <HingePoint>
+       <ID>KP4\Hinge1</ID>
+       <Name>ConnectionPoint2</Name>
+       <Description></Description>
+       <Position>
+        <Z>
+         <Value>-0.04</Value>
+        </Z>
+       </Position>
+       <Orientation>
+        <OriBryant>
+         <Angles>
+          <Y>
+           <Value>1.5707963267949</Value>
+          </Y>
+         </Angles>
+        </OriBryant>
+       </Orientation>
+       <GeneratePort>false</GeneratePort>
+       <OutputAbsHMatrix>false</OutputAbsHMatrix>
+       <BodyID>Body5</BodyID>
+       <KPID>KP4</KPID>
+      </HingePoint>
+     </HingePoints>
+    </HingePointConnections>
+    <UserDirection>true</UserDirection>
+    <JointType>Weld</JointType>
+    <MoveAxis1>0</MoveAxis1>
+    <MoveAxis2>0</MoveAxis2>
+    <ConstraintJoint>false</ConstraintJoint>
+    <UserConstraint>false</UserConstraint>
+    <GeneratePort>false</GeneratePort>
+    <OutputPosition>false</OutputPosition>
+    <OutputVelocity>false</OutputVelocity>
+    <OutputConstraintForces>false</OutputConstraintForces>
+    <OverrideConstraintParameter>false</OverrideConstraintParameter>
+    <InitValLocked>false</InitValLocked>
+   </Joint3D>
+   <Joint3D>
+    <ID>KP5</ID>
+    <Name>Arm2_M2</Name>
+    <Description></Description>
+    <HingePointConnections>
+     <HingePoints>
+      <HingePoint>
+       <ID>KP5\Hinge0</ID>
+       <Name>ConnectionPoint1</Name>
+       <Description></Description>
+       <Position>
+        <Y>
+         <VariableName>l2/2</VariableName>
+         <Value>0.2</Value>
+        </Y>
+       </Position>
+       <Orientation>
+        <OriBryant>
+        </OriBryant>
+       </Orientation>
+       <GeneratePort>false</GeneratePort>
+       <OutputAbsHMatrix>false</OutputAbsHMatrix>
+       <BodyID>Body2</BodyID>
+       <KPID>KP5</KPID>
+      </HingePoint>
+      <HingePoint>
+       <ID>KP5\Hinge1</ID>
+       <Name>ConnectionPoint2</Name>
+       <Description></Description>
+       <Position>
+        <Z>
+         <Value>-0.04</Value>
+        </Z>
+       </Position>
+       <Orientation>
+        <OriBryant>
+         <Angles>
+          <Y>
+           <Value>1.5707963267949</Value>
+          </Y>
+         </Angles>
+        </OriBryant>
+       </Orientation>
+       <GeneratePort>false</GeneratePort>
+       <OutputAbsHMatrix>false</OutputAbsHMatrix>
+       <BodyID>Body6</BodyID>
+       <KPID>KP5</KPID>
+      </HingePoint>
+     </HingePoints>
+    </HingePointConnections>
+    <UserDirection>true</UserDirection>
+    <JointType>Weld</JointType>
+    <MoveAxis1>0</MoveAxis1>
+    <MoveAxis2>0</MoveAxis2>
+    <ConstraintJoint>false</ConstraintJoint>
+    <UserConstraint>false</UserConstraint>
+    <GeneratePort>false</GeneratePort>
+    <OutputPosition>false</OutputPosition>
+    <OutputVelocity>false</OutputVelocity>
+    <OutputConstraintForces>false</OutputConstraintForces>
+    <OverrideConstraintParameter>false</OverrideConstraintParameter>
+    <InitValLocked>false</InitValLocked>
+   </Joint3D>
+   <Joint3D>
+    <ID>KP6</ID>
+    <Name>BaseWeld</Name>
+    <Description></Description>
+    <HingePointConnections>
+     <HingePoints>
+      <HingePoint>
+       <ID>KP6\Hinge0</ID>
        <Name>ConnectionPoint1</Name>
        <Description></Description>
        <Position>
@@ -2315,11 +2952,11 @@
        </Orientation>
        <GeneratePort>false</GeneratePort>
        <OutputAbsHMatrix>false</OutputAbsHMatrix>
-       <BodyID>Body5</BodyID>
-       <KPID>KP4</KPID>
+       <BodyID>Body7</BodyID>
+       <KPID>KP6</KPID>
       </HingePoint>
       <HingePoint>
-       <ID>KP4\Hinge1</ID>
+       <ID>KP6\Hinge1</ID>
        <Name>ConnectionPoint2</Name>
        <Description></Description>
        <Position>
@@ -2331,7 +2968,7 @@
        <GeneratePort>false</GeneratePort>
        <OutputAbsHMatrix>false</OutputAbsHMatrix>
        <BodyID>Body0</BodyID>
-       <KPID>KP4</KPID>
+       <KPID>KP6</KPID>
       </HingePoint>
      </HingePoints>
     </HingePointConnections>
@@ -2349,7 +2986,7 @@
     <InitValLocked>false</InitValLocked>
    </Joint3D>
    <AutoAdded>
-    <JointID>KP4</JointID>
+    <JointID>KP6</JointID>
    </AutoAdded>
   </KinematicPairs>
   <Ports>
@@ -2387,8 +3024,8 @@
   <OutputThetaDotVector>false</OutputThetaDotVector>
   <OutputJMatrix>false</OutputJMatrix>
   <OutputCenterOfMass>false</OutputCenterOfMass>
-  <CodeOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\Final_arm.emx]]></CodeOutputFileName>
-  <SceneryOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\Final_arm.scn]]></SceneryOutputFileName>
+  <CodeOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.emx]]></CodeOutputFileName>
+  <SceneryOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.scn]]></SceneryOutputFileName>
   <CodeSubmodelName>Final_arm</CodeSubmodelName>
   <NoJointSceneryObjectGeneration>false</NoJointSceneryObjectGeneration>
   <GenerateSpringDampersForConstraintJoints>true</GenerateSpringDampersForConstraintJoints>
