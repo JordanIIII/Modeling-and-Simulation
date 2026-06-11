@@ -220,7 +220,7 @@
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body7</ID>
-     <Name>World</Name>
+     <Name>Reference Frame</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>
@@ -2018,14 +2018,14 @@
                                        <Value>-0.04</Value>
                                       </X>
                                       <Z>
-                                       <Value>2.44929359829471e-18</Value>
+                                       <Value>-1.39659253553725e-16</Value>
                                       </Z>
                                      </Position>
                                      <Orientation>
                                       <OriBryant>
                                        <Angles>
                     <Y>
-                     <Value>-1.5707963267949</Value>
+                     <Value>-1.57079632679489</Value>
                     </Y>
                                        </Angles>
                                       </OriBryant>

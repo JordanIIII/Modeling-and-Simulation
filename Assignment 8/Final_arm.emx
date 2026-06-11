@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.emx</LibraryPath>
-    <TimeStamp>2026-6-11 11:36:15</TimeStamp>
+    <TimeStamp>2026-6-11 15:47:49</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -1055,10 +1055,11 @@ parameters
 	real global r_int;
 	real global r_ext;
 	real global p;
+	real global Maxon_m;
 	
 	real global m[3] = [pi*(r_ext^2-r_int^2)*l1*p;pi*(r_ext^2-r_int^2)*l2*p;pi*(r_ext^2-r_int^2)*l3*p];
-	real K_imp[3,3] = [30,0,0; 0,30,0; 0,0,30];
-	real b_imp[3,3] = [5,0,0; 0,5,0; 0,0,5];
+	real K_imp[3,3] = [40,0,0; 0,40,0; 0,0,40];
+	real b_imp[3,3] = [8,0,0; 0,8,0; 0,0,8];
 	
 variables
 	real J[3,3];  // Jacobian
@@ -1090,7 +1091,7 @@ equations
 	
 	g = 	[	    			
 				0;    			
-				m[2]*grav*L[2]/2*cos(q[2]) + m[3]*grav*(L[2]*cos(q[2]) + L[3]/2*cos(q[2] + q[3]));    			
+				m[2]*grav*L[2]/2*cos(q[2]) + m[3]*grav*(L[2]*cos(q[2]) + L[3]/2*cos(q[2] + q[3])) + Maxon_m*grav*L[2]*cos(q[2]);    			
 				m[3]*grav*L[3]/2*cos(q[2] + q[3])
 			];
 			
@@ -1207,7 +1208,7 @@ equations
 	p1.e = p2.e;
 	q = int (p1.f);
 implementation_end;
-      MaxonMotor 252 235.5
+      MaxonMotor 268 235.5
        description '<Information>
   <Description>
     <Version>5.1</Version>
@@ -1570,8 +1571,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 50.0 {};			// Proportional gain
-	real tauI = 1 {s};		// Integral time constant: tauI > 0
+	real kp = 2.0 {};			// Proportional gain
+	real tauI = 0.1 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -1775,7 +1776,7 @@ equations
        end;
        implementation eq
 parameters
-	real kp = 10.0 {};			// Proportional gain
+	real kp = 1.0 {};			// Proportional gain
 	real tauD = 1 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
 variables
@@ -2444,8 +2445,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 50.0 {};			// Proportional gain
-	real tauI = 1 {s};		// Integral time constant: tauI > 0
+	real kp = 2.0 {};			// Proportional gain
+	real tauI = 0.1 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -2649,7 +2650,7 @@ equations
        end;
        implementation eq
 parameters
-	real kp = 10.0 {};			// Proportional gain
+	real kp = 1.0 {};			// Proportional gain
 	real tauD = 1 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
 variables
@@ -2955,7 +2956,7 @@ equations
 	p1.e = p2.e;
 	q = int (p1.f);
 implementation_end;
-      MaxonMotor 252 235.5
+      MaxonMotor 276 243.5
        description '<Information>
   <Description>
     <Version>5.1</Version>
@@ -3318,8 +3319,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 50.0 {};			// Proportional gain
-	real tauI = 1 {s};		// Integral time constant: tauI > 0
+	real kp = 2.0 {};			// Proportional gain
+	real tauI = 0.1 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -3523,7 +3524,7 @@ equations
        end;
        implementation eq
 parameters
-	real kp = 10.0 {};			// Proportional gain
+	real kp = 1.0 {};			// Proportional gain
 	real tauD = 1 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
 variables
@@ -6774,11 +6775,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>Final_arm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>-0.2282641977071762</Value>
+             <Value>-0.21526651084423065</Value>
             </X>
             <Y>
              <VariableName>Final_arm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9735992550849915</Value>
+             <Value>0.976555347442627</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\RotHinge\AbsH[3,2]</VariableName>
@@ -7186,44 +7187,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm1\AbsH[1,4]</VariableName>
-            <Value>-0.035519840882331774</Value>
+            <Value>-0.041793707386783785</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-            <Value>0.15150027772483413</Value>
+            <Value>0.18959692778704607</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-            <Value>0.07435762357790285</Value>
+            <Value>0.15197614138179294</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,3]</VariableName>
-             <Value>-0.14339828491210938</Value>
+             <Value>-0.051689643412828445</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.6116266250610352</Value>
+             <Value>0.2344897985458374</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.7780423164367676</Value>
+             <Value>0.9707434177398682</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,2]</VariableName>
-             <Value>-0.1775992065668106</Value>
+             <Value>-0.20896854996681213</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.7575013637542725</Value>
+             <Value>0.9479846954345703</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.6282119154930115</Value>
+             <Value>-0.2401193231344223</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -7636,44 +7637,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm2\AbsH[1,4]</VariableName>
-            <Value>-0.07833479013235194</Value>
+            <Value>-0.08540234775735467</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-            <Value>0.3341158678013997</Value>
+            <Value>0.3874272892506227</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-            <Value>0.04347082077107052</Value>
+            <Value>0.20359623184308862</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,3]</VariableName>
-             <Value>0.21629305183887482</Value>
+             <Value>0.2145000398159027</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9225395321846008</Value>
+             <Value>-0.9730783104896545</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.31959056854248047</Value>
+             <Value>0.08431097865104675</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,2]</VariableName>
-             <Value>-0.07295109331607819</Value>
+             <Value>-0.018149331212043762</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.3111531436443329</Value>
+             <Value>0.08233434706926346</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9475557804107666</Value>
+             <Value>0.996439516544342</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -8074,44 +8075,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\EE\AbsH[1,4]</VariableName>
-            <Value>-0.08562989850004032</Value>
+            <Value>-0.08721728074114177</Value>
            </X>
            <Y>
             <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-            <Value>0.3652311801531311</Value>
+            <Value>0.39566072292715326</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-            <Value>0.13822639438633536</Value>
+            <Value>0.30324018092259136</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,3]</VariableName>
-             <Value>0.21629305183887482</Value>
+             <Value>0.2145000398159027</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9225395321846008</Value>
+             <Value>-0.9730783104896545</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,3]</VariableName>
-             <Value>0.31959056854248047</Value>
+             <Value>0.08431097865104675</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,2]</VariableName>
-             <Value>-0.07295109331607819</Value>
+             <Value>-0.018149331212043762</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,2]</VariableName>
-             <Value>0.3111531436443329</Value>
+             <Value>0.08233434706926346</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9475557804107666</Value>
+             <Value>0.996439516544342</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -8876,11 +8877,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>Final_arm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>-0.2282641977071762</Value>
+             <Value>-0.21526651084423065</Value>
             </X>
             <Y>
              <VariableName>Final_arm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9735992550849915</Value>
+             <Value>0.976555347442627</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\RotHinge\AbsH[3,2]</VariableName>
@@ -9426,44 +9427,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm1\AbsH[1,4]</VariableName>
-            <Value>-0.035519840882331774</Value>
+            <Value>-0.041793707386783785</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-            <Value>0.15150027772483413</Value>
+            <Value>0.18959692778704607</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-            <Value>0.07435762357790285</Value>
+            <Value>0.15197614138179294</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,3]</VariableName>
-             <Value>-0.14339828491210938</Value>
+             <Value>-0.051689643412828445</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.6116266250610352</Value>
+             <Value>0.2344897985458374</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.7780423164367676</Value>
+             <Value>0.9707434177398682</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,2]</VariableName>
-             <Value>-0.1775992065668106</Value>
+             <Value>-0.20896854996681213</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.7575013637542725</Value>
+             <Value>0.9479846954345703</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.6282119154930115</Value>
+             <Value>-0.2401193231344223</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -10014,44 +10015,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm2\AbsH[1,4]</VariableName>
-            <Value>-0.07833479013235194</Value>
+            <Value>-0.08540234775735467</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-            <Value>0.3341158678013997</Value>
+            <Value>0.3874272892506227</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-            <Value>0.04347082077107052</Value>
+            <Value>0.20359623184308862</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,3]</VariableName>
-             <Value>0.21629305183887482</Value>
+             <Value>0.2145000398159027</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9225395321846008</Value>
+             <Value>-0.9730783104896545</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.31959056854248047</Value>
+             <Value>0.08431097865104675</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,2]</VariableName>
-             <Value>-0.07295109331607819</Value>
+             <Value>-0.018149331212043762</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.3111531436443329</Value>
+             <Value>0.08233434706926346</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9475557804107666</Value>
+             <Value>0.996439516544342</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -10452,44 +10453,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\EE\AbsH[1,4]</VariableName>
-            <Value>-0.08562989850004032</Value>
+            <Value>-0.08721728074114177</Value>
            </X>
            <Y>
             <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-            <Value>0.3652311801531311</Value>
+            <Value>0.39566072292715326</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-            <Value>0.13822639438633536</Value>
+            <Value>0.30324018092259136</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,3]</VariableName>
-             <Value>0.21629305183887482</Value>
+             <Value>0.2145000398159027</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9225395321846008</Value>
+             <Value>-0.9730783104896545</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,3]</VariableName>
-             <Value>0.31959056854248047</Value>
+             <Value>0.08431097865104675</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,2]</VariableName>
-             <Value>-0.07295109331607819</Value>
+             <Value>-0.018149331212043762</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,2]</VariableName>
-             <Value>0.3111531436443329</Value>
+             <Value>0.08233434706926346</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9475557804107666</Value>
+             <Value>0.996439516544342</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -10686,11 +10687,11 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M1\AbsH[1,4]</VariableName>
-            <Value>-0.03894396908758601</Value>
+            <Value>-0.039062213589494486</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M1\AbsH[2,4]</VariableName>
-            <Value>-0.009130567983709727</Value>
+            <Value>-0.008610660223740838</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M1\AbsH[3,4]</VariableName>
@@ -10701,11 +10702,11 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,3]</VariableName>
-             <Value>-0.9735992550849915</Value>
+             <Value>-0.976555347442627</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,3]</VariableName>
-             <Value>-0.2282641977071762</Value>
+             <Value>-0.21526651084423065</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,3]</VariableName>
@@ -10715,11 +10716,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,2]</VariableName>
-             <Value>-0.2282641977071762</Value>
+             <Value>-0.21526651084423065</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,2]</VariableName>
-             <Value>0.9735992550849915</Value>
+             <Value>0.976555347442627</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,2]</VariableName>
@@ -10935,44 +10936,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M2\AbsH[1,4]</VariableName>
-            <Value>-0.10998365085224956</Value>
+            <Value>-0.12264962836306206</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M2\AbsH[2,4]</VariableName>
-            <Value>0.29386998746595855</Value>
+            <Value>0.3705831953503513</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
-            <Value>-0.051284752844194315</Value>
+            <Value>0.10395228276358587</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,3]</VariableName>
-             <Value>-0.9735992550849915</Value>
+             <Value>-0.976555347442627</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,3]</VariableName>
-             <Value>-0.2282641977071762</Value>
+             <Value>-0.21526651084423065</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,3]</VariableName>
-             <Value>4.764135157470587e-17</Value>
+             <Value>5.944088779815025e-17</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,2]</VariableName>
-             <Value>-0.1775992065668106</Value>
+             <Value>-0.20896854996681213</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,2]</VariableName>
-             <Value>0.7575013637542725</Value>
+             <Value>0.9479846954345703</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,2]</VariableName>
-             <Value>-0.6282119154930115</Value>
+             <Value>-0.2401193082332611</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -11277,36 +11278,36 @@ implementation_end;
           <Name>Camera</Name>
           <Position>
            <X>
-            <Value>0.976113469720597</Value>
+            <Value>0.329292312031286</Value>
            </X>
            <Y>
-            <Value>1.07516874860924</Value>
+            <Value>1.16810161449894</Value>
            </Y>
            <Z>
-            <Value>0.2867572209672</Value>
+            <Value>0.847420272891127</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.659443575674306</Value>
+             <Value>-0.22246351087973</Value>
             </X>
             <Y>
-             <Value>-0.726363375113483</Value>
+             <Value>-0.789146933171899</Value>
             </Y>
             <Z>
-             <Value>-0.193727689801008</Value>
+             <Value>-0.572500746019122</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.130219445479645</Value>
+             <Value>-0.155335866996232</Value>
             </X>
             <Y>
-             <Value>-0.143434008165596</Value>
+             <Value>-0.551024382328806</Value>
             </Y>
             <Z>
-             <Value>0.981055340600379</Value>
+             <Value>0.81990420080866</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -11363,7 +11364,7 @@ implementation_end;
   </PlotPanels>
   <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
    <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
-0.00390625 0.003125 0.996094 0.855208
+0.00260417 0.00416667 0.997396 0.996875
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
