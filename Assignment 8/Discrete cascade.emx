@@ -8,7 +8,7 @@
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
     <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\Discrete cascade.emx</LibraryPath>
-    <TimeStamp>2026-6-10 12:22:41</TimeStamp>
+    <TimeStamp>2026-6-10 12:31:37</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
@@ -518,8 +518,6 @@ implementation_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
-  <Constants>
-  </Constants>
   <Parameters>
   </Parameters>
   <Initials>
@@ -845,9 +843,6 @@ implementation_end;
   <WriteFilename></WriteFilename>
   <DoWrite>false</DoWrite>
   <ExportVariables>
-   <ExportVariable>
-    <VariableName>time</VariableName>
-   </ExportVariable>
   </ExportVariables>
   <ImportVariables>
   </ImportVariables>

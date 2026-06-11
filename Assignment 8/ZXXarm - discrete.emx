@@ -7,8 +7,8 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 8\ZXXarm - tomoki.emx</LibraryPath>
-    <TimeStamp>2026-6-10 12:18:25</TimeStamp>
+    <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\ZXXarm - discrete.emx</LibraryPath>
+    <TimeStamp>2026-6-10 12:31:33</TimeStamp>
   </Description>
 </Information>';
  type 'Mainmodel- tomoki'
@@ -573,6 +573,1131 @@ equations
 
 	
 	implementation_end;
+   MaxonT_control_X 744 296
+    description '<Information><Description><Version>5.1</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate><LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\MaxonTcontrol.emx</LibraryPath><TimeStamp>2026-5-8 12:40:27</TimeStamp></Description></Information>';
+    type Submodel
+     ports
+      signal in input;
+      rotation out p;
+    end;
+    implementation bg
+     submodels
+      C1 376 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         rotation in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 376 120 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global k1 = 2.0; // k = Nm/(rad) 
+equations
+	state = int(p.f);
+	p.e = state * k1;
+implementation_end;
+      dQspring 376 183.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 369.1 176.9 382.9 191 color 0 fill 16777215;
+         text 'q' 375.5 181.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      Feedforward 136 312
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 120.1 296 151.9 328 color 0 fill 15132390;
+         text 'K' 136 312 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real gearratio = 33.0;		// gain
+	real geareff = 1.0;			// should be 0.75
+	real motorconst = 53.8e-3;
+	real motoreff = 0.88;
+variables 
+	real Tmotor;
+	real Imotor;
+equations
+	Tmotor = (input/gearratio)/geareff;
+	Imotor = (Tmotor/motorconst)/motoreff;
+	output = Imotor; // all together are approx 0.85
+    implementation_end;
+      Hold 192 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
+</Description>';
+       type Hold
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 176 224 208 256 color 0 fill 15132390;
+         text 'ZOH' 193.1 238.9 color 16711680 14;
+       end;
+       implementation eq
+parameters
+	real initial = 0;
+equations
+	output = hold (input, initial);
+         implementation_end;
+      LinkEncoder1 448 239.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 441.1 232.9 454.9 247 color 0 fill 16777215;
+         text 'q' 447.5 237.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      MSe 280 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 280 240 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      plug input -199 240;
+      plug p 518.9 240;
+      PD 56 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath>
+  <TimeStamp>2007-9-27 14:50:12</TimeStamp>
+</Description>';
+       type PD
+        ports
+         signal in error;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 40 224 72 256 color 0 fill 15132390;
+         text 'PD' 56 239.5 color 1336868 18 bold;
+       end;
+       implementation eq
+parameters
+	real kp = 0.0 {};			// Proportional gain
+	real tauD = 0.01 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+variables
+	real hidden factor,uD;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	output = uD;implementation_end;
+      PlusMinus1 136 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse 128 232 144 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus2 -16 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -24 232 -8 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      R1 376 304
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 376 304 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real r = 1.0;
+equations
+	p.e = r * p.f;
+implementation_end;
+      Sample 296 88
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
+</Description>';
+       type Sample
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 280 72 312 104 color 0 fill 15132390;
+         line 282.3 78.8 285.2 78.8 285.2 74.9 289.3 74.9 289.3 78.8 293.2 78.8 293.2 74.9 295.1 74.9 color 16711680 fill 15132390;
+         line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
+         line 297 85.1 297.7 86.4 color 0 fill 15132390;
+         line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
+       end;
+       implementation eq
+equations
+	output = sample (input);
+      implementation_end;
+      Splitter1 -64 240
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -67.2 236.8 -60.8 243.2 color -1 fill 0;
+         ellipse -68.3 235.7 -59.7 244.3 color -1;
+        terminals
+         input -64 240 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      Tspring 216 88
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 200.1 72 231.9 104 color 0 fill 15132390;
+         text 'K' 216 88 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global k1;		// spring stiffness
+equations
+	output = k1 * input;
+    implementation_end;
+      ZeroJunction1 376 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         rotation knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 376 240 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      C1\state -> Sample\input 376 88;
+      dQspring\p2 => C1\p;
+      Feedforward\output -> PlusMinus1\plus;
+      Hold\output -> MSe\effort;
+      MSe\p => ZeroJunction1\p;
+      p <= LinkEncoder1\p2;
+      PD\output -> PlusMinus1\plus;
+      PlusMinus1\output -> Hold\input;
+      PlusMinus2\output -> PD\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
+      Sample\output -> Tspring\input;
+      Splitter1\output -> Feedforward\input -64 312;
+      Splitter1\output -> PlusMinus2\plus;
+      Tspring\output -> PlusMinus2\minus -16 88;
+      ZeroJunction1\p => dQspring\p1;
+      ZeroJunction1\p => LinkEncoder1\p1;
+      ZeroJunction1\p => R1\p;
+     end;
+    implementation_end;
+   MaxonT_control_Y 744 344
+    description '<Information><Description><Version>5.1</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate><LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\MaxonTcontrol.emx</LibraryPath><TimeStamp>2026-5-8 12:40:27</TimeStamp></Description></Information>';
+    type Submodel
+     ports
+      signal in input;
+      rotation out p;
+    end;
+    implementation bg
+     submodels
+      C1 376 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         rotation in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 376 120 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global k1 = 2.0; // k = Nm/(rad) 
+equations
+	state = int(p.f);
+	p.e = state * k1;
+implementation_end;
+      dQspring 376 183.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 369.1 176.9 382.9 191 color 0 fill 16777215;
+         text 'q' 375.5 181.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      Feedforward 136 312
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 120.1 296 151.9 328 color 0 fill 15132390;
+         text 'K' 136 312 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real gearratio = 33.0;		// gain
+	real geareff = 1.0;			// should be 0.75
+	real motorconst = 53.8e-3;
+	real motoreff = 0.88;
+variables 
+	real Tmotor;
+	real Imotor;
+equations
+	Tmotor = (input/gearratio)/geareff;
+	Imotor = (Tmotor/motorconst)/motoreff;
+	output = Imotor; // all together are approx 0.85
+    implementation_end;
+      Hold 192 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
+</Description>';
+       type Hold
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 176 224 208 256 color 0 fill 15132390;
+         text 'ZOH' 193.1 238.9 color 16711680 14;
+       end;
+       implementation eq
+parameters
+	real initial = 0;
+equations
+	output = hold (input, initial);
+         implementation_end;
+      LinkEncoder1 448 239.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 441.1 232.9 454.9 247 color 0 fill 16777215;
+         text 'q' 447.5 237.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      MSe 280 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 280 240 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      plug input -199 240;
+      plug p 518.9 240;
+      PD 56 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath>
+  <TimeStamp>2007-9-27 14:50:12</TimeStamp>
+</Description>';
+       type PD
+        ports
+         signal in error;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 40 224 72 256 color 0 fill 15132390;
+         text 'PD' 56 239.5 color 1336868 18 bold;
+       end;
+       implementation eq
+parameters
+	real kp = 0.0 {};			// Proportional gain
+	real tauD = 0.01 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+variables
+	real hidden factor,uD;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	output = uD;implementation_end;
+      PlusMinus1 136 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse 128 232 144 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus2 -16 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -24 232 -8 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      R1 376 304
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 376 304 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real r = 1.0;
+equations
+	p.e = r * p.f;
+implementation_end;
+      Sample 296 88
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
+</Description>';
+       type Sample
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 280 72 312 104 color 0 fill 15132390;
+         line 282.3 78.8 285.2 78.8 285.2 74.9 289.3 74.9 289.3 78.8 293.2 78.8 293.2 74.9 295.1 74.9 color 16711680 fill 15132390;
+         line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
+         line 297 85.1 297.7 86.4 color 0 fill 15132390;
+         line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
+       end;
+       implementation eq
+equations
+	output = sample (input);
+      implementation_end;
+      Splitter1 -64 240
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -67.2 236.8 -60.8 243.2 color -1 fill 0;
+         ellipse -68.3 235.7 -59.7 244.3 color -1;
+        terminals
+         input -64 240 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      Tspring 216 88
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 200.1 72 231.9 104 color 0 fill 15132390;
+         text 'K' 216 88 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global k1;		// spring stiffness
+equations
+	output = k1 * input;
+    implementation_end;
+      ZeroJunction1 376 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         rotation knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 376 240 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      C1\state -> Sample\input 376 88;
+      dQspring\p2 => C1\p;
+      Feedforward\output -> PlusMinus1\plus;
+      Hold\output -> MSe\effort;
+      MSe\p => ZeroJunction1\p;
+      p <= LinkEncoder1\p2;
+      PD\output -> PlusMinus1\plus;
+      PlusMinus1\output -> Hold\input;
+      PlusMinus2\output -> PD\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
+      Sample\output -> Tspring\input;
+      Splitter1\output -> Feedforward\input -64 312;
+      Splitter1\output -> PlusMinus2\plus;
+      Tspring\output -> PlusMinus2\minus -16 88;
+      ZeroJunction1\p => dQspring\p1;
+      ZeroJunction1\p => LinkEncoder1\p1;
+      ZeroJunction1\p => R1\p;
+     end;
+    implementation_end;
+   MaxonT_control_Z 744 392
+    description '<Information><Description><Version>5.1</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate><LibraryPath>C:\Users\solis\Documents\M-ROB\Q2B\MS\A3\MaxonTcontrol.emx</LibraryPath><TimeStamp>2026-5-8 12:40:27</TimeStamp></Description></Information>';
+    type Submodel
+     ports
+      signal in input;
+      rotation out p;
+    end;
+    implementation bg
+     submodels
+      C1 376 120
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\C.emx</LibraryPath>
+  <TimeStamp>2011-11-29 15:58:35</TimeStamp>
+</Description>
+</Information>';
+       type C
+        ports
+         rotation in p;
+         signal out state;
+        restrictions
+         causality preferred out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'C' 376 120 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real global k1 = 2.0; // k = Nm/(rad) 
+equations
+	state = int(p.f);
+	p.e = state * k1;
+implementation_end;
+      dQspring 376 183.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 369.1 176.9 382.9 191 color 0 fill 16777215;
+         text 'q' 375.5 181.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      Feedforward 136 312
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 120.1 296 151.9 328 color 0 fill 15132390;
+         text 'K' 136 312 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real gearratio = 33.0;		// gain
+	real geareff = 1.0;			// should be 0.75
+	real motorconst = 53.8e-3;
+	real motoreff = 0.88;
+variables 
+	real Tmotor;
+	real Imotor;
+equations
+	Tmotor = (input/gearratio)/geareff;
+	Imotor = (Tmotor/motorconst)/motoreff;
+	output = Imotor; // all together are approx 0.85
+    implementation_end;
+      Hold 192 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
+</Description>';
+       type Hold
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 176 224 208 256 color 0 fill 15132390;
+         text 'ZOH' 193.1 238.9 color 16711680 14;
+       end;
+       implementation eq
+parameters
+	real initial = 0;
+equations
+	output = hold (input, initial);
+         implementation_end;
+      LinkEncoder1 448 239.9
+       description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       knot QSensor
+        ports
+         rotation knot in p1 [1];
+         rotation knot out p2 [1];
+         signal knot out q [1];
+        restrictions
+         causality constraint not_equal p1 p2;
+       end;
+       icon bg ellipse
+        figures
+         ellipse 441.1 232.9 454.9 247 color 0 fill 16777215;
+         text 'q' 447.5 237.2 color 0;
+       end;
+       implementation eq
+equations
+	p2.f = p1.f;
+	p1.e = p2.e;
+	q = int (p1.f);
+implementation_end;
+      MSe 280 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
+</Description>
+</Information>';
+       type MSe
+        ports
+         power out p;
+         signal in effort;
+        restrictions
+         causality fixed out p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'MSe' 280 240 color 0 18 bold;
+       end;
+       implementation eq
+variables
+	real flow;
+equations
+	p.e = effort;
+	flow = p.f;
+implementation_end;
+      plug input -199 240;
+      plug p 518.9 240;
+      PD 56 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Discrete\PD.emx</LibraryPath>
+  <TimeStamp>2007-9-27 14:50:12</TimeStamp>
+</Description>';
+       type PD
+        ports
+         signal in error;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 40 224 72 256 color 0 fill 15132390;
+         text 'PD' 56 239.5 color 1336868 18 bold;
+       end;
+       implementation eq
+parameters
+	real kp = 0.0 {};			// Proportional gain
+	real tauD = 0.01 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+variables
+	real hidden factor,uD;
+equations
+	factor = 1 / ( sampletime + tauD * beta );
+	uD = factor * ( tauD * previous ( uD ) * beta + tauD * kp * ( error - previous ( error )) + sampletime * kp * error );
+	output = uD;implementation_end;
+      PlusMinus1 136 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse 128 232 144 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus2 -16 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -24 232 -8 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
+      R1 376 304
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\R.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:35:37</TimeStamp>
+</Description>
+</Information>';
+       type R
+        ports
+         power in p;
+       end;
+       icon bg ellipse bottom
+        figures
+         text 'R' 376 304 color 0 18 bold;
+       end;
+       implementation eq
+parameters
+	real r = 1.0;
+equations
+	p.e = r * p.f;
+implementation_end;
+      Sample 296 88
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
+  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
+</Description>';
+       type Sample
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 280 72 312 104 color 0 fill 15132390;
+         line 282.3 78.8 285.2 78.8 285.2 74.9 289.3 74.9 289.3 78.8 293.2 78.8 293.2 74.9 295.1 74.9 color 16711680 fill 15132390;
+         line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
+         line 297 85.1 297.7 86.4 color 0 fill 15132390;
+         line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
+       end;
+       implementation eq
+equations
+	output = sample (input);
+      implementation_end;
+      Splitter1 -64 240
+       description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+       knot Splitter
+        ports
+         signal knot duplicatable out output [1];
+         signal knot in input [1];
+       end;
+       icon bg ellipse
+        figures
+         ellipse -67.2 236.8 -60.8 243.2 color -1 fill 0;
+         ellipse -68.3 235.7 -59.7 244.3 color -1;
+        terminals
+         input -64 240 fixed;
+       end;
+       implementation eq
+equations
+    collect (output) = input;
+implementation_end;
+      Tspring 216 88
+       description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Block Diagram\Gain.emx</LibraryPath><TimeStamp>2007-9-26 12:15:12</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+       type Gain
+        ports
+         signal in input;
+         signal out output;
+       end;
+       icon bg bottom
+        figures
+         rectangle 200.1 72 231.9 104 color 0 fill 15132390;
+         text 'K' 216 88 color 16711680 16 bold;
+       end;
+       implementation eq
+parameters
+	real global k1;		// spring stiffness
+equations
+	output = k1 * input;
+    implementation_end;
+      ZeroJunction1 376 240
+       description '<Information>
+ <Description>
+    <Version>4.2</Version>
+<IsMainModel>1</IsMainModel>
+  <KeepParameterValues>False</KeepParameterValues>
+    <LibraryPath>Bond Graph\ZeroJunction.emx</LibraryPath>
+  <TimeStamp>2011-11-29 16:45:16</TimeStamp>
+</Description>
+</Information>';
+       knot ZeroJunction
+        ports
+         rotation knot duplicatable none p [1];
+         signal knot out effort [1];
+        restrictions
+         causality constraint one_in p;
+       end;
+       icon bg ellipse
+        figures
+         text '0' 376 240 color 0 18 bold;
+       end;
+       implementation eq
+equations
+	sum (direct (p.f)) = 0;
+	equal (collect (p.e));
+	effort = first (p.e);
+implementation_end;
+     end;
+     connections
+      C1\state -> Sample\input 376 88;
+      dQspring\p2 => C1\p;
+      Feedforward\output -> PlusMinus1\plus;
+      Hold\output -> MSe\effort;
+      MSe\p => ZeroJunction1\p;
+      p <= LinkEncoder1\p2;
+      PD\output -> PlusMinus1\plus;
+      PlusMinus1\output -> Hold\input;
+      PlusMinus2\output -> PD\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
+      Sample\output -> Tspring\input;
+      Splitter1\output -> Feedforward\input -64 312;
+      Splitter1\output -> PlusMinus2\plus;
+      Tspring\output -> PlusMinus2\minus -16 88;
+      ZeroJunction1\p => dQspring\p1;
+      ZeroJunction1\p => LinkEncoder1\p1;
+      ZeroJunction1\p => R1\p;
+     end;
+    implementation_end;
    MSe 1088 344
     description '<Information>
  <Description>
@@ -597,90 +1722,6 @@ equations
     implementation eq
  variables
 	real flow[3];
-equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
-   MSe1 712 288
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 712 288 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
-   MSe2 712 344
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 712 344 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
-equations
-	p.e = effort;
-	flow = p.f;
-implementation_end;
-   MSe3 712 400
-    description '<Information>
- <Description>
-    <Version>4.2</Version>
-<IsMainModel>1</IsMainModel>
-  <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>Bond Graph\MSe.emx</LibraryPath>
-  <TimeStamp>2011-11-29 16:12:33</TimeStamp>
-</Description>
-</Information>';
-    type MSe
-     ports
-      power out p;
-      signal in effort;
-     restrictions
-      causality fixed out p;
-    end;
-    icon bg ellipse bottom
-     figures
-      text 'MSe' 712 400 color 0 18 bold;
-    end;
-    implementation eq
-variables
-	real flow;
 equations
 	p.e = effort;
 	flow = p.f;
@@ -1863,9 +2904,9 @@ implementation_end;
       image 'C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 7\ZXXarmIcon.png' 844 279 128 128;
      terminals
       Force1 972 344;
-      Base_Rot 844 288;
+      Base_Rot 844 296;
       Rot_Arm1 844 344;
-      Arm1_Arm2 844 400;
+      Arm1_Arm2 844 391.5;
     end;
     implementation eq
 // 20-sim 3D Mechanics Editor
@@ -2248,15 +3289,15 @@ implementation_end;
    Constant4\output -> Mux1\input1;
    Constant5\output -> Mux1\input3;
    Demux\input <- Hold4\output;
-   Demux\output1 -> MSe1\effort;
-   Demux\output2 -> MSe2\effort;
-   Demux\output3 -> MSe3\effort;
+   Demux\output1 -> MaxonT_control_X\input;
+   Demux\output2 -> MaxonT_control_Y\input;
+   Demux\output3 -> MaxonT_control_Z\input;
    DiscreteDifferential\output -> Imp_contr\dq 472 120;
    DiscreteDifferential1\output -> Imp_contr\vel_des 480 424;
    Imp_contr\u -> Hold4\input;
-   MSe1\p => ZXXarm\Base_Rot;
-   MSe2\p => ZXXarm\Rot_Arm1;
-   MSe3\p => ZXXarm\Arm1_Arm2 832 400;
+   MaxonT_control_X\p => ZXXarm\Base_Rot;
+   MaxonT_control_Y\p => ZXXarm\Rot_Arm1;
+   MaxonT_control_Z\p => ZXXarm\Arm1_Arm2;
    Mux\output -> Sample_ref\input;
    Mux1\output -> MSe\effort;
    PlusMinus1\output -> Mux\input3;
@@ -2293,8 +3334,6 @@ implementation_end;
  </ModelProperties>
  <RealTimeSyncTimeUs>1000</RealTimeSyncTimeUs>
  <Variables>
-  <Constants>
-  </Constants>
   <Parameters>
   </Parameters>
   <Initials>
@@ -2737,24 +3776,24 @@ implementation_end;
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.45749568939209</Value>
+             <Value>0.457495704067041</Value>
             </X>
             <Y>
-             <Value>-0.762492835521698</Value>
+             <Value>-0.762492859979951</Value>
             </Y>
             <Z>
-             <Value>-0.45749568939209</Value>
+             <Value>-0.457495704067041</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.235379606485367</Value>
+             <Value>0.235379603289675</Value>
             </X>
             <Y>
-             <Value>-0.392299354076385</Value>
+             <Value>-0.392299348750231</Value>
             </Y>
             <Z>
-             <Value>0.88921183347702</Value>
+             <Value>0.889211821404405</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -3812,29 +4851,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,3]</VariableName>
-             <Value>-0.23549950122833252</Value>
+             <Value>-0.2354995008466571</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9063400030136108</Value>
+             <Value>-0.9063400015447004</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.35083869099617004</Value>
+             <Value>0.35083869042756377</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,2]</VariableName>
-             <Value>0.08809304982423782</Value>
+             <Value>0.08809304628677433</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.3395989239215851</Value>
+             <Value>0.3395989102846546</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9364359378814697</Value>
+             <Value>0.936435900277959</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -4238,29 +5277,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,3]</VariableName>
-             <Value>0.13956649601459503</Value>
+             <Value>0.13956649583926076</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.5377068519592285</Value>
+             <Value>0.5377068512837193</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.8315001726150513</Value>
+             <Value>0.8315001715704561</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,2]</VariableName>
-             <Value>0.2091447412967682</Value>
+             <Value>0.2091447457218905</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.8047676682472229</Value>
+             <Value>0.804767685274643</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.555524468421936</Value>
+             <Value>-0.5555244801758235</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -4690,11 +5729,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>ZXXarm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>0.2514379620552063</Value>
+             <Value>0.25143795301573596</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9678734540939331</Value>
+             <Value>0.9678734192978216</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\RotHinge\AbsH[3,2]</VariableName>
@@ -5111,29 +6150,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,3]</VariableName>
-             <Value>-0.23549950122833252</Value>
+             <Value>-0.2354995008466571</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9063400030136108</Value>
+             <Value>-0.9063400015447004</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,3]</VariableName>
-             <Value>0.35083869099617004</Value>
+             <Value>0.35083869042756377</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,2]</VariableName>
-             <Value>0.08809304982423782</Value>
+             <Value>0.08809304628677433</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,2]</VariableName>
-             <Value>0.3395989239215851</Value>
+             <Value>0.3395989102846546</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9364359378814697</Value>
+             <Value>0.936435900277959</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -5893,29 +6932,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,3]</VariableName>
-             <Value>-0.23549950122833252</Value>
+             <Value>-0.2354995008466571</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.9063400030136108</Value>
+             <Value>-0.9063400015447004</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.35083869099617004</Value>
+             <Value>0.35083869042756377</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm2\AbsH[1,2]</VariableName>
-             <Value>0.08809304982423782</Value>
+             <Value>0.08809304628677433</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.3395989239215851</Value>
+             <Value>0.3395989102846546</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9364359378814697</Value>
+             <Value>0.936435900277959</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -6331,29 +7370,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,3]</VariableName>
-             <Value>0.13956649601459503</Value>
+             <Value>0.13956649583926076</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.5377068519592285</Value>
+             <Value>0.5377068512837193</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.8315001726150513</Value>
+             <Value>0.8315001715704561</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\Arm1\AbsH[1,2]</VariableName>
-             <Value>0.2091447412967682</Value>
+             <Value>0.2091447457218905</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.8047676682472229</Value>
+             <Value>0.804767685274643</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.555524468421936</Value>
+             <Value>-0.5555244801758235</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -6795,11 +7834,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>ZXXarm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>0.2514379620552063</Value>
+             <Value>0.25143795301573596</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9678734540939331</Value>
+             <Value>0.9678734192978216</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\RotHinge\AbsH[3,2]</VariableName>
@@ -7222,29 +8261,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,3]</VariableName>
-             <Value>-0.23549950122833252</Value>
+             <Value>-0.2354995008466571</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.9063400030136108</Value>
+             <Value>-0.9063400015447004</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,3]</VariableName>
-             <Value>0.35083869099617004</Value>
+             <Value>0.35083869042756377</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>ZXXarm\EE\AbsH[1,2]</VariableName>
-             <Value>0.08809304982423782</Value>
+             <Value>0.08809304628677433</Value>
             </X>
             <Y>
              <VariableName>ZXXarm\EE\AbsH[2,2]</VariableName>
-             <Value>0.3395989239215851</Value>
+             <Value>0.3395989102846546</Value>
             </Y>
             <Z>
              <VariableName>ZXXarm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9364359378814697</Value>
+             <Value>0.936435900277959</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -8124,9 +9163,9 @@ implementation_end;
     <ToggleState>Base</ToggleState>
    </PlotPanel>
   </PlotPanels>
-  <WindowRectangles virtualDesktopWidth="1536" virtualDesktopHeight="960">
-   <WindowRectangle monitor="0" left="0" top="0" right="1536" bottom="960" plotpanelid="1">
-0.0104167 0.00416667 0.989583 0.929167
+  <WindowRectangles virtualDesktopWidth="1920" virtualDesktopHeight="1080">
+   <WindowRectangle monitor="0" left="0" top="0" right="1920" bottom="1080" plotpanelid="1">
+0.0104167 0 0.989583 1
    </WindowRectangle>
   </WindowRectangles>
  </PlotSpecs>
