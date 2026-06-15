@@ -220,7 +220,7 @@
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body7</ID>
-     <Name>Reference Frame</Name>
+     <Name>World</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>

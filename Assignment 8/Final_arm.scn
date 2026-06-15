@@ -1454,7 +1454,7 @@
      <Value>1</Value>
     </X>
     <Z>
-     <Value>6.12323399573677e-17</Value>
+     <Value>-3.49148133884313e-15</Value>
     </Z>
    </ZAxis>
    <YAxis>
@@ -2408,7 +2408,7 @@
    </Y>
    <Z>
     <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
-    <Value>0.2</Value>
+    <Value>0.19999999999999987</Value>
    </Z>
   </Position>
   <Orientation>
@@ -2423,7 +2423,7 @@
     </Y>
     <Z>
      <VariableName>Final_arm\M2\AbsH[3,3]</VariableName>
-     <Value>6.123233995736766e-17</Value>
+     <Value>3.391901413832837e-15</Value>
     </Z>
    </ZAxis>
    <YAxis>
@@ -2556,6 +2556,9 @@
   <ID>KP5\Hinge1</ID>
   <Name>Frame</Name>
   <Position>
+   <X>
+    <Value>2.75335310107039e-16</Value>
+   </X>
    <Z>
     <Value>-0.04</Value>
    </Z>
@@ -2566,7 +2569,7 @@
      <Value>1</Value>
     </X>
     <Z>
-     <Value>6.12323399573677e-17</Value>
+     <Value>3.39190141383284e-15</Value>
     </Z>
    </ZAxis>
    <YAxis>
