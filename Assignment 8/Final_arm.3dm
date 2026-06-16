@@ -533,7 +533,7 @@
                      <Name>RotHinge</Name>
                      <Position>
                       <Z>
-                       <Value>0.1</Value>
+                       <Value>0.05</Value>
                       </Z>
                      </Position>
                      <Orientation>
@@ -615,7 +615,7 @@
                        <Name>Frame</Name>
                        <Position>
                         <Z>
-                         <Value>0.1</Value>
+                         <Value>0.05</Value>
                         </Z>
                        </Position>
                        <Orientation>
@@ -808,7 +808,7 @@
                              <Name>Arm1</Name>
                              <Position>
                               <Y>
-                               <Value>0.2</Value>
+                               <Value>0.1</Value>
                               </Y>
                              </Position>
                              <Orientation>
@@ -895,7 +895,7 @@
                                <Name>Frame</Name>
                                <Position>
                                 <Y>
-                                 <Value>0.2</Value>
+                                 <Value>0.1</Value>
                                 </Y>
                                </Position>
                                <Orientation>
@@ -1088,7 +1088,7 @@
                                      <Name>Arm2</Name>
                                      <Position>
                                       <Y>
-                                       <Value>0.1</Value>
+                                       <Value>0.05</Value>
                                       </Y>
                                      </Position>
                                      <Orientation>
@@ -1175,7 +1175,7 @@
                                        <Name>Frame</Name>
                                        <Position>
                     <Y>
-                     <Value>0.1</Value>
+                     <Value>0.05</Value>
                     </Y>
                                        </Position>
                                        <Orientation>
@@ -1883,7 +1883,7 @@
                                <Name>Frame</Name>
                                <Position>
                                 <Y>
-                                 <Value>0.2</Value>
+                                 <Value>0.1</Value>
                                 </Y>
                                </Position>
                                <Orientation>
@@ -2121,7 +2121,7 @@
                        <Name>Frame</Name>
                        <Position>
                         <Z>
-                         <Value>0.1</Value>
+                         <Value>0.05</Value>
                         </Z>
                        </Position>
                        <Orientation>
@@ -2373,17 +2373,17 @@
     <ExpressionVariable>
      <Name>l1</Name>
      <Type>1</Type>
-     <Value>0.2</Value>
+     <Value>0.1</Value>
     </ExpressionVariable>
     <ExpressionVariable>
      <Name>l2</Name>
      <Type>1</Type>
-     <Value>0.4</Value>
+     <Value>0.2</Value>
     </ExpressionVariable>
     <ExpressionVariable>
      <Name>l3</Name>
      <Type>1</Type>
-     <Value>0.2</Value>
+     <Value>0.1</Value>
     </ExpressionVariable>
     <ExpressionVariable>
      <Name>r_int</Name>
@@ -2452,10 +2452,10 @@
     <Name>RotHinge</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.002569871878021663</Ixx>
-     <Iyy>0.002569871878021663</Iyy>
-     <Izz>8.985936736971052e-4</Izz>
-     <Mass>0.6361725123519328</Mass>
+     <Ixx>4.89720298570915e-4</Ixx>
+     <Iyy>4.89720298570915e-4</Iyy>
+     <Izz>4.492968368485526e-4</Izz>
+     <Mass>0.3180862561759664</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l1*p</MassExpression>
      <IxxExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2))</IyyExpression>
@@ -2470,10 +2470,10 @@
     <Name>Arm1</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.017863194003081985</Ixx>
-     <Iyy>0.0017971873473942104</Iyy>
-     <Izz>0.017863194003081985</Izz>
-     <Mass>1.2723450247038657</Mass>
+     <Ixx>0.002569871878021663</Ixx>
+     <Iyy>8.985936736971052e-4</Iyy>
+     <Izz>0.002569871878021663</Izz>
+     <Mass>0.6361725123519328</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l2*p</MassExpression>
      <IxxExpression>pi*l2*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l2^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>(1/2)*pi*l2*p*(r_ext^4 - r_int^4)</IyyExpression>
@@ -2488,10 +2488,10 @@
     <Name>Arm2</Name>
     <Description></Description>
     <Inertia>
-     <Ixx>0.002569871878021663</Ixx>
-     <Iyy>8.985936736971052e-4</Iyy>
-     <Izz>0.002569871878021663</Izz>
-     <Mass>0.6361725123519328</Mass>
+     <Ixx>4.89720298570915e-4</Ixx>
+     <Iyy>4.492968368485526e-4</Iyy>
+     <Izz>4.89720298570915e-4</Izz>
+     <Mass>0.3180862561759664</Mass>
      <MassExpression>pi*(r_ext^2-r_int^2)*l3*p</MassExpression>
      <IxxExpression>pi*l3*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l3^2*(r_ext^2 - r_int^2))</IxxExpression>
      <IyyExpression>(1/2)*pi*l3*p*(r_ext^4 - r_int^4)</IyyExpression>
@@ -2605,7 +2605,7 @@
        <Position>
         <Z>
          <VariableName>-l1/2</VariableName>
-         <Value>-0.1</Value>
+         <Value>-0.05</Value>
         </Z>
        </Position>
        <Orientation>
@@ -2646,7 +2646,7 @@
        <Position>
         <Z>
          <VariableName>l1/2</VariableName>
-         <Value>0.1</Value>
+         <Value>0.05</Value>
         </Z>
        </Position>
        <Orientation>
@@ -2665,7 +2665,7 @@
        <Position>
         <Y>
          <VariableName>-l2/2</VariableName>
-         <Value>-0.2</Value>
+         <Value>-0.1</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2706,7 +2706,7 @@
        <Position>
         <Y>
          <VariableName>l2/2</VariableName>
-         <Value>0.2</Value>
+         <Value>0.1</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2725,7 +2725,7 @@
        <Position>
         <Y>
          <VariableName>-l3/2</VariableName>
-         <Value>-0.1</Value>
+         <Value>-0.05</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2766,7 +2766,7 @@
        <Position>
         <Y>
          <VariableName>l3/2</VariableName>
-         <Value>0.1</Value>
+         <Value>0.05</Value>
         </Y>
        </Position>
        <Orientation>
@@ -2821,7 +2821,7 @@
        <Position>
         <Z>
          <VariableName>l1/2</VariableName>
-         <Value>0.1</Value>
+         <Value>0.05</Value>
         </Z>
        </Position>
        <Orientation>
@@ -2884,7 +2884,7 @@
        <Position>
         <Y>
          <VariableName>l2/2</VariableName>
-         <Value>0.2</Value>
+         <Value>0.1</Value>
         </Y>
        </Position>
        <Orientation>
@@ -3024,8 +3024,8 @@
   <OutputThetaDotVector>false</OutputThetaDotVector>
   <OutputJMatrix>false</OutputJMatrix>
   <OutputCenterOfMass>false</OutputCenterOfMass>
-  <CodeOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.emx]]></CodeOutputFileName>
-  <SceneryOutputFileName><![CDATA[C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.scn]]></SceneryOutputFileName>
+  <CodeOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\Final_arm.emx]]></CodeOutputFileName>
+  <SceneryOutputFileName><![CDATA[C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling and Simulation\Assignment 8\Final_arm.scn]]></SceneryOutputFileName>
   <CodeSubmodelName>Final_arm</CodeSubmodelName>
   <NoJointSceneryObjectGeneration>false</NoJointSceneryObjectGeneration>
   <GenerateSpringDampersForConstraintJoints>true</GenerateSpringDampersForConstraintJoints>
