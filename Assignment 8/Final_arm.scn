@@ -350,7 +350,7 @@
    </Y>
    <Z>
     <VariableName>Final_arm\RotHinge\AbsH[3,4]</VariableName>
-    <Value>0.1</Value>
+    <Value>0.05</Value>
    </Z>
   </Position>
   <Orientation>
@@ -499,7 +499,7 @@
   <Name>Frame</Name>
   <Position>
    <Z>
-    <Value>-0.1</Value>
+    <Value>-0.05</Value>
    </Z>
   </Position>
   <Orientation>
@@ -635,7 +635,7 @@
   <Name>Frame</Name>
   <Position>
    <Z>
-    <Value>0.1</Value>
+    <Value>0.05</Value>
    </Z>
   </Position>
   <Orientation>
@@ -774,7 +774,7 @@
   <Name>Frame</Name>
   <Position>
    <Z>
-    <Value>0.1</Value>
+    <Value>0.05</Value>
    </Z>
   </Position>
   <Orientation>
@@ -917,11 +917,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -1076,7 +1076,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>-0.2</Value>
+    <Value>-0.1</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1215,7 +1215,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1354,7 +1354,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1497,11 +1497,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-    <Value>0.5</Value>
+    <Value>0.25</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -1656,7 +1656,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>-0.1</Value>
+    <Value>-0.05</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1795,7 +1795,7 @@
   <Name>Frame</Name>
   <Position>
    <Y>
-    <Value>0.1</Value>
+    <Value>0.05</Value>
    </Y>
   </Position>
   <Orientation>
@@ -1929,11 +1929,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-    <Value>0.6</Value>
+    <Value>0.3</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-    <Value>0.2</Value>
+    <Value>0.1</Value>
    </Z>
   </Position>
   <Orientation>
@@ -2163,7 +2163,7 @@
    </Y>
    <Z>
     <VariableName>Final_arm\M1\AbsH[3,4]</VariableName>
-    <Value>0.19999999999999987</Value>
+    <Value>0.09999999999999987</Value>
    </Z>
   </Position>
   <Orientation>
@@ -2404,11 +2404,11 @@
    </X>
    <Y>
     <VariableName>Final_arm\M2\AbsH[2,4]</VariableName>
-    <Value>0.4</Value>
+    <Value>0.2</Value>
    </Y>
    <Z>
     <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
-    <Value>0.19999999999999987</Value>
+    <Value>0.09999999999999987</Value>
    </Z>
   </Position>
   <Orientation>
