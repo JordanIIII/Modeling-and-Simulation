@@ -158,37 +158,37 @@
      <Name>Camera</Name>
      <Position>
       <X>
-       <Value>-1.22570237549827</Value>
+       <Value>0.699570297497021</Value>
       </X>
       <Y>
-       <Value>0.262388143515783</Value>
+       <Value>0.454353994761358</Value>
       </Y>
       <Z>
-       <Value>0.787287638522487</Value>
+       <Value>1.22277589693539</Value>
       </Z>
      </Position>
      <Orientation>
       <DirectionDirUp>
        <DirectionVector>
         <X>
-         <Value>0.828060935149212</Value>
+         <Value>-0.472616067020876</Value>
         </X>
         <Y>
-         <Value>-0.177264364744812</Value>
+         <Value>-0.306952708783442</Value>
         </Y>
         <Z>
-         <Value>-0.531876332121885</Value>
+         <Value>-0.826083584006017</Value>
         </Z>
        </DirectionVector>
        <UpVector>
         <X>
-         <Value>0.520092729479302</Value>
+         <Value>-0.692790378829848</Value>
         </X>
         <Y>
-         <Value>-0.11133710603634</Value>
+         <Value>-0.449950590551121</Value>
         </Y>
         <Z>
-         <Value>0.846822060153266</Value>
+         <Value>0.563547652877282</Value>
         </Z>
        </UpVector>
       </DirectionDirUp>
@@ -220,7 +220,7 @@
     <Frame3D>
      <ShowCOMOnSelection>true</ShowCOMOnSelection>
      <ID>Body7</ID>
-     <Name>World</Name>
+     <Name>Reference Frame</Name>
      <Orientation>
       <OriBryant>
       </OriBryant>
@@ -570,18 +570,18 @@
                          <Value>0.04</Value>
                         </Y>
                         <Z>
-                         <Value>0.2</Value>
+                         <Value>0.1</Value>
                         </Z>
                        </MeshScale>
                        <ColorValue>
                         <Red>
-                         <Value>0.188235294117647</Value>
+                         <Value>0.184313725490196</Value>
                         </Red>
                         <Green>
                          <Value>0.803921568627451</Value>
                         </Green>
                         <Blue>
-                         <Value>0.188235294117647</Value>
+                         <Value>0.184313725490196</Value>
                         </Blue>
                         <Alpha>
                          <Value>1</Value>
@@ -850,18 +850,18 @@
                                  <Value>0.04</Value>
                                 </Y>
                                 <Z>
-                                 <Value>0.4</Value>
+                                 <Value>0.2</Value>
                                 </Z>
                                </MeshScale>
                                <ColorValue>
                                 <Red>
-                                 <Value>0.184313725490196</Value>
+                                 <Value>0.180392156862745</Value>
                                 </Red>
                                 <Green>
                                  <Value>0.803921568627451</Value>
                                 </Green>
                                 <Blue>
-                                 <Value>0.184313725490196</Value>
+                                 <Value>0.180392156862745</Value>
                                 </Blue>
                                 <Alpha>
                                  <Value>1</Value>
@@ -1130,18 +1130,18 @@
                      <Value>0.04</Value>
                     </Y>
                     <Z>
-                     <Value>0.2</Value>
+                     <Value>0.1</Value>
                     </Z>
                                        </MeshScale>
                                        <ColorValue>
                     <Red>
-                     <Value>0.180392156862745</Value>
+                     <Value>0.176470588235294</Value>
                     </Red>
                     <Green>
                      <Value>0.803921568627451</Value>
                     </Green>
                     <Blue>
-                     <Value>0.180392156862745</Value>
+                     <Value>0.176470588235294</Value>
                     </Blue>
                     <Alpha>
                      <Value>1</Value>
