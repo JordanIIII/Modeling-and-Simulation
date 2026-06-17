@@ -7,227 +7,15 @@
     <Version>5.1</Version>
     <IsMainModel>0</IsMainModel>
     <KeepParameterValues>False</KeepParameterValues>
-    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Better_controlCollAvoid.emx</LibraryPath>
-    <TimeStamp>2026-6-17 17:32:42</TimeStamp>
+    <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\transparency2.emx</LibraryPath>
+    <TimeStamp>2026-6-17 10:54:43</TimeStamp>
   </Description>
 </Information>';
  type Mainmodel
  end;
  implementation bg
   submodels
-   Coll_avoid 592 272
-    description '<Information><Description><Version>5.1</Version><LibraryPath>C:\Users\User\projects\Modeling-and-Simulation\Assignment 8\CollAvoid.emx</LibraryPath><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><TimeStamp>2026-6-11 10:11:51</TimeStamp><AllowLibraryUpdate>False</AllowLibraryUpdate></Description></Information>';
-    type 'Submodel-Equation'
-     ports
-      signal in q [3,1];
-      signal out tauAvoid [3,1];
-    end;
-    implementation eq
-parameters
-    real global L[3];
-
-    integer Ns = 6;
-
-    real sphereRadius = 0.02;
-    real safetyDist   = 1.0*sphereRadius;
-
-    real Kground = 0;//20;
-    real Kself   = 20;
-
-variables
-    real p[3,6];
-
-    real tauGround[3];
-    real tauSelf[3];
-
-    real F[3];
-
-    real P0[3];
-    real P1[3];
-    real P2[3];
-    real P3[3];
-
-    real JP2[3,3];
-    real JP3[3,3];
-
-    real Js1[3,3];
-    real Js2[3,3];
-    real Js3[3,3];
-    real Js4[3,3];
-    real Js5[3,3];
-    real Js6[3,3];
-
-    real dx[3];
-    real n[3];
-
-    real d;
-
-    integer i,j;
-
-equations
-    P0 = [0;0;0];
-
-    P1 = [
-          0;
-          0;
-          L[1]
-         ];
-
-    P2 = P1 + [
-              -L[2]*cos(q[2])*sin(q[1]);
-               L[2]*cos(q[2])*cos(q[1]);
-               L[2]*sin(q[2])
-              ];
-
-    P3 = P2 + [
-              -L[3]*cos(q[2]+q[3])*sin(q[1]);
-               L[3]*cos(q[2]+q[3])*cos(q[1]);
-               L[3]*sin(q[2]+q[3])
-              ];
-
-    // SPHERE POSITIONS
-    p[:,1] = 0.33*P1;
-    p[:,2] = 0.66*P1;
-
-    p[:,3] = P1 + 0.33*(P2-P1);
-    p[:,4] = P1 + 0.9*(P2-P1);
-
-    p[:,5] = P2 + 0.33*(P3-P2);
-    p[:,6] = P2 + 0.66*(P3-P2);
-
-    // ANALYTICAL JACOBIANS
-    JP2 = [
-        -L[2]*cos(q[2])*cos(q[1]),
-         L[2]*sin(q[2])*sin(q[1]),
-         0;
-
-        -L[2]*cos(q[2])*sin(q[1]),
-        -L[2]*sin(q[2])*cos(q[1]),
-         0;
-
-         0,
-         L[2]*cos(q[2]),
-         0
-    ];
-
-    JP3 = [
-        -(L[2]*cos(q[2]) + L[3]*cos(q[2]+q[3]))*cos(q[1]),
-         (L[2]*sin(q[2]) + L[3]*sin(q[2]+q[3]))*sin(q[1]),
-         L[3]*sin(q[2]+q[3])*sin(q[1]);
-
-        -(L[2]*cos(q[2]) + L[3]*cos(q[2]+q[3]))*sin(q[1]),
-        (-L[2]*sin(q[2]) - L[3]*sin(q[2]+q[3]))*cos(q[1]),
-        -L[3]*sin(q[2]+q[3])*cos(q[1]);
-
-         0,
-         L[2]*cos(q[2]) + L[3]*cos(q[2]+q[3]),
-         L[3]*cos(q[2]+q[3])
-    ];
-
-code
-    // Sphere Jacobians
-    Js1 = [0,0,0; 0,0,0; 0,0,0];
-    Js2 = [0,0,0; 0,0,0; 0,0,0];
-
-    Js3 = 0.33*JP2;
-    Js4 = 0.9*JP2;
-
-    Js5 = 0.67*JP2 + 0.33*JP3;
-    Js6 = 0.34*JP2 + 0.66*JP3;
-
-    tauGround = [0;0;0];
-    tauSelf   = [0;0;0];
-
-    // GROUND COLLISION
-    for i = 1 to Ns do
-
-        d = p[3,i] - sphereRadius;
-
-        if d < safetyDist then
-
-            F = [
-                0;
-                0;
-                Kground*(safetyDist-d)
-            ];
-
-            if i == 1 then
-                tauGround = tauGround + transpose(Js1)*F;
-            elsif i == 2 then
-                tauGround = tauGround + transpose(Js2)*F;
-            elsif i == 3 then
-                tauGround = tauGround + transpose(Js3)*F;
-            elsif i == 4 then
-                tauGround = tauGround + transpose(Js4)*F;
-            elsif i == 5 then
-                tauGround = tauGround + transpose(Js5)*F;
-            else
-                tauGround = tauGround + transpose(Js6)*F;
-            end;
-
-        end;
-
-    end;
-
-    // SELF COLLISION
-    for i = 1 to Ns-1 do
-
-        for j = i+2 to Ns do
-
-            dx = p[:,i] - p[:,j];
-
-            d = sqrt(
-                dx[1]^2 +
-                dx[2]^2 +
-                dx[3]^2
-            );
-
-            if d > 1e-9 then
-
-                if d < (2*sphereRadius + safetyDist) then
-
-                    n = dx/d;
-
-                    F = Kself *
-                        ((2*sphereRadius + safetyDist) - d)
-                        * n;
-
-                    // Sphere i torque
-                    if i == 1 then
-                        tauSelf = tauSelf + transpose(Js1)*F;
-                    elsif i == 2 then
-                        tauSelf = tauSelf + transpose(Js2)*F;
-                    elsif i == 3 then
-                        tauSelf = tauSelf + transpose(Js3)*F;
-                    elsif i == 4 then
-                        tauSelf = tauSelf + transpose(Js4)*F;
-                    elsif i == 5 then
-                        tauSelf = tauSelf + transpose(Js5)*F;
-                    else
-                        tauSelf = tauSelf + transpose(Js6)*F;
-                    end;
-
-                    // Sphere j torque
-                    if j == 1 then
-                        tauSelf = tauSelf - transpose(Js1)*F;
-                    elsif j == 2 then
-                        tauSelf = tauSelf - transpose(Js2)*F;
-                    elsif j == 3 then
-                        tauSelf = tauSelf - transpose(Js3)*F;
-                    elsif j == 4 then
-                        tauSelf = tauSelf - transpose(Js4)*F;
-                    elsif j == 5 then
-                        tauSelf = tauSelf - transpose(Js5)*F;
-                    else
-                        tauSelf = tauSelf - transpose(Js6)*F;
-                    end;
-                end;
-            end;
-        end;
-    end;
-
-    tauAvoid = tauGround + tauSelf;implementation_end;
-   Constant1 24 320
+   Constant1 72 296
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -238,56 +26,10 @@ code
     end;
     icon bg bottom
      figures
-      rectangle 8.1 304 39.9 336 color 0 fill 15132390;
-      line 12.9 315.6 34.9 315.6 color 16711680 width 2;
-      line 10.2 326.7 35.9 326.7 color 0;
-      line 12.5 310.7 12.5 329 color 0;
-    end;
-    implementation eq
-parameters
-	real global l2;
-	real C = l2;		// output value
-equations
-	output = C;
-     implementation_end;
-   Constant2 112 512
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
-  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
-</Description>';
-    type Constant
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 96.1 496 127.9 528 color 0 fill 15132390;
-      line 100.9 507.6 122.9 507.6 color 16711680 width 2;
-      line 98.2 518.7 123.9 518.7 color 0;
-      line 100.5 502.7 100.5 521 color 0;
-    end;
-    implementation eq
-parameters
-	real global l1;
-	real C = l1;		// output value
-equations
-	output = C;
-     implementation_end;
-   Constant3 112 200
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
-  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
-</Description>';
-    type Constant
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 96.1 184 127.9 216 color 0 fill 15132390;
-      line 100.9 195.6 122.9 195.6 color 16711680 width 2;
-      line 98.2 206.7 123.9 206.7 color 0;
-      line 100.5 190.7 100.5 209 color 0;
+      rectangle 56.1 280 87.9 312 color 0 fill 15132390;
+      line 60.9 291.6 82.9 291.6 color 16711680 width 2;
+      line 58.2 302.7 83.9 302.7 color 0;
+      line 60.5 286.7 60.5 305 color 0;
     end;
     implementation eq
 parameters
@@ -295,7 +37,7 @@ parameters
 equations
 	output = C;
      implementation_end;
-   Constant4 1216 288
+   Constant2 72 352
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -306,10 +48,10 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 1200.1 272 1231.9 304 color 0 fill 15132390;
-      line 1204.9 283.6 1226.9 283.6 color 16711680 width 2;
-      line 1202.2 294.7 1227.9 294.7 color 0;
-      line 1204.5 278.7 1204.5 297 color 0;
+      rectangle 56.1 336 87.9 368 color 0 fill 15132390;
+      line 60.9 347.6 82.9 347.6 color 16711680 width 2;
+      line 58.2 358.7 83.9 358.7 color 0;
+      line 60.5 342.7 60.5 361 color 0;
     end;
     implementation eq
 parameters
@@ -317,7 +59,7 @@ parameters
 equations
 	output = C;
      implementation_end;
-   Constant5 1216 424
+   Constant3 1240 72
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
   <TimeStamp>2007-10-19 14:48:44</TimeStamp>
@@ -328,14 +70,58 @@ equations
     end;
     icon bg bottom
      figures
-      rectangle 1200.1 408 1231.9 440 color 0 fill 15132390;
-      line 1204.9 419.6 1226.9 419.6 color 16711680 width 2;
-      line 1202.2 430.7 1227.9 430.7 color 0;
-      line 1204.5 414.7 1204.5 433 color 0;
+      rectangle 1224.1 56 1255.9 88 color 0 fill 15132390;
+      line 1228.9 67.6 1250.9 67.6 color 16711680 width 2;
+      line 1226.2 78.7 1251.9 78.7 color 0;
+      line 1228.5 62.7 1228.5 81 color 0;
     end;
     implementation eq
 parameters
 	real C = 0;		// output value
+equations
+	output = C;
+     implementation_end;
+   Constant4 1304 136
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 1288.1 120 1319.9 152 color 0 fill 15132390;
+      line 1292.9 131.6 1314.9 131.6 color 16711680 width 2;
+      line 1290.2 142.7 1315.9 142.7 color 0;
+      line 1292.5 126.7 1292.5 145 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0.28;		// output value
+equations
+	output = C;
+     implementation_end;
+   Constant5 1368 200
+    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\Constant.emx</LibraryPath>
+  <TimeStamp>2007-10-19 14:48:44</TimeStamp>
+</Description>';
+    type Constant
+     ports
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 1352.1 184 1383.9 216 color 0 fill 15132390;
+      line 1356.9 195.6 1378.9 195.6 color 16711680 width 2;
+      line 1354.2 206.7 1379.9 206.7 color 0;
+      line 1356.5 190.7 1356.5 209 color 0;
+    end;
+    implementation eq
+parameters
+	real C = 0.07;		// output value
 equations
 	output = C;
      implementation_end;
@@ -396,6 +182,297 @@ specification_end;
    output2 624 352 fixed;
    output3 624 360 fixed;
    input 624 352 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3] = input;implementation_end;
+specification_end;
+				specification 'outputs_4'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal in input [4,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '4' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 32 fixed;
+   output4 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4] = input;implementation_end;
+specification_end;
+				specification 'outputs_5'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal in input [5,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 48 width 2;
+   rectangle 0 0 16 48 color -1;
+   text '5' 6 42 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   input 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5] = input;implementation_end;
+specification_end;
+				specification 'outputs_6'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal in input [6,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '6' 6 58 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 40 fixed;
+   output5 0 48 fixed;
+   output6 0 56 fixed;
+   input 0 32 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6] = input;implementation_end;
+specification_end;
+				specification 'outputs_7'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal in input [7,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 64 width 2;
+   rectangle 0 0 16 64 color -1;
+   text '7' 6 58 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   input 0 32 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7] = input;implementation_end;
+specification_end;
+				specification 'outputs_8'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal in input [8,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80 color -1;
+   text '8' 6 72 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 48 fixed;
+   output6 0 56 fixed;
+   output7 0 64 fixed;
+   output8 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8] = input;implementation_end;
+specification_end;
+				specification 'outputs_9'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal out output4;
+   signal out output5;
+   signal out output6;
+   signal out output7;
+   signal out output8;
+   signal out output9;
+   signal in input [9,1];
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 80 width 2;
+   rectangle 0 0 16 80  color -1;
+   text '9' 6 74 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   output2 0 16 fixed;
+   output3 0 24 fixed;
+   output4 0 32 fixed;
+   output5 0 40 fixed;
+   output6 0 48 fixed;
+   output7 0 56 fixed;
+   output8 0 64 fixed;
+   output9 0 72 fixed;
+   input 0 40 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2; output3; output4; output5; output6; output7; output8; output9] = input;implementation_end;
+specification_end;
+			end;
+   Demux1 1159 208
+			specifications active 'outputs_3'
+				specification 'outputs_2'
+description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal in input [2,1];
+   signal out output2;
+ end;
+ icon bg bottom
+  figures
+   line 0 0 0 32 color 0 width 2;
+   rectangle 0 0 16 32 color -1;
+   text '2' 6 28 color 8421504 8;
+  terminals
+   output1 0 8 fixed;
+   input 0 16 fixed;
+   output2 0 24 fixed;
+ end;
+ implementation eq
+equations
+	[output1; output2] = input;implementation_end;
+specification_end;
+				specification 'outputs_3'
+ description '<Description>
+   <Version>4.8</Version>
+  <LibraryPath>Signal\Block Diagram\Demux.emx</LibraryPath>
+  <TimeStamp>2019-06-26 12:00:00</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+ <AllowLibraryUpdate>True</AllowLibraryUpdate>
+</Description>';
+ type Demux
+  ports
+   signal out output1;
+   signal out output2;
+   signal out output3;
+   signal in input [3,1];
+ end;
+ icon bg bottom
+  figures
+   line 1152 192 1152 224 color 0 width 2;
+   rectangle 1152 192 1168 224 color -1;
+   text '3' 1158 218 color 8421504 8;
+  terminals
+   output1 1152 200 fixed;
+   output2 1152 208 fixed;
+   output3 1152 216 fixed;
+   input 1152 208 fixed;
  end;
  implementation eq
 equations
@@ -712,9 +789,9 @@ implementation_end;
    <KeepParameterValues>True</KeepParameterValues>
    <Version>5.1</Version>
    <Description>Model generated by 3D-Mechanics Toolbox
-	Original Filename: C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 8\Final_arm.3dm</Description>
-   <LibraryPath>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 8\Final_arm.emx</LibraryPath>
-   <TimeStamp>2026-6-17 11:40:15</TimeStamp>
+	Original Filename: C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.3dm</Description>
+   <LibraryPath>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.emx</LibraryPath>
+   <TimeStamp>2026-6-16 18:4:57</TimeStamp>
 </Description>';
     type MechanicsModel
      ports
@@ -733,19 +810,19 @@ implementation_end;
     end;
     icon bg bottom
      figures
-      image 'C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 8\Final_armIcon2.png' 882 290 128 128;
+      image 'C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_armIcon.png' 882 290 128 128;
      terminals
-      Force1 1010 352;
+      Force1 1010 392;
       Base_Rot 882 305;
       Rot_Arm1 882 352;
       Arm1_Arm2 882 400;
     end;
     implementation eq
 // 20-sim 3D Mechanics Editor
-// C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 8\Final_arm.3dm
+// C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.3dm
 // build : 5.1.6 build 14106
-// date  : Wednesday, June 17, 2026
-// time  : 11:40:15 AM
+// date  : Tuesday, June 16, 2026
+// time  : 18:04:57 PM
 
 parameters
 	real global l1 = 0.1;
@@ -753,7 +830,7 @@ parameters
 	real global l3 = 0.1;
 	real global r_int = 0.035;
 	real global r_ext = 0.04;
-	real global p = 2700.0;
+	real global p = 2700;
 	real global Maxon_m = 0.5;
 	real global Maxon_l = 0.11;
 	real global Maxon_r = 0.015;
@@ -779,8 +856,8 @@ parameters
 			0.0, 0.0, 1.0, 0.0;
 			0.0, 0.0, 0.0, 1.0];
 	real Base_Rot_phiInitial = 0.0;
-	real Rot_Arm1_phiInitial = 0.0;
-	real Arm1_Arm2_phiInitial = 0.0;
+	real Rot_Arm1_phiInitial = -0.17453292519943295;
+	real Arm1_Arm2_phiInitial = 0.3490658503988659;
 	real hidden EE\RelH[4,4] = [
 			1.0, 0.0, 0.0, -0.0;
 			-0.0, 1.0, 0.0, -0.0;
@@ -1270,8 +1347,8 @@ parameters
 	real global Maxon_m;
 	
 	real global m[3] = [pi*(r_ext^2-r_int^2)*l1*p;pi*(r_ext^2-r_int^2)*l2*p;pi*(r_ext^2-r_int^2)*l3*p];
-	real K_imp[3,3] = [2,0,0; 0,2,0; 0,0,2];
-	real b_imp[3,3] = [2,0,0; 0,2,0; 0,0,2];
+	real K_imp[3,3] = [36,0,0; 0,36,0; 0,0,36];
+	real b_imp[3,3] = [8,0,0; 0,8,0; 0,0,8];
 	
 variables
 	real J[3,3];  // Jacobian
@@ -1310,7 +1387,52 @@ equations
 	vel = J * dq;
 	F_imp = K_imp*(pos_des - pos) + b_imp*(vel_des - vel);
 		
-	u = transpose(J)*F_imp + g;
+	u = g;
+	//u = g;
+	// u = [1;1];
+
+	
+	implementation_end;
+   Imp_contr1 1080 144
+    description '<Information><Description><Version>4.0</Version><LibraryPath>System\Submodel.emx</LibraryPath><TimeStamp>2007-10-31 11:32:54</TimeStamp><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
+    type Submodel
+     ports
+      signal in q [3,1];
+      signal out u [3,1] {N.m} ;
+    end;
+    implementation eq
+parameters
+	real global grav = g_n;		// m/s^2
+
+	real global l1;
+	real global l2;
+	real global l3;
+	real global L[3] = [l1;l2;l3];
+	real global r_int;
+	real global r_ext;
+	real global p;
+	real global Maxon_m;
+	
+	real global m[3] = [pi*(r_ext^2-r_int^2)*l1*p;pi*(r_ext^2-r_int^2)*l2*p;pi*(r_ext^2-r_int^2)*l3*p];
+	real K_imp[3,3] = [36,0,0; 0,36,0; 0,0,36];
+	real b_imp[3,3] = [8,0,0; 0,8,0; 0,0,8];
+	
+variables
+	real J[3,3];  // Jacobian
+	real g[3];
+	real pos[3];
+	real vel[3];
+	real F_imp[3];
+	
+equations
+	pos = [
+				-(L[2]*cos(q[2]) +  L[3]*cos(q[2]+q[3]))*sin(q[1]);	
+				(L[2]*cos(q[2]) +  L[3]*cos(q[2]+q[3]))*cos(q[1]);	
+				L[1] + L[2]*sin(q[2]) +  L[3]*sin(q[2]+q[3])
+			];
+
+		
+	u = pos;
 	//u = g;
 	// u = [1;1];
 
@@ -1400,27 +1522,6 @@ equations
 	Imotor = (Tmotor/motorconst)/motoreff;
 	output = Imotor; // all together are approx 0.85
     implementation_end;
-      Hold1 -160 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-       type Hold
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -176 224 -144 256 color 0 fill 15132390;
-         text 'ZOH' -158.9 238.9 color 16711680 14;
-       end;
-       implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
       LinkEncoder1 448 239.9
        description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        knot QSensor
@@ -1630,27 +1731,6 @@ equations
 	p.e = r * p.f;
 	P = p.e * p.f;
 implementation_end;
-         Hold1 120 80
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-          type Hold
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 104 64 136 96 color 0 fill 15132390;
-            text 'ZOH' 121.1 78.9 color 16711680 14;
-          end;
-          implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
          Inductance 168 328
           description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
           type I
@@ -1725,7 +1805,7 @@ equations
 	P = p.e * p.f;
 implementation_end;
          plug p2 566.1 264;
-         plug Ides 224 32;
+         plug Ides 104 64;
          OneJunction 104 264
           description '<Information>
  <Description>
@@ -1826,8 +1906,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 2.443477741035439 {};			// Proportional gain
-	real tauI = 0.0862165380428119 {s};		// Integral time constant: tauI > 0
+	real kp = 1.0 {};			// Proportional gain
+	real tauI = 0.3 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -1943,28 +2023,6 @@ equations
 	P = p.e * p.f;
 
 implementation_end;
-         Sample2 192 80
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-          type Sample
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 176 64 208 96 color 0 fill 15132390;
-            line 178.3 70.8 181.2 70.8 181.2 66.9 185.3 66.9 185.3 70.8 189.2 70.8 189.2 66.9 191.1 66.9 color 16711680 fill 15132390;
-            line 191.5 72.4 193.7 72.4 193.7 78.4 194.6 76.9 color 0 fill 15132390;
-            line 193 77.1 193.7 78.4 color 0 fill 15132390;
-            line 179.9 83.9 187.9 83.9 200 80 color 0 fill 15132390 width 2;
-          end;
-          implementation eq
-equations
-	output = sample (input);
-      implementation_end;
          TF 448 264
           description '<Information>
  <Description>
@@ -2015,8 +2073,7 @@ equations
          ADcurr\output -> PlusMinus1\minus;
          DA\output -> MSe\effort;
          GY\p2 => OneJunction1\p;
-         Hold1\output -> Sample2\input;
-         Ides -> Hold1\input;
+         Ides -> PlusMinus1\plus;
          MSe\p => OneJunction\p;
          OneJunction\flow -> ADcurr\input;
          OneJunction\p => GY\p1;
@@ -2032,12 +2089,11 @@ equations
          PowerSensorIn\P -> TF\Pin 344 224 448 224;
          PowerSensorIn\p1 <= OneJunction1\p;
          PowerSensorIn1\p2 => p2;
-         Sample2\output -> PlusMinus1\plus;
          TF\p2 => PowerSensorIn1\p1;
         end;
        implementation_end;
-      plug p 518.9 240;
       plug input -199 240;
+      plug p 518.9 240;
       PID 56 240
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
@@ -2055,12 +2111,10 @@ equations
        end;
        implementation eq
 parameters
-	real global Kt_p;
-	real global Kt_d;
-	real kp = Kt_p {};			// Proportional gain
-	real tauD = Kt_d / Kt_p {s};		// Derivative time constant: tauD > 0
+	real kp = 10.0 {};			// Proportional gain
+	real tauD = 5 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.4 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 0.05 {s};		// Integral time constant: tauI > 0
+	real tauI = 0.2 {s};		// Integral time constant: tauI > 0
 variables
 	real hidden factor,uD,uI;
 equations
@@ -2106,6 +2160,25 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
       Sample 296 88
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
@@ -2123,28 +2196,6 @@ equations
          line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
          line 297 85.1 297.7 86.4 color 0 fill 15132390;
          line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
-       end;
-       implementation eq
-equations
-	output = sample (input);
-      implementation_end;
-      Sample2 -88 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-       type Sample
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -104 224 -72 256 color 0 fill 15132390;
-         line -101.7 230.8 -98.8 230.8 -98.8 226.9 -94.7 226.9 -94.7 230.8 -90.8 230.8 -90.8 226.9 -88.9 226.9 color 16711680 fill 15132390;
-         line -88.5 232.4 -86.3 232.4 -86.3 238.4 -85.4 236.9 color 0 fill 15132390;
-         line -87 237.1 -86.3 238.4 color 0 fill 15132390;
-         line -100.1 243.9 -92.1 243.9 -80 240 color 0 fill 15132390 width 2;
        end;
        implementation eq
 equations
@@ -2223,15 +2274,14 @@ implementation_end;
       C1\state -> Sample\input 376 88;
       dQspring\p2 => C1\p;
       Feedforward\output -> PlusMinus1\plus;
-      Hold1\output -> Sample2\input;
-      input -> Hold1\input;
       MaxonMotor\p2 => ZeroJunction1\p;
       p <= LinkEncoder1\p2;
       PID\output -> PlusMinus1\plus;
       PlusMinus1\output -> MaxonMotor\Ides;
       PlusMinus2\output -> PID\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
       Sample\output -> Tspring\input;
-      Sample2\output -> Splitter1\input;
       Splitter1\output -> Feedforward\input -64 312;
       Splitter1\output -> PlusMinus2\plus;
       Tspring\output -> PlusMinus2\minus -16 88;
@@ -2323,27 +2373,6 @@ equations
 	Imotor = (Tmotor/motorconst)/motoreff;
 	output = Imotor; // all together are approx 0.85
     implementation_end;
-      Hold1 -160 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-       type Hold
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -176 224 -144 256 color 0 fill 15132390;
-         text 'ZOH' -158.9 238.9 color 16711680 14;
-       end;
-       implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
       LinkEncoder1 448 239.9
        description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        knot QSensor
@@ -2553,27 +2582,6 @@ equations
 	p.e = r * p.f;
 	P = p.e * p.f;
 implementation_end;
-         Hold1 112 88
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-          type Hold
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 96 72 128 104 color 0 fill 15132390;
-            text 'ZOH' 113.1 86.9 color 16711680 14;
-          end;
-          implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
          Inductance 168 328
           description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
           type I
@@ -2749,8 +2757,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 2.443477741035439 {};			// Proportional gain
-	real tauI = 0.0862165380428119 {s};		// Integral time constant: tauI > 0
+	real kp = 1.0 {};			// Proportional gain
+	real tauI = 0.3 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -2866,28 +2874,6 @@ equations
 	P = p.e * p.f;
 
 implementation_end;
-         Sample2 184 88
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-          type Sample
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 168 72 200 104 color 0 fill 15132390;
-            line 170.3 78.8 173.2 78.8 173.2 74.9 177.3 74.9 177.3 78.8 181.2 78.8 181.2 74.9 183.1 74.9 color 16711680 fill 15132390;
-            line 183.5 80.4 185.7 80.4 185.7 86.4 186.6 84.9 color 0 fill 15132390;
-            line 185 85.1 185.7 86.4 color 0 fill 15132390;
-            line 171.9 91.9 179.9 91.9 192 88 color 0 fill 15132390 width 2;
-          end;
-          implementation eq
-equations
-	output = sample (input);
-      implementation_end;
          TF 448 264
           description '<Information>
  <Description>
@@ -2938,8 +2924,7 @@ equations
          ADcurr\output -> PlusMinus1\minus;
          DA\output -> MSe\effort;
          GY\p2 => OneJunction1\p;
-         Hold1\output -> Sample2\input;
-         Ides -> Hold1\input;
+         Ides -> PlusMinus1\plus;
          MSe\p => OneJunction\p;
          OneJunction\flow -> ADcurr\input;
          OneJunction\p => GY\p1;
@@ -2955,13 +2940,12 @@ equations
          PowerSensorIn\P -> TF\Pin 344 224 448 224;
          PowerSensorIn\p1 <= OneJunction1\p;
          PowerSensorIn1\p2 => p2;
-         Sample2\output -> PlusMinus1\plus;
          TF\p2 => PowerSensorIn1\p1;
         end;
        implementation_end;
-      plug p 518.9 240;
       plug input -199 240;
-      PID 56 240
+      plug p 518.9 240;
+      PID 64 248
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
   <TimeStamp>2007-9-27 14:49:14</TimeStamp>
@@ -2973,17 +2957,15 @@ equations
        end;
        icon bg bottom
         figures
-         rectangle 40 224 72 256 color 0 fill 15132390;
-         text 'PID' 56 239.5 color 1336868 18 bold;
+         rectangle 48 232 80 264 color 0 fill 15132390;
+         text 'PID' 64 247.5 color 1336868 18 bold;
        end;
        implementation eq
 parameters
-	real global Kt_p;
-	real global Kt_d;
-	real kp = Kt_p {};			// Proportional gain
-	real tauD = Kt_d / Kt_p {s};		// Derivative time constant: tauD > 0
+	real kp = 10.0 {};			// Proportional gain
+	real tauD = 5 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.4 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 0.05 {s};		// Integral time constant: tauI > 0
+	real tauI = 0.2 {s};		// Integral time constant: tauI > 0
 variables
 	real hidden factor,uD,uI;
 equations
@@ -3029,6 +3011,25 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
       Sample 296 88
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
@@ -3046,28 +3047,6 @@ equations
          line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
          line 297 85.1 297.7 86.4 color 0 fill 15132390;
          line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
-       end;
-       implementation eq
-equations
-	output = sample (input);
-      implementation_end;
-      Sample2 -88 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-       type Sample
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -104 224 -72 256 color 0 fill 15132390;
-         line -101.7 230.8 -98.8 230.8 -98.8 226.9 -94.7 226.9 -94.7 230.8 -90.8 230.8 -90.8 226.9 -88.9 226.9 color 16711680 fill 15132390;
-         line -88.5 232.4 -86.3 232.4 -86.3 238.4 -85.4 236.9 color 0 fill 15132390;
-         line -87 237.1 -86.3 238.4 color 0 fill 15132390;
-         line -100.1 243.9 -92.1 243.9 -80 240 color 0 fill 15132390 width 2;
        end;
        implementation eq
 equations
@@ -3146,15 +3125,14 @@ implementation_end;
       C1\state -> Sample\input 376 88;
       dQspring\p2 => C1\p;
       Feedforward\output -> PlusMinus1\plus;
-      Hold1\output -> Sample2\input;
-      input -> Hold1\input;
       MaxonMotor\p2 => ZeroJunction1\p;
       p <= LinkEncoder1\p2;
       PID\output -> PlusMinus1\plus;
       PlusMinus1\output -> MaxonMotor\Ides;
       PlusMinus2\output -> PID\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
       Sample\output -> Tspring\input;
-      Sample2\output -> Splitter1\input;
       Splitter1\output -> Feedforward\input -64 312;
       Splitter1\output -> PlusMinus2\plus;
       Tspring\output -> PlusMinus2\minus -16 88;
@@ -3246,27 +3224,6 @@ equations
 	Imotor = (Tmotor/motorconst)/motoreff;
 	output = Imotor; // all together are approx 0.85
     implementation_end;
-      Hold1 -168 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-       type Hold
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -184 224 -152 256 color 0 fill 15132390;
-         text 'ZOH' -166.9 238.9 color 16711680 14;
-       end;
-       implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
       LinkEncoder1 448 239.9
        description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\QSensor.emx</LibraryPath><TimeStamp>2011-11-29 16:34:15</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
        knot QSensor
@@ -3476,27 +3433,6 @@ equations
 	p.e = r * p.f;
 	P = p.e * p.f;
 implementation_end;
-         Hold1 40 64
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Hold.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:15</TimeStamp>
-</Description>';
-          type Hold
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 24 48 56 80 color 0 fill 15132390;
-            text 'ZOH' 41.1 62.9 color 16711680 14;
-          end;
-          implementation eq
-parameters
-	real initial = 0;
-equations
-	output = hold (input, initial);
-         implementation_end;
          Inductance 168 328
           description '<Information><Description><Version>4.2</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Bond Graph\I.emx</LibraryPath><TimeStamp>2011-11-29 15:55:55</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
           type I
@@ -3672,8 +3608,8 @@ implementation_end;
 parameters
 	//real kp = 1.0 {};			// Proportional gain
 	//real tauI = 1.0 {s};		// Integral time constant: tauI > 0
-	real kp = 2.443477741035439 {};			// Proportional gain
-	real tauI = 0.0862165380428119 {s};		// Integral time constant: tauI > 0
+	real kp = 1.0 {};			// Proportional gain
+	real tauI = 0.3 {s};		// Integral time constant: tauI > 0
 variables
 	real bi;
 	real uP;
@@ -3789,28 +3725,6 @@ equations
 	P = p.e * p.f;
 
 implementation_end;
-         Sample2 112 64
-          description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-          type Sample
-           ports
-            signal in input;
-            signal out output;
-          end;
-          icon bg bottom
-           figures
-            rectangle 96 48 128 80 color 0 fill 15132390;
-            line 98.3 54.8 101.2 54.8 101.2 50.9 105.3 50.9 105.3 54.8 109.2 54.8 109.2 50.9 111.1 50.9 color 16711680 fill 15132390;
-            line 111.5 56.4 113.7 56.4 113.7 62.4 114.6 60.9 color 0 fill 15132390;
-            line 113 61.1 113.7 62.4 color 0 fill 15132390;
-            line 99.9 67.9 107.9 67.9 120 64 color 0 fill 15132390 width 2;
-          end;
-          implementation eq
-equations
-	output = sample (input);
-      implementation_end;
          TF 448 264
           description '<Information>
  <Description>
@@ -3861,8 +3775,7 @@ equations
          ADcurr\output -> PlusMinus1\minus;
          DA\output -> MSe\effort;
          GY\p2 => OneJunction1\p;
-         Hold1\output -> Sample2\input;
-         Ides -> Hold1\input 40 32;
+         Ides -> PlusMinus1\plus;
          MSe\p => OneJunction\p;
          OneJunction\flow -> ADcurr\input;
          OneJunction\p => GY\p1;
@@ -3878,13 +3791,12 @@ equations
          PowerSensorIn\P -> TF\Pin 344 224 448 224;
          PowerSensorIn\p1 <= OneJunction1\p;
          PowerSensorIn1\p2 => p2;
-         Sample2\output -> PlusMinus1\plus;
          TF\p2 => PowerSensorIn1\p1;
         end;
        implementation_end;
-      plug p 518.9 240;
       plug input -199 240;
-      PID 56 240
+      plug p 518.9 240;
+      PID 64 248
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Control\PID Control\Discrete\PID.emx</LibraryPath>
   <TimeStamp>2007-9-27 14:49:14</TimeStamp>
@@ -3896,17 +3808,15 @@ equations
        end;
        icon bg bottom
         figures
-         rectangle 40 224 72 256 color 0 fill 15132390;
-         text 'PID' 56 239.5 color 1336868 18 bold;
+         rectangle 48 232 80 264 color 0 fill 15132390;
+         text 'PID' 64 247.5 color 1336868 18 bold;
        end;
        implementation eq
 parameters
-	real global Kt_p;
-	real global Kt_d;
-	real kp = Kt_p {};			// Proportional gain
-	real tauD = Kt_d / Kt_p {s};		// Derivative time constant: tauD > 0
+	real kp = 10.0 {};			// Proportional gain
+	real tauD = 5 {s};		// Derivative time constant: tauD > 0
 	real beta = 0.4 {};		// Tameness constant: 0 < beta << 1
-	real tauI = 0.05 {s};		// Integral time constant: tauI > 0
+	real tauI = 0.2 {s};		// Integral time constant: tauI > 0
 variables
 	real hidden factor,uD,uI;
 equations
@@ -3952,6 +3862,25 @@ equations
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
+      PlusMinus4 -128 240
+       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
+  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
+</Description>';
+       knot PlusMinus
+        ports
+         signal knot duplicatable in plus [1];
+         signal knot duplicatable in minus [1];
+         signal knot out output [1];
+       end;
+       icon bg ellipse bottom
+        figures
+         ellipse -136 232 -120 248 color 0 fill 16777215;
+       end;
+       implementation eq
+equations
+    output = sum (collect (plus)) - sum (collect (minus));
+    implementation_end;
       Sample 296 88
        description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
@@ -3969,28 +3898,6 @@ equations
          line 295.5 80.4 297.7 80.4 297.7 86.4 298.6 84.9 color 0 fill 15132390;
          line 297 85.1 297.7 86.4 color 0 fill 15132390;
          line 283.9 91.9 291.9 91.9 304 88 color 0 fill 15132390 width 2;
-       end;
-       implementation eq
-equations
-	output = sample (input);
-      implementation_end;
-      Sample2 -96 240
-       description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Discrete\Sample.emx</LibraryPath>
-  <TimeStamp>2007-9-27 15:20:31</TimeStamp>
-</Description>';
-       type Sample
-        ports
-         signal in input;
-         signal out output;
-       end;
-       icon bg bottom
-        figures
-         rectangle -112 224 -80 256 color 0 fill 15132390;
-         line -109.7 230.8 -106.8 230.8 -106.8 226.9 -102.7 226.9 -102.7 230.8 -98.8 230.8 -98.8 226.9 -96.9 226.9 color 16711680 fill 15132390;
-         line -96.5 232.4 -94.3 232.4 -94.3 238.4 -93.4 236.9 color 0 fill 15132390;
-         line -95 237.1 -94.3 238.4 color 0 fill 15132390;
-         line -108.1 243.9 -100.1 243.9 -88 240 color 0 fill 15132390 width 2;
        end;
        implementation eq
 equations
@@ -4069,15 +3976,14 @@ implementation_end;
       C1\state -> Sample\input 376 88;
       dQspring\p2 => C1\p;
       Feedforward\output -> PlusMinus1\plus;
-      Hold1\output -> Sample2\input;
-      input -> Hold1\input;
       MaxonMotor\p2 => ZeroJunction1\p;
       p <= LinkEncoder1\p2;
       PID\output -> PlusMinus1\plus;
       PlusMinus1\output -> MaxonMotor\Ides;
       PlusMinus2\output -> PID\error;
+      PlusMinus4\output -> Splitter1\input;
+      PlusMinus4\plus <- input;
       Sample\output -> Tspring\input;
-      Sample2\output -> Splitter1\input;
       Splitter1\output -> Feedforward\input -64 312;
       Splitter1\output -> PlusMinus2\plus;
       Tspring\output -> PlusMinus2\minus -16 88;
@@ -4085,7 +3991,7 @@ implementation_end;
       ZeroJunction1\p => LinkEncoder1\p1;
      end;
     implementation_end;
-   MSe 1096 352
+   MSe 1088 392
     description '<Information>
  <Description>
     <Version>4.2</Version>
@@ -4104,10 +4010,10 @@ implementation_end;
     end;
     icon bg ellipse bottom
      figures
-      text 'MSe' 1096 352 color 0 18 bold;
+      text 'MSe' 1088 392 color 0 18 bold;
     end;
     implementation eq
- variables
+variables
 	real flow[3];
 equations
 	p.e = effort;
@@ -4404,7 +4310,7 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
-   Mux1 1151 352
+   Mux1 1151 360
 			specifications active 'inputs_3'
 				specification 'inputs_2'
 description '<Description>
@@ -4453,14 +4359,14 @@ specification_end;
  end;
  icon bg bottom
   figures
-   line 1144 336 1144 368 color 0 width 2;
-   rectangle 1144 336 1160 368 color -1;
-   text '3' 1150 362 color 8421504 8;
+   line 1144 344 1144 376 color 0 width 2;
+   rectangle 1144 344 1160 376 color -1;
+   text '3' 1150 370 color 8421504 8;
   terminals
-   input1 1144 344 fixed;
-   input2 1144 352 fixed;
-   input3 1144 360 fixed;
-   output 1144 352 fixed;
+   input1 1144 352 fixed;
+   input2 1144 360 fixed;
+   input3 1144 368 fixed;
+   output 1144 360 fixed;
  end;
  implementation eq
 equations
@@ -4695,7 +4601,112 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
-   PlusMinus1 104 416
+   PID 1224 288
+    description '<Description>
+ <Version>4.0</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Continuous\PID.emx</LibraryPath>
+  <TimeStamp>2008-1-17 10:49:30</TimeStamp>
+</Description>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 1208 272 1240 304 color 0 fill 15132390;
+      text 'PID' 1224 287.5 color 16711680 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 30.0 {};			// Proportional gain
+	real tauD = 0.5 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
+variables
+	real pdout, pdrate, pdstate;
+	real pirate, pistate;
+equations
+	pdrate = (kp * error - pdout) / (beta * tauD);
+	pdstate = int (pdrate);
+	pdout = pdstate + (kp * error / beta);
+	pirate = pdout / tauI;
+	pistate = int (pirate);
+	output = pistate + pdout;
+      implementation_end;
+   PID1 1224 344
+    description '<Description>
+ <Version>4.0</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Continuous\PID.emx</LibraryPath>
+  <TimeStamp>2008-1-17 10:49:30</TimeStamp>
+</Description>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 1208 328 1240 360 color 0 fill 15132390;
+      text 'PID' 1224 343.5 color 16711680 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 30.0 {};			// Proportional gain
+	real tauD = 0.5 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
+variables
+	real pdout, pdrate, pdstate;
+	real pirate, pistate;
+equations
+	pdrate = (kp * error - pdout) / (beta * tauD);
+	pdstate = int (pdrate);
+	pdout = pdstate + (kp * error / beta);
+	pirate = pdout / tauI;
+	pistate = int (pirate);
+	output = pistate + pdout;
+      implementation_end;
+   PID2 1224 400
+    description '<Description>
+ <Version>4.0</Version>
+ <IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Control\PID Control\Continuous\PID.emx</LibraryPath>
+  <TimeStamp>2008-1-17 10:49:30</TimeStamp>
+</Description>';
+    type PID
+     ports
+      signal in error;
+      signal out output;
+    end;
+    icon bg bottom
+     figures
+      rectangle 1208 384 1240 416 color 0 fill 15132390;
+      text 'PID' 1224 399.5 color 16711680 18 bold;
+    end;
+    implementation eq
+parameters
+	real kp = 30.0 {};			// Proportional gain
+	real tauD = 0.5 {s};		// Derivative time constant: tauD > 0
+	real beta = 0.1 {};		// Tameness constant: 0 < beta << 1
+	real tauI = 1.0 {s};		// Integral time constant: tauI > 0
+variables
+	real pdout, pdrate, pdstate;
+	real pirate, pistate;
+equations
+	pdrate = (kp * error - pdout) / (beta * tauD);
+	pdstate = int (pdrate);
+	pdout = pdstate + (kp * error / beta);
+	pirate = pdout / tauI;
+	pistate = int (pirate);
+	output = pistate + pdout;
+      implementation_end;
+   PlusMinus 1184 128
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -4706,15 +4717,15 @@ specification_end;
       signal knot duplicatable in minus [1];
       signal knot out output [1];
     end;
-    icon bg ellipse bottom
+    icon bg ellipse
      figures
-      ellipse 96 408 112 424 color 0 fill 16777215;
+      ellipse 1176 120 1192 136 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   PlusMinus2 104 352
+   PlusMinus1 1240 176
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -4725,15 +4736,15 @@ equations
       signal knot duplicatable in minus [1];
       signal knot out output [1];
     end;
-    icon bg ellipse bottom
+    icon bg ellipse
      figures
-      ellipse 96 344 112 360 color 0 fill 16777215;
+      ellipse 1232 168 1248 184 color 0 fill 16777215;
     end;
     implementation eq
 equations
     output = sum (collect (plus)) - sum (collect (minus));
     implementation_end;
-   PlusMinus3 104 296
+   PlusMinus2 1304 224
     description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
    <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
   <TimeStamp>2007-9-27 10:15:13</TimeStamp>
@@ -4744,28 +4755,9 @@ equations
       signal knot duplicatable in minus [1];
       signal knot out output [1];
     end;
-    icon bg ellipse bottom
+    icon bg ellipse
      figures
-      ellipse 96 288 112 304 color 0 fill 16777215;
-    end;
-    implementation eq
-equations
-    output = sum (collect (plus)) - sum (collect (minus));
-    implementation_end;
-   PlusMinus4 584 352
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Block Diagram\PlusMinus.emx</LibraryPath>
-  <TimeStamp>2007-9-27 10:15:13</TimeStamp>
-</Description>';
-    knot PlusMinus
-     ports
-      signal knot duplicatable in plus [3,1];
-      signal knot duplicatable in minus [3,1];
-      signal knot out output [3,1];
-    end;
-    icon bg ellipse bottom
-     figures
-      ellipse 576 344 592 360 color 0 fill 16777215;
+      ellipse 1296 216 1312 232 color 0 fill 16777215;
     end;
     implementation eq
 equations
@@ -5062,38 +5054,6 @@ equations
 	output = [input1; input2; input3; input4; input5; input6; input7; input8; input9];implementation_end;
 specification_end;
 			end;
-   Pulse 1216 352
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\SignalGenerator-Pulse.emx</LibraryPath>
-  <TimeStamp>2007-9-27 16:1:38</TimeStamp>
-</Description>';
-    type 'SignalGenerator-Pulse'
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      rectangle 1200.1 336 1231.9 368 color 0 fill 15132390;
-      line 1211.7 350.4 1217.4 350.4 color 16711680 width 2;
-      line 1203 362.2 1229 362.2 color 0;
-      line 1206 362.1 1211.6 362.1 1211.6 350.5 color 16711680 width 2;
-      line 1206 344.6 1206 365 color 0;
-      line 1226.2 362.2 1217.4 362.1 1217.4 350.5 color 16711680 width 2;
-    end;
-    implementation eq
-parameters
-	real start_time = 4.0 {s};
-	real stop_time = 6.0 {s};
-	real amplitude = 0 {none};
-variables
-	boolean hidden change;
-equations
-	"calculate at least at the start and stop time"
-	change = timeevent (start_time) or timeevent (stop_time);
-
-	"calculate the block signal"
-	output = amplitude * (step (start_time) - step (stop_time));
-implementation_end;
    Sample_pos 1008 208
     description '<Information><Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues><LibraryPath>Signal\Discrete\Sample.emx</LibraryPath><TimeStamp>2007-9-27 15:20:31</TimeStamp><AllowLibraryUpdate>True</AllowLibraryUpdate></Description></Information>';
     type Sample
@@ -5155,6 +5115,29 @@ equations
 equations
     collect (output) = input;
 implementation_end;
+   Splitter1 1056 216
+    description '<Description><Version>4.0</Version>
+   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
+  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
+<IsMainModel>1</IsMainModel>
+ <KeepParameterValues>False</KeepParameterValues>
+</Description>';
+    knot Splitter
+     ports
+      signal knot duplicatable out output [3,1];
+      signal knot in input [3,1];
+    end;
+    icon bg ellipse
+     figures
+      ellipse 1052.8 212.8 1059.2 219.2 color -1 fill 0;
+      ellipse 1051.7 211.7 1060.3 220.3 color -1;
+     terminals
+      input 1056 216 fixed;
+    end;
+    implementation eq
+equations
+    collect (output) = input;
+implementation_end;
    Splitter2 768 208
     description '<Description><Version>4.0</Version>
    <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
@@ -5178,250 +5161,373 @@ implementation_end;
 equations
     collect (output) = input;
 implementation_end;
-   Splitter3 584 208
-    description '<Description><Version>4.0</Version>
-   <LibraryPath>Signal\Block Diagram\Splitter.emx</LibraryPath>
-  <TimeStamp>2008-01-17 11:28:29</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
+   Sweep 72 408
+			specifications active 'default'
+				specification 'default'
+ description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
 </Description>';
-    knot Splitter
-     ports
-      signal knot duplicatable out output [3,1];
-      signal knot in input [3,1];
-    end;
-    icon bg ellipse
-     figures
-      ellipse 580.8 204.8 587.2 211.2 color -1 fill 0;
-      ellipse 579.7 203.7 588.3 212.3 color -1;
-     terminals
-      input 584 208 fixed;
-    end;
-    implementation eq
-equations
-    collect (output) = input;
-implementation_end;
-   Submodel5 648 520
-    description '<Description>
- <Version>4.0</Version>
-   <LibraryPath>System\Submodel.emx</LibraryPath>
-  <TimeStamp>2007-10-31 11:32:54</TimeStamp>
-<IsMainModel>1</IsMainModel>
- <KeepParameterValues>False</KeepParameterValues>
-</Description>';
-    type Submodel
-    end;
-    implementation eq
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 56 392 88 424 color 0 fill 15132390;
+   line 60.5 398.4 60.5 417.6 color 0;
+   line 86.1 408 57.3 408 color 0;
+   spline 60.5 408 64.2 403.9 68.5 400.2 73.3 418.1 76.3 398.6 78.9 418.3 81.3 398.4 83.2 418.3 84.5 398.4 85.5 418.3 color 16711680;
+ end;
+ implementation eq
 parameters
-	real global l1;
-	real global l2;
-	real global l3;
-	real global L[3];
-	real global r_int;
-	real global r_ext;
-	real global p;
-	real global Maxon_m;
-	real global Maxon_r;
-	real global Maxon_l;
-	real global m[3];
-	
-	real global k1;
-	
-	real i = 34.7e-7 + 0.8e-7; //motor + gearbox inertia
-	
-	// inertias of arms
-	real I1x = pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2));
-	real I1y = pi*l1*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l1^2*(r_ext^2 - r_int^2));
-	real I1z = (1/2)*pi*l1*p*(r_ext^4 - r_int^4);
-	
-	real I2x = pi*l2*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l2^2*(r_ext^2 - r_int^2));
-	real I2y = (1/2)*pi*l2*p*(r_ext^4 - r_int^4);
-	real I2z = pi*l2*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l2^2*(r_ext^2 - r_int^2));
-	
-	real I3x = pi*l3*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l3^2*(r_ext^2 - r_int^2));
-	real I3y = (1/2)*pi*l3*p*(r_ext^4 - r_int^4);
-	real I3z = pi*l3*p*((1/4)*(r_ext^4 - r_int^4) + (1/12)*l3^2*(r_ext^2 - r_int^2));
-	
-	// inertias of motors
- 	real Maxon_Ix = (1/2)*Maxon_m*Maxon_r^2;
-	real Maxon_Iy = (1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2;
-	real Maxon_Iz = (1/4)*Maxon_m*Maxon_r^2 + (1/12)*Maxon_m*Maxon_l^2;
-	
-	// configuration in the middle of task trajectory
-	real q1_task = 0;
-	real q2_task = -0.505;
-	real q3_task = 1.318; 
-	
-	// configuration of maximal inertia
-	real q1_worst = 0;
-	real q2_worst = 0;
-	real q3_worst = 0; 
-
-	// control parameters
-	real alpha = 3.5;
-	real ksi = 1;
-	real global Kt_p = alpha^2 - 1;
-	real omega_0 = sqrt(k1*(Kt_p+1)/i);
-	real global Kt_d = 2*i*omega_0*ksi / k1;
-	real omega_n = sqrt(k1/i); // locked-output natural resonance frequency
-	
+	real amplitude = 10.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 * 5 {frequency, rad/s};
 variables
-	real m1I_task;
-	real m2I_task;
-	real m3I_task;
-	
-	real m1I_worst;
-	real m2I_worst;
-	real m3I_worst;
-	
-
-	
-equations
-	// load inertias for each motor in the stretched out configuration
-	m1I_worst = (I1z) + (I2z + m[2]*(l2/2)^2) + (I3z + m[3]*(l2+l3/2)^2) + (Maxon_Iz + Maxon_m*(0.04)^2) + (Maxon_Iz + Maxon_m*(l2^2+0.04^2));
-	m2I_worst = (I2x + m[2]*(l2/2)^2) + (I3x + m[3]*(l2+l3/2)^2) + (Maxon_Ix + Maxon_m*l2^2);
-	m3I_worst = I3x + m[3]*(l3/2)^2;implementation_end;
-   WaveGenerator1 32 472
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
-  <TimeStamp>2007-9-27 16:12:6</TimeStamp>
-</Description>';
-    type 'WaveGenerator-Sine'
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      group
-       rectangle 16 456 48 488 color 0 fill 15132390;
-       line 20.5 462.4 20.5 481.6 color 0;
-       line 46.1 472 17.3 472 color 0;
-       spline 20.9 471.9 24.1 463.8 27.3 471.9 30.6 480 33.7 471.9 36.8 463.8 40.1 471.9 43.6 480.2 46.8 472.2 color 16711680;
-      end;
-    end;
-    implementation eq
-parameters
-	real global l1;
-	real amplitude = l1/2;			// amplitude of the wave
-	real omega = 1.0 {rad/s};		// angular frequency of the wave
-variables
+	real omega {frequency, rad/s};		// current frequency {rad/s}
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
 	boolean hidden change;
-	real hidden half;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
 equations
-	"calculate at least 2 points per cycle to get a triangle"
-	half = pi / omega;
-	change = frequencyevent (half, half / 2);
-
-	"calculate the sine wave"
-	output = amplitude * sin ( omega * time);
-implementation_end;
-   WaveGenerator2 24 384
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
-  <TimeStamp>2007-9-27 16:12:6</TimeStamp>
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + t * dwdt;
+	output = amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+				specification 'Logarithmic'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
 </Description>';
-    type 'WaveGenerator-Sine'
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      group
-       rectangle 8 368 40 400 color 0 fill 15132390;
-       line 12.5 374.4 12.5 393.6 color 0;
-       line 38.1 384 9.3 384 color 0;
-       spline 12.9 383.9 16.1 375.8 19.3 383.9 22.6 392 25.7 383.9 28.8 375.8 32.1 383.9 35.6 392.2 38.8 384.2 color 16711680;
-      end;
-    end;
-    implementation eq
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.7 124.5 317.2;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.7 140.3 297.8 142.9 317.8 145.3 297.7 147.2 317.8 148.5 297.7 149.5 317.8 color 16711680;
+   text 'log' 137.6 322 color 16711680;
+ end;
+ implementation eq
 parameters
-	real amplitude = 0;			// amplitude of the wave
-	real omega = 2.0 {rad/s};		// angular frequency of the wave
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
 variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden base;
 	boolean hidden change;
-	real hidden half;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	base = exp(log(dw)/dt);
+	dwdt = dw/dt;
 equations
-	"calculate at least 2 points per cycle to get a triangle"
-	half = pi / omega;
-	change = frequencyevent (half, half / 2);
-
-	"calculate the sine wave"
-	output = amplitude * sin ( omega * time);
-implementation_end;
-   WaveGenerator3 48 232
-    description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
-   <LibraryPath>Signal\Sources\WaveGenerator-Sine.emx</LibraryPath>
-  <TimeStamp>2007-9-27 16:12:6</TimeStamp>
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + dw*base^t / (base^dt*(1 + dt*log(base)))+ t*dw*base^t*log(base) / (base^dt*(1 + dt*log(base)));
+	output = amplitude*sin( t * ( omega_start +  (dw*base^t)/( base^dt*(1+dt*log(base)))   )  ); implementation_end;
+specification_end;
+				specification 'ZeroMean'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
 </Description>';
-    type 'WaveGenerator-Sine'
-     ports
-      signal out output;
-    end;
-    icon bg bottom
-     figures
-      group
-       rectangle 32 216 64 248 color 0 fill 15132390;
-       line 36.5 222.4 36.5 241.6 color 0;
-       line 62.1 232 33.3 232 color 0;
-       spline 36.9 231.9 40.1 223.8 43.3 231.9 46.6 240 49.7 231.9 52.8 223.8 56.1 231.9 59.6 240.2 62.8 232.2 color 16711680;
-      end;
-    end;
-    implementation eq
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.6 124.5 317.1;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.6 140.3 297.8 142.9 317.8 145.3 297.6 147.2 317.8 148.5 297.6 149.5 317.8 color 16711680;
+   text 'zero' 134.4 322 color 16711680;
+ end;
+ implementation eq
 parameters
-	real global l1;
-	real amplitude = l1/2;			// amplitude of the wave
-	real omega = 1 {rad/s};		// angular frequency of the wave
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
 variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
+	real hidden tc;
+	real hidden correction;
 	boolean hidden change;
-	real hidden half;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
+	tc = start_time + ( -omega_start + sqrt(omega_start^2 + 8*pi*dwdt2) ) / dwdt ;
 equations
-	"calculate at least 2 points per cycle to get a triangle"
-	half = pi / omega;
-	change = frequencyevent (half, half / 2);
-
-	"calculate the sine wave"
-	output = amplitude * cos ( omega * time);
-implementation_end;
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end;
+	omega = omega_start + t * dwdt;
+	correction = ((ramp(start_time) - ramp(tc))/(tc-start_time))^2.8715;
+	output = correction*amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+			end;
+   Sweep1 1160 64
+			specifications active 'default'
+				specification 'default'
+ description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 1144 48 1176 80 color 0 fill 15132390;
+   line 1148.5 54.4 1148.5 73.6 color 0;
+   line 1174.1 64 1145.3 64 color 0;
+   spline 1148.5 64 1152.2 59.9 1156.5 56.2 1161.3 74.1 1164.3 54.6 1166.9 74.3 1169.3 54.4 1171.2 74.3 1172.5 54.4 1173.5 74.3 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 0.05 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency {rad/s}
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + t * dwdt;
+	output = amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+				specification 'Logarithmic'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.7 124.5 317.2;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.7 140.3 297.8 142.9 317.8 145.3 297.7 147.2 317.8 148.5 297.7 149.5 317.8 color 16711680;
+   text 'log' 137.6 322 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden base;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	base = exp(log(dw)/dt);
+	dwdt = dw/dt;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end; 
+	omega = omega_start + dw*base^t / (base^dt*(1 + dt*log(base)))+ t*dw*base^t*log(base) / (base^dt*(1 + dt*log(base)));
+	output = amplitude*sin( t * ( omega_start +  (dw*base^t)/( base^dt*(1+dt*log(base)))   )  ); implementation_end;
+specification_end;
+				specification 'ZeroMean'
+description '<Description><Version>4.0</Version><IsMainModel>1</IsMainModel><KeepParameterValues>False</KeepParameterValues>
+   <LibraryPath>Signal\Sources\SignalGenerator-Sweep.emx</LibraryPath>
+  <TimeStamp>2008-1-24 10:10:10</TimeStamp>
+</Description>';
+ type 'SignalGenerator-Sweep'
+  ports
+   signal out output;
+ end;
+ icon bg bottom
+  figures
+   rectangle 120 294.9 152 327.4 fill 15132390;
+   line 124.5 297.6 124.5 317.1;
+   line 150.1 308.5 121.3 308.5;
+   spline 124.5 307.4 128.2 303.2 132.5 299.5 137.3 317.6 140.3 297.8 142.9 317.8 145.3 297.6 147.2 317.8 148.5 297.6 149.5 317.8 color 16711680;
+   text 'zero' 134.4 322 color 16711680;
+ end;
+ implementation eq
+parameters
+	real amplitude = 1.0 {};
+	real start_time = 0.0 {s};
+	real stop_time = 10.0 {s};
+	real omega_start = 0.0 {frequency, rad/s};
+	real omega_stop = 62.8318530718 {frequency, rad/s};
+variables
+	real omega {frequency, rad/s};		// current frequency (rad /s)
+	real hidden t;
+	real hidden dw;
+	real hidden dt;
+	real hidden dwdt;
+	real hidden dwdt2;
+	real hidden tc;
+	real hidden correction;
+	boolean hidden change;
+initialequations
+	dw = omega_stop - omega_start;
+	dt = stop_time - start_time;
+	dwdt = dw/dt;
+	dwdt2 = dwdt/2;
+	tc = start_time + ( -omega_start + sqrt(omega_start^2 + 8*pi*dwdt2) ) / dwdt ;
+equations
+	"calculate at least at the start and stop time"
+	change = timeevent (start_time) or timeevent (stop_time);
+	t = if time < start_time then 
+		0  
+	else
+		if time > stop_time then
+			0
+		else
+			time - start_time
+		end	
+	end;
+	omega = omega_start + t * dwdt;
+	correction = ((ramp(start_time) - ramp(tc))/(tc-start_time))^2.8715;
+	output = correction*amplitude*sin( t * ( omega_start + t * dwdt2  )  ); implementation_end;
+specification_end;
+			end;
   end;
   connections
-   Coll_avoid\tauAvoid -> PlusMinus4\plus;
-   Constant1\output -> PlusMinus2\plus;
-   Constant2\output -> PlusMinus1\plus;
-   Constant3\output -> PlusMinus3\plus;
-   Constant4\output -> Mux1\input1;
-   Constant5\output -> Mux1\input3;
+   Constant1\output -> Mux\input1;
+   Constant3\output -> PlusMinus\plus;
+   Constant4\output -> PlusMinus1\plus;
+   Constant5\output -> PlusMinus2\plus;
    Demux\output1 -> MaxonT_control_X\input;
    Demux\output2 -> MaxonT_control_Y\input;
    Demux\output3 -> MaxonT_control_Z\input;
+   Demux1\output1 -> PlusMinus\minus;
+   Demux1\output2 -> PlusMinus1\minus;
+   Demux1\output3 -> PlusMinus2\minus;
    DiscreteDifferential\output -> Imp_contr\dq 480 128;
    DiscreteDifferential1\output -> Imp_contr\vel_des 488 432;
    Final_arm\Arm1_Arm2_phi -> Position\input3;
    Final_arm\Base_Rot_phi -> Position\input1;
+   Final_arm\Force1 <= MSe\p;
    Final_arm\Rot_Arm1_phi -> Position\input2;
-   Imp_contr\u -> PlusMinus4\plus;
+   Imp_contr\u -> Demux\input;
+   Imp_contr1\q <- Splitter1\output;
+   Imp_contr1\u -> Demux1\input;
    MaxonT_control_X\p => Final_arm\Base_Rot;
    MaxonT_control_Y\p => Final_arm\Rot_Arm1;
    MaxonT_control_Z\p => Final_arm\Arm1_Arm2;
-   MSe\p => Final_arm\Force1;
+   Mux\input2 <- Constant2\output;
+   Mux\input3 <- Sweep\output;
    Mux\output -> Sample_ref\input;
    Mux1\output -> MSe\effort;
-   PlusMinus1\output -> Mux\input3;
-   PlusMinus2\output -> Mux\input2;
-   PlusMinus3\output -> Mux\input1;
-   PlusMinus4\output -> Demux\input;
-   Position\output -> Sample_pos\input 1056 208;
-   Pulse\output -> Mux1\input2;
+   PID\output -> Mux1\input1;
+   PID1\output -> Mux1\input2;
+   PID2\output -> Mux1\input3;
+   PlusMinus\output -> PID\error;
+   PlusMinus1\output -> PID1\error;
+   PlusMinus2\output -> PID2\error;
+   Position\output -> Splitter1\input;
    Sample_pos\output -> Splitter2\input;
    Sample_ref\output -> Splitter\input;
    Splitter\output -> DiscreteDifferential1\input 264 432;
    Splitter\output -> Imp_contr\pos_des;
+   Splitter1\output -> Sample_pos\input;
    Splitter2\output -> DiscreteDifferential\input 768 128;
-   Splitter2\output -> Splitter3\input;
-   Splitter3\output -> Coll_avoid\q;
-   Splitter3\output -> Imp_contr\q 520 208;
-   WaveGenerator1\output -> PlusMinus1\plus;
-   WaveGenerator2\output -> PlusMinus2\plus;
-   WaveGenerator3\output -> PlusMinus3\plus;
+   Splitter2\output -> Imp_contr\q 520 208;
+   Sweep1\output -> PlusMinus\plus;
   end;
  implementation_end;
 ]]></Sidops>
@@ -5442,31 +5548,9 @@ implementation_end;
   </Constants>
   <Parameters>
    <Variable>
-    <Name>Coll_avoid\safetyDist</Name>
-    <Value>0.02</Value>
-   </Variable>
-   <Variable>
-    <Name>Constant1\C</Name>
-    <Description><![CDATA[output value]]></Description>
-    <Value>0.2</Value>
-   </Variable>
-   <Variable>
-    <Name>Constant2\C</Name>
-    <Description><![CDATA[output value]]></Description>
-    <Value>0.1</Value>
-   </Variable>
-   <Variable>
     <Name>grav</Name>
     <Description><![CDATA[m/s^2]]></Description>
     <Value>9.80665</Value>
-   </Variable>
-   <Variable>
-    <Name>Kt_d</Name>
-    <Value>0.004170731350734544</Value>
-   </Variable>
-   <Variable>
-    <Name>Kt_p</Name>
-    <Value>11.25</Value>
    </Variable>
    <Variable>
     <Name>L</Name>
@@ -5495,17 +5579,6 @@ implementation_end;
     <Value>0.030303030303030304</Value>
    </Variable>
    <Variable>
-    <Name>MaxonT_control_X\PID\kp</Name>
-    <Description><![CDATA[Proportional gain]]></Description>
-    <Value>11.25</Value>
-   </Variable>
-   <Variable>
-    <Name>MaxonT_control_X\PID\tauD</Name>
-    <Description><![CDATA[Derivative time constant: tauD > 0]]></Description>
-    <Unit>s</Unit>
-    <Value>3.707316756208484e-4</Value>
-   </Variable>
-   <Variable>
     <Name>MaxonT_control_Y\MaxonMotor\MotorLoadInertia\i</Name>
     <Description><![CDATA[motor, gearbox]]></Description>
     <Value>3.55e-6</Value>
@@ -5518,17 +5591,6 @@ implementation_end;
    <Variable>
     <Name>MaxonT_control_Y\MaxonMotor\TF\r</Name>
     <Value>0.030303030303030304</Value>
-   </Variable>
-   <Variable>
-    <Name>MaxonT_control_Y\PID\kp</Name>
-    <Description><![CDATA[Proportional gain]]></Description>
-    <Value>11.25</Value>
-   </Variable>
-   <Variable>
-    <Name>MaxonT_control_Y\PID\tauD</Name>
-    <Description><![CDATA[Derivative time constant: tauD > 0]]></Description>
-    <Unit>s</Unit>
-    <Value>3.707316756208484e-4</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\MaxonMotor\MotorLoadInertia\i</Name>
@@ -5545,89 +5607,8 @@ implementation_end;
     <Value>0.030303030303030304</Value>
    </Variable>
    <Variable>
-    <Name>MaxonT_control_Z\PID\kp</Name>
-    <Description><![CDATA[Proportional gain]]></Description>
-    <Value>11.25</Value>
-   </Variable>
-   <Variable>
-    <Name>MaxonT_control_Z\PID\tauD</Name>
-    <Description><![CDATA[Derivative time constant: tauD > 0]]></Description>
-    <Unit>s</Unit>
-    <Value>3.707316756208484e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\i</Name>
-    <Description><![CDATA[motor + gearbox inertia]]></Description>
-    <Value>3.55e-6</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I1x</Name>
-    <Value>4.89720298570915e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I1y</Name>
-    <Value>4.89720298570915e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I1z</Name>
-    <Value>4.4929683684855255e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I2x</Name>
-    <Value>0.002569871878021663</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I2y</Name>
-    <Value>8.985936736971051e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I2z</Name>
-    <Value>0.002569871878021663</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I3x</Name>
-    <Value>4.89720298570915e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I3y</Name>
-    <Value>4.4929683684855255e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\I3z</Name>
-    <Description><![CDATA[inertias of motors]]></Description>
-    <Value>4.89720298570915e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\Maxon_Ix</Name>
-    <Value>5.625e-5</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\Maxon_Iy</Name>
-    <Value>5.322916666666667e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\Maxon_Iz</Name>
-    <Description><![CDATA[configuration in the middle of task trajectory]]></Description>
-    <Value>5.322916666666667e-4</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\omega_0</Name>
-    <Value>5874.2695080768235</Value>
-   </Variable>
-   <Variable>
-    <Name>Submodel5\omega_n</Name>
-    <Description><![CDATA[locked-output natural resonance frequency]]></Description>
-    <Value>1678.3627165933783</Value>
-   </Variable>
-   <Variable>
-    <Name>WaveGenerator1\amplitude</Name>
-    <Description><![CDATA[amplitude of the wave]]></Description>
-    <Value>0.05</Value>
-   </Variable>
-   <Variable>
-    <Name>WaveGenerator3\amplitude</Name>
-    <Description><![CDATA[amplitude of the wave]]></Description>
-    <Value>0.05</Value>
+    <Name>Sweep\omega_stop</Name>
+    <Value>314.15926535899996</Value>
    </Variable>
   </Parameters>
   <Initials>
@@ -5706,7 +5687,7 @@ implementation_end;
    <Variable>
     <Name>MaxonT_control_Z\C1\state_initial</Name>
     <Unit>rad</Unit>
-    <Value>0.01556</Value>
+    <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\dQspring\q_initial</Name>
@@ -5731,75 +5712,99 @@ implementation_end;
     <Value>0.0</Value>
    </Variable>
    <Variable>
+    <Name>PID\pdstate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID\pistate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID1\pdstate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID1\pistate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID2\pdstate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
+    <Name>PID2\pistate_initial</Name>
+    <Value>0.0</Value>
+   </Variable>
+   <Variable>
     <Name>MaxonT_control_X\MaxonMotor\PI3\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>2</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_X\PID\error_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>3</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_X\PID\uD_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>3</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_X\PID\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>3</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Y\MaxonMotor\PI3\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>4</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Y\PID\error_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>5</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Y\PID\uD_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>5</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Y\PID\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>5</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\MaxonMotor\PI3\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>6</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\PID\error_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>7</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\PID\uD_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>7</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
    <Variable>
     <Name>MaxonT_control_Z\PID\uI_previous_initial</Name>
     <VarType>B</VarType>
-    <DiscreteIndex>7</DiscreteIndex>
+    <DiscreteIndex>1</DiscreteIndex>
     <Value>0.0</Value>
    </Variable>
   </Initials>
@@ -5882,11 +5887,179 @@ implementation_end;
    <VarName>Imp_contr\pos[1]</VarName>
    <VarName>Imp_contr\pos[2]</VarName>
    <VarName>Imp_contr\pos[3]</VarName>
-   <VarName>Imp_contr\pos_des[1]</VarName>
-   <VarName>Imp_contr\pos_des[2]</VarName>
-   <VarName>Imp_contr\pos_des[3]</VarName>
+   <VarName>MSe\p.e[1]</VarName>
+   <VarName>MSe\p.e[2]</VarName>
+   <VarName>MSe\p.e[3]</VarName>
   </VarNames>
   <Plots>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>1</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>transparency2</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>-0.14999999999999997</Minimum>
+      <Maximum>0.35000000000000003</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pos[1]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0909008191925198</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pos[2]</Label>
+     </Axis>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>0.0909008191925198</Maximum>
+      <Linear>true</Linear>
+      <Scaling>1</Scaling>
+      <Label>pos[3]</Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
+     <Curve>
+      <LineColor>3355111</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>3355111</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Imp_contr\pos[1]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>6076255</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>6076255</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Imp_contr\pos[2]</VarName>
+      </YCurveData>
+     </Curve>
+     <Curve>
+      <LineColor>12553035</LineColor>
+      <LineStyle>1</LineStyle>
+      <TickColor>12553035</TickColor>
+      <TickStyle>0</TickStyle>
+      <CurveVisible>true</CurveVisible>
+      <PixelThresshold>1</PixelThresshold>
+      <LineThickness>2</LineThickness>
+      <LineOrder>1</LineOrder>
+      <ShowYValues>true</ShowYValues>
+      <XCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>time</VarName>
+      </XCurveData>
+      <YCurveData>
+       <ShowUnit>true</ShowUnit>
+       <VarName>Imp_contr\pos[3]</VarName>
+      </YCurveData>
+     </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
    <Plot>
     <PlotType>D3DPlot</PlotType>
     <BasePlot>
@@ -6064,24 +6237,24 @@ implementation_end;
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.45749568939209</Value>
+             <Value>0.457495704067041</Value>
             </X>
             <Y>
-             <Value>-0.762492835521698</Value>
+             <Value>-0.762492859979951</Value>
             </Y>
             <Z>
-             <Value>-0.45749568939209</Value>
+             <Value>-0.457495704067041</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.235379606485367</Value>
+             <Value>0.235379603289675</Value>
             </X>
             <Y>
-             <Value>-0.392299354076385</Value>
+             <Value>-0.392299348750231</Value>
             </Y>
             <Z>
-             <Value>0.88921183347702</Value>
+             <Value>0.889211821404405</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -7147,11 +7320,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>Final_arm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </X>
             <Y>
              <VariableName>Final_arm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9555433392524719</Value>
+             <Value>0.9999747672929887</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\RotHinge\AbsH[3,2]</VariableName>
@@ -7186,7 +7359,7 @@ implementation_end;
               <Value>0.04</Value>
              </Y>
              <Z>
-              <Value>0.1</Value>
+              <Value>0.2</Value>
              </Z>
             </ScaleValue>
             <OverrideColor>true</OverrideColor>
@@ -7697,44 +7870,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm1\AbsH[1,4]</VariableName>
-            <Value>-0.024659699356993744</Value>
+            <Value>-7.032203413781052e-4</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-            <Value>0.07991641125420428</Value>
+            <Value>0.09898885251022238</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-            <Value>0.04517968953141932</Value>
+            <Value>0.11416730601987948</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,3]</VariableName>
-             <Value>-0.161638081073761</Value>
+             <Value>0.0010064251061868183</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.523831844329834</Value>
+             <Value>-0.1416694792706657</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.8363452553749084</Value>
+             <Value>0.9899135041768468</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,2]</VariableName>
-             <Value>-0.24659699201583862</Value>
+             <Value>-0.0070322037902890355</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.7991641163825989</Value>
+             <Value>0.9898885258466052</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.5482031106948853</Value>
+             <Value>0.14167305497901236</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -7765,7 +7938,7 @@ implementation_end;
               <Value>0.04</Value>
              </Y>
              <Z>
-              <Value>0.2</Value>
+              <Value>0.4</Value>
              </Z>
             </ScaleValue>
             <OverrideColor>true</OverrideColor>
@@ -7823,12 +7996,12 @@ implementation_end;
                <Value>-1</Value>
               </Y>
               <Z>
-               <Value>-3.49148124352701e-15</Value>
+               <Value>-3.49148133884313e-15</Value>
               </Z>
              </ZAxis>
              <YAxis>
               <Y>
-               <Value>-3.49148124352701e-15</Value>
+               <Value>-3.49148133884313e-15</Value>
               </Y>
               <Z>
                <Value>1</Value>
@@ -8285,44 +8458,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm2\AbsH[1,4]</VariableName>
-            <Value>-0.054812190804628576</Value>
+            <Value>-0.0016939222578268179</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-            <Value>0.17763369774596569</Value>
+            <Value>0.23844506576018462</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-            <Value>0.03675935832819948</Value>
+            <Value>0.0989694955049356</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,3]</VariableName>
-             <Value>0.2736213803291321</Value>
+             <Value>-0.004172111393702304</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.8867438435554504</Value>
+             <Value>0.5872874853117708</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.37258124351501465</Value>
+             <Value>0.8093676563112063</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,2]</VariableName>
-             <Value>-0.10985583811998367</Value>
+             <Value>-0.005749631884867244</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.356017529964447</Value>
+             <Value>0.8093472361801785</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9279995560646057</Value>
+             <Value>-0.5873023012220323</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -8353,7 +8526,7 @@ implementation_end;
               <Value>0.04</Value>
              </Y>
              <Z>
-              <Value>0.1</Value>
+              <Value>0.2</Value>
              </Z>
             </ScaleValue>
             <OverrideColor>true</OverrideColor>
@@ -8411,12 +8584,12 @@ implementation_end;
                <Value>-1</Value>
               </Y>
               <Z>
-               <Value>-3.49148124352701e-15</Value>
+               <Value>-3.49148133884313e-15</Value>
               </Z>
              </ZAxis>
              <YAxis>
               <Y>
-               <Value>-3.49148124352701e-15</Value>
+               <Value>-3.49148133884313e-15</Value>
               </Y>
               <Z>
                <Value>1</Value>
@@ -8723,44 +8896,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\EE\AbsH[1,4]</VariableName>
-            <Value>-0.060304982895269664</Value>
+            <Value>-0.0019814038328974256</Value>
            </X>
            <Y>
             <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-            <Value>0.19543457298352282</Value>
+            <Value>0.2789124264999245</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-            <Value>0.08315933759356033</Value>
+            <Value>0.06960437897011224</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,3]</VariableName>
-             <Value>0.2736213803291321</Value>
+             <Value>-0.004172111393702304</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.8867438435554504</Value>
+             <Value>0.5872874853117708</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,3]</VariableName>
-             <Value>0.37258124351501465</Value>
+             <Value>0.8093676563112063</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,2]</VariableName>
-             <Value>-0.10985583811998367</Value>
+             <Value>-0.005749631884867244</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,2]</VariableName>
-             <Value>0.356017529964447</Value>
+             <Value>0.8093472361801785</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9279995560646057</Value>
+             <Value>-0.5873023012220323</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -8957,11 +9130,11 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M1\AbsH[1,4]</VariableName>
-            <Value>-0.03822173317270844</Value>
+            <Value>-0.03999899069174029</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M1\AbsH[2,4]</VariableName>
-            <Value>-0.0117940287126274</Value>
+            <Value>-2.8415425753238756e-4</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M1\AbsH[3,4]</VariableName>
@@ -8972,29 +9145,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,3]</VariableName>
-             <Value>-0.9555433392524719</Value>
+             <Value>-0.9999747672929887</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,3]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,3]</VariableName>
-             <Value>-3.491481243527014e-15</Value>
+             <Value>-3.491481173897192e-15</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,2]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,2]</VariableName>
-             <Value>0.9555433392524719</Value>
+             <Value>0.9999747672929887</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,2]</VariableName>
-             <Value>1.0587911840678754e-22</Value>
+             <Value>0.0</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -9206,44 +9379,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M2\AbsH[1,4]</VariableName>
-            <Value>-0.0875411318866959</Value>
+            <Value>-0.041405431374496496</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M2\AbsH[2,4]</VariableName>
-            <Value>0.14803879379578108</Value>
+            <Value>0.1976935507629124</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
-            <Value>-0.009640620937161481</Value>
+            <Value>0.12833461203975882</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,3]</VariableName>
-             <Value>-0.9555433392524719</Value>
+             <Value>-0.9999747672929887</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,3]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,3]</VariableName>
-             <Value>-2.9200838287375772e-15</Value>
+             <Value>-3.4562645092679918e-15</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,2]</VariableName>
-             <Value>-0.24659699201583862</Value>
+             <Value>-0.0070322037902890355</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,2]</VariableName>
-             <Value>0.7991641163825989</Value>
+             <Value>0.9898885258466052</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,2]</VariableName>
-             <Value>-0.5482031106948853</Value>
+             <Value>0.14167305497901236</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -9551,36 +9724,36 @@ implementation_end;
           <Name>Camera</Name>
           <Position>
            <X>
-            <Value>-0.362695642090539</Value>
+            <Value>-1.22570237549827</Value>
            </X>
            <Y>
-            <Value>0.446888749806188</Value>
+            <Value>0.262388143515783</Value>
            </Y>
            <Z>
-            <Value>0.321359941914589</Value>
+            <Value>0.787287638522487</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>0.550215122368833</Value>
+             <Value>0.828060935149212</Value>
             </X>
             <Y>
-             <Value>-0.677937385074756</Value>
+             <Value>-0.177264364744812</Value>
             </Y>
             <Z>
-             <Value>-0.487508175351606</Value>
+             <Value>-0.531876332121885</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>0.307214195590244</Value>
+             <Value>0.520092729479302</Value>
             </X>
             <Y>
-             <Value>-0.378528273180608</Value>
+             <Value>-0.11133710603634</Value>
             </Y>
             <Z>
-             <Value>0.873118425204019</Value>
+             <Value>0.846822060153266</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -9631,7 +9804,7 @@ implementation_end;
         </ScaleValue>
         <ShowReferenceFrame>false</ShowReferenceFrame>
         <Name>Final_arm</Name>
-        <SceneryFileName>C:\Users\Jordan\OneDrive - University of Twente\Documents\Robotics Master\Modeling-and-Simulation\Assignment 8\Final_arm.scn</SceneryFileName>
+        <SceneryFileName>C:\Users\Aleksei\MS\Modeling-and-Simulation\Assignment 8\Final_arm.scn</SceneryFileName>
         <Position>
         </Position>
         <Orientation>
@@ -10023,11 +10196,11 @@ implementation_end;
            <YAxis>
             <X>
              <VariableName>Final_arm\RotHinge\AbsH[1,2]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </X>
             <Y>
              <VariableName>Final_arm\RotHinge\AbsH[2,2]</VariableName>
-             <Value>0.9555433392524719</Value>
+             <Value>0.9999747672929887</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\RotHinge\AbsH[3,2]</VariableName>
@@ -10573,44 +10746,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm1\AbsH[1,4]</VariableName>
-            <Value>-0.024659699356993744</Value>
+            <Value>-7.032203413781052e-4</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm1\AbsH[2,4]</VariableName>
-            <Value>0.07991641125420428</Value>
+            <Value>0.09898885251022238</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm1\AbsH[3,4]</VariableName>
-            <Value>0.04517968953141932</Value>
+            <Value>0.11416730601987948</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,3]</VariableName>
-             <Value>-0.161638081073761</Value>
+             <Value>0.0010064251061868183</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,3]</VariableName>
-             <Value>0.523831844329834</Value>
+             <Value>-0.1416694792706657</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,3]</VariableName>
-             <Value>0.8363452553749084</Value>
+             <Value>0.9899135041768468</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm1\AbsH[1,2]</VariableName>
-             <Value>-0.24659699201583862</Value>
+             <Value>-0.0070322037902890355</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm1\AbsH[2,2]</VariableName>
-             <Value>0.7991641163825989</Value>
+             <Value>0.9898885258466052</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm1\AbsH[3,2]</VariableName>
-             <Value>-0.5482031106948853</Value>
+             <Value>0.14167305497901236</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -11161,44 +11334,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\Arm2\AbsH[1,4]</VariableName>
-            <Value>-0.054812190804628576</Value>
+            <Value>-0.0016939222578268179</Value>
            </X>
            <Y>
             <VariableName>Final_arm\Arm2\AbsH[2,4]</VariableName>
-            <Value>0.17763369774596569</Value>
+            <Value>0.23844506576018462</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\Arm2\AbsH[3,4]</VariableName>
-            <Value>0.03675935832819948</Value>
+            <Value>0.0989694955049356</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,3]</VariableName>
-             <Value>0.2736213803291321</Value>
+             <Value>-0.004172111393702304</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,3]</VariableName>
-             <Value>-0.8867438435554504</Value>
+             <Value>0.5872874853117708</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,3]</VariableName>
-             <Value>0.37258124351501465</Value>
+             <Value>0.8093676563112063</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\Arm2\AbsH[1,2]</VariableName>
-             <Value>-0.10985583811998367</Value>
+             <Value>-0.005749631884867244</Value>
             </X>
             <Y>
              <VariableName>Final_arm\Arm2\AbsH[2,2]</VariableName>
-             <Value>0.356017529964447</Value>
+             <Value>0.8093472361801785</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\Arm2\AbsH[3,2]</VariableName>
-             <Value>0.9279995560646057</Value>
+             <Value>-0.5873023012220323</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -11599,44 +11772,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\EE\AbsH[1,4]</VariableName>
-            <Value>-0.060304982895269664</Value>
+            <Value>-0.0019814038328974256</Value>
            </X>
            <Y>
             <VariableName>Final_arm\EE\AbsH[2,4]</VariableName>
-            <Value>0.19543457298352282</Value>
+            <Value>0.2789124264999245</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\EE\AbsH[3,4]</VariableName>
-            <Value>0.08315933759356033</Value>
+            <Value>0.06960437897011224</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,3]</VariableName>
-             <Value>0.2736213803291321</Value>
+             <Value>-0.004172111393702304</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,3]</VariableName>
-             <Value>-0.8867438435554504</Value>
+             <Value>0.5872874853117708</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,3]</VariableName>
-             <Value>0.37258124351501465</Value>
+             <Value>0.8093676563112063</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\EE\AbsH[1,2]</VariableName>
-             <Value>-0.10985583811998367</Value>
+             <Value>-0.005749631884867244</Value>
             </X>
             <Y>
              <VariableName>Final_arm\EE\AbsH[2,2]</VariableName>
-             <Value>0.356017529964447</Value>
+             <Value>0.8093472361801785</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\EE\AbsH[3,2]</VariableName>
-             <Value>0.9279995560646057</Value>
+             <Value>-0.5873023012220323</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -11833,11 +12006,11 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M1\AbsH[1,4]</VariableName>
-            <Value>-0.03822173317270844</Value>
+            <Value>-0.03999899069174029</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M1\AbsH[2,4]</VariableName>
-            <Value>-0.0117940287126274</Value>
+            <Value>-2.8415425753238756e-4</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M1\AbsH[3,4]</VariableName>
@@ -11848,29 +12021,29 @@ implementation_end;
            <ZAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,3]</VariableName>
-             <Value>-0.9555433392524719</Value>
+             <Value>-0.9999747672929887</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,3]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,3]</VariableName>
-             <Value>-3.491481243527014e-15</Value>
+             <Value>-3.491481173897192e-15</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\M1\AbsH[1,2]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M1\AbsH[2,2]</VariableName>
-             <Value>0.9555433392524719</Value>
+             <Value>0.9999747672929887</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M1\AbsH[3,2]</VariableName>
-             <Value>1.0587911840678754e-22</Value>
+             <Value>0.0</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -12082,44 +12255,44 @@ implementation_end;
           <Position>
            <X>
             <VariableName>Final_arm\M2\AbsH[1,4]</VariableName>
-            <Value>-0.0875411318866959</Value>
+            <Value>-0.041405431374496496</Value>
            </X>
            <Y>
             <VariableName>Final_arm\M2\AbsH[2,4]</VariableName>
-            <Value>0.14803879379578108</Value>
+            <Value>0.1976935507629124</Value>
            </Y>
            <Z>
             <VariableName>Final_arm\M2\AbsH[3,4]</VariableName>
-            <Value>-0.009640620937161481</Value>
+            <Value>0.12833461203975882</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,3]</VariableName>
-             <Value>-0.9555433392524719</Value>
+             <Value>-0.9999747672929887</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,3]</VariableName>
-             <Value>-0.2948507070541382</Value>
+             <Value>-0.007103856511304474</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,3]</VariableName>
-             <Value>-2.9200838287375772e-15</Value>
+             <Value>-3.4562645092679918e-15</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
              <VariableName>Final_arm\M2\AbsH[1,2]</VariableName>
-             <Value>-0.24659699201583862</Value>
+             <Value>-0.0070322037902890355</Value>
             </X>
             <Y>
              <VariableName>Final_arm\M2\AbsH[2,2]</VariableName>
-             <Value>0.7991641163825989</Value>
+             <Value>0.9898885258466052</Value>
             </Y>
             <Z>
              <VariableName>Final_arm\M2\AbsH[3,2]</VariableName>
-             <Value>-0.5482031106948853</Value>
+             <Value>0.14167305497901236</Value>
             </Z>
            </YAxis>
            <OrientationType>Matrix</OrientationType>
@@ -12427,36 +12600,36 @@ implementation_end;
           <Name>Camera</Name>
           <Position>
            <X>
-            <Value>0.652502493083388</Value>
+            <Value>-0.938991209180396</Value>
            </X>
            <Y>
-            <Value>0.781120341267792</Value>
+            <Value>0.128134580777174</Value>
            </Y>
            <Z>
-            <Value>0.0827183668484922</Value>
+            <Value>0.323987300230633</Value>
            </Z>
           </Position>
           <Orientation>
            <ZAxis>
             <X>
-             <Value>-0.638986787163759</Value>
+             <Value>0.93754347874997</Value>
             </X>
             <Y>
-             <Value>-0.764940573045491</Value>
+             <Value>-0.127937029318322</Value>
             </Y>
             <Z>
-             <Value>-0.0810049723101763</Value>
+             <Value>-0.323487777176522</Value>
             </Z>
            </ZAxis>
            <YAxis>
             <X>
-             <Value>-0.0519317709400454</Value>
+             <Value>0.32051729983218</Value>
             </X>
             <Y>
-             <Value>-0.0621682948093103</Value>
+             <Value>-0.0437377388842383</Value>
             </Y>
             <Z>
-             <Value>0.996713697250887</Value>
+             <Value>0.946232355558392</Value>
             </Z>
            </YAxis>
            <OrientationType>Direct3D</OrientationType>
@@ -12500,7 +12673,7 @@ implementation_end;
    <Plot>
     <PlotType>GraphPlot</PlotType>
     <BasePlot>
-     <PlotId>5</PlotId>
+     <PlotId>3</PlotId>
      <UseWindowsBGColor>false</UseWindowsBGColor>
      <BGColor>16777215</BGColor>
      <PlotIsVisible>true</PlotIsVisible>
@@ -12577,46 +12750,25 @@ implementation_end;
     </XAxes>
     <YAxes>
      <Axis>
-      <Minimum>-0.14999999999999997</Minimum>
-      <Maximum>0.35000000000000003</Maximum>
+      <Minimum>-25.0</Minimum>
+      <Maximum>25.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[1]</Label>
+      <Label>p.e[1]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.104934829949656</Minimum>
+      <Minimum>-1.26930830170934</Minimum>
       <Maximum>0.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[2]</Label>
+      <Label>p.e[2]</Label>
      </Axis>
      <Axis>
-      <Minimum>-0.104934829949656</Minimum>
+      <Minimum>-1.26930830170934</Minimum>
       <Maximum>0.0</Maximum>
       <Linear>true</Linear>
       <Scaling>2</Scaling>
-      <Label>pos[3]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-0.104934829949656</Minimum>
-      <Maximum>0.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos_des[1]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-0.104934829949656</Minimum>
-      <Maximum>0.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos_des[2]</Label>
-     </Axis>
-     <Axis>
-      <Minimum>-0.104934829949656</Minimum>
-      <Maximum>0.0</Maximum>
-      <Linear>true</Linear>
-      <Scaling>2</Scaling>
-      <Label>pos_des[3]</Label>
+      <Label>p.e[3]</Label>
      </Axis>
     </YAxes>
     <ZAxes>
@@ -12638,7 +12790,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos[1]</VarName>
+       <VarName>MSe\p.e[1]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -12657,7 +12809,7 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos[2]</VarName>
+       <VarName>MSe\p.e[2]</VarName>
       </YCurveData>
      </Curve>
      <Curve>
@@ -12676,13 +12828,110 @@ implementation_end;
       </XCurveData>
       <YCurveData>
        <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos[3]</VarName>
+       <VarName>MSe\p.e[3]</VarName>
       </YCurveData>
      </Curve>
+    </Curves>
+    <Legenda>
+     <ShowLegenda>true</ShowLegenda>
+     <BorderPenColor>0</BorderPenColor>
+     <BackgroundColor>16777215</BackgroundColor>
+    </Legenda>
+   </Plot>
+   <Plot>
+    <PlotType>GraphPlot</PlotType>
+    <BasePlot>
+     <PlotId>4</PlotId>
+     <UseWindowsBGColor>false</UseWindowsBGColor>
+     <BGColor>16777215</BGColor>
+     <PlotIsVisible>true</PlotIsVisible>
+     <Solo>false</Solo>
+    </BasePlot>
+    <Grid>
+     <DrawGrid>true</DrawGrid>
+     <GridColor>15780518</GridColor>
+     <GridBorderLineColor>12624260</GridBorderLineColor>
+     <GridZeroLineColor>0</GridZeroLineColor>
+     <XTicks>10</XTicks>
+     <YTicks>10</YTicks>
+     <ZTicks>10</ZTicks>
+     <Use3DLook>false</Use3DLook>
+    </Grid>
+    <PlotBGColor>16777215</PlotBGColor>
+    <ShowPlotTitle>true</ShowPlotTitle>
+    <TitlePosition>1</TitlePosition>
+    <PlotTitle>model(1)</PlotTitle>
+    <ShowXValues>true</ShowXValues>
+    <Fonts>
+     <TitleFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </TitleFont>
+     <LabelFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LabelFont>
+     <ValuesFont>
+      <Name>Arial</Name>
+      <Height>10</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </ValuesFont>
+     <LegendFont>
+      <Name>Arial</Name>
+      <Height>12</Height>
+      <PitchFamily>34</PitchFamily>
+      <Weight>400</Weight>
+      <Italic>0</Italic>
+      <UnderLine>0</UnderLine>
+      <StrikeOut>0</StrikeOut>
+      <Color>0</Color>
+     </LegendFont>
+    </Fonts>
+    <SharedXAxis>true</SharedXAxis>
+    <SharedYAxis>true</SharedYAxis>
+    <SharedZAxis>false</SharedZAxis>
+    <XAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>3</Scaling>
+      <Label>time</Label>
+     </Axis>
+    </XAxes>
+    <YAxes>
+     <Axis>
+      <Minimum>0.0</Minimum>
+      <Maximum>10.0</Maximum>
+      <Linear>true</Linear>
+      <Scaling>2</Scaling>
+      <Label></Label>
+     </Axis>
+    </YAxes>
+    <ZAxes>
+    </ZAxes>
+    <Curves>
      <Curve>
-      <LineColor>15086320</LineColor>
+      <LineColor>3355111</LineColor>
       <LineStyle>1</LineStyle>
-      <TickColor>15086320</TickColor>
+      <TickColor>3355111</TickColor>
       <TickStyle>0</TickStyle>
       <CurveVisible>true</CurveVisible>
       <PixelThresshold>1</PixelThresshold>
@@ -12693,48 +12942,6 @@ implementation_end;
        <ShowUnit>true</ShowUnit>
        <VarName>time</VarName>
       </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos_des[1]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>15790150</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>15790150</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos_des[2]</VarName>
-      </YCurveData>
-     </Curve>
-     <Curve>
-      <LineColor>1696255</LineColor>
-      <LineStyle>1</LineStyle>
-      <TickColor>1696255</TickColor>
-      <TickStyle>0</TickStyle>
-      <CurveVisible>true</CurveVisible>
-      <PixelThresshold>1</PixelThresshold>
-      <LineThickness>2</LineThickness>
-      <LineOrder>1</LineOrder>
-      <ShowYValues>true</ShowYValues>
-      <XCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>time</VarName>
-      </XCurveData>
-      <YCurveData>
-       <ShowUnit>true</ShowUnit>
-       <VarName>Imp_contr\pos_des[3]</VarName>
-      </YCurveData>
      </Curve>
     </Curves>
     <Legenda>
@@ -12749,10 +12956,12 @@ implementation_end;
     <PlotPanelId>1</PlotPanelId>
     <PlotPanelVisible>true</PlotPanelVisible>
     <Name>Window 1</Name>
-    <Tiling>2</Tiling>
+    <Tiling>0</Tiling>
     <PlotIds>
+     <PlotId>1</PlotId>
      <PlotId>2</PlotId>
-     <PlotId>5</PlotId>
+     <PlotId>3</PlotId>
+     <PlotId>4</PlotId>
     </PlotIds>
     <ToggleState>Base</ToggleState>
    </PlotPanel>
@@ -12779,97 +12988,7 @@ implementation_end;
    <UpdateHoldInstructions>true</UpdateHoldInstructions>
    <DiscreteSystems>
     <DiscreteSystem>
-     <DiscreteID>DiscreteDifferential\input</DiscreteID>
-     <TimeInterval>0.001</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
      <DiscreteID>MaxonT_control_X\MaxonMotor\ADcurr\hold_signal</DiscreteID>
-     <TimeInterval>1.0e-4</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
-     <DiscreteID>MaxonT_control_X\Sample\output</DiscreteID>
-     <TimeInterval>0.001</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
-     <DiscreteID>MaxonT_control_Y\MaxonMotor\ADcurr\hold_signal</DiscreteID>
-     <TimeInterval>1.0e-4</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
-     <DiscreteID>MaxonT_control_Y\Sample\output</DiscreteID>
-     <TimeInterval>0.001</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
-     <DiscreteID>MaxonT_control_Z\MaxonMotor\ADcurr\hold_signal</DiscreteID>
-     <TimeInterval>1.0e-4</TimeInterval>
-     <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
-     <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
-     <VariableTimeDelayMin>0.0</VariableTimeDelayMin>
-     <VariableTimeDelayMax>0.0</VariableTimeDelayMax>
-     <VariableTimeDelayMean>0.0</VariableTimeDelayMean>
-     <VariableTimeDelayDeviation>0.0</VariableTimeDelayDeviation>
-     <UseVariableTimeDelay>false</UseVariableTimeDelay>
-     <UniformVariableTimeDelay>false</UniformVariableTimeDelay>
-     <UseGlobalTime>true</UseGlobalTime>
-     <HoldTimeDelay>0.0</HoldTimeDelay>
-     <ActionOnSampleMissed>0</ActionOnSampleMissed>
-    </DiscreteSystem>
-    <DiscreteSystem>
-     <DiscreteID>MaxonT_control_Z\Sample\output</DiscreteID>
      <TimeInterval>0.001</TimeInterval>
      <InitialSampleTimeDelay>0.0</InitialSampleTimeDelay>
      <FixedSampleTimeDelay>0.0</FixedSampleTimeDelay>
@@ -12987,35 +13106,13 @@ implementation_end;
   <ActionBeforeOptimization>0</ActionBeforeOptimization>
   <CompareValue>0.0</CompareValue>
   <UseCompareValue>true</UseCompareValue>
-  <MultipleRunType>Optimization</MultipleRunType>
+  <MultipleRunType>MultipleRun</MultipleRunType>
   <Minimize>true</Minimize>
-  <OptimizationVariable>MaxonT_control_Y\MaxonMotor\PI3\error</OptimizationVariable>
-  <ResulVarUsage>UseIntegralSquare</ResulVarUsage>
+  <OptimizationVariable></OptimizationVariable>
+  <ResulVarUsage>UseEndValue</ResulVarUsage>
   <Tolerance>0.001</Tolerance>
-  <OptimizationMethod>ContinuousDescent</OptimizationMethod>
+  <OptimizationMethod>BroydonFletcherGoldfarbShanno</OptimizationMethod>
   <MultipleRunVariables>
-   <MultipleRunVariable>
-    <Name>MaxonT_control_Y\MaxonMotor\PI3\kp</Name>
-    <Minimum>0.01</Minimum>
-    <Maximum>50.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>1.0</Mean>
-    <Deviation>1.0</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>2.44347774103544</Nominal>
-   </MultipleRunVariable>
-   <MultipleRunVariable>
-    <Name>MaxonT_control_Y\MaxonMotor\PI3\tauI</Name>
-    <Minimum>0.01</Minimum>
-    <Maximum>50.0</Maximum>
-    <SweepMethod>Linear</SweepMethod>
-    <Distribution>Uniform</Distribution>
-    <Mean>0.3</Mean>
-    <Deviation>1.0</Deviation>
-    <TolerancePercentage>1.0</TolerancePercentage>
-    <Nominal>0.0862165380428119</Nominal>
-   </MultipleRunVariable>
   </MultipleRunVariables>
  </MultipleRun>
  <ExportData>
