@@ -707,6 +707,11 @@
                          <Name>Frame</Name>
                          <Orientation>
                           <OriBryant>
+                           <Angles>
+                            <X>
+                             <Value>-0.174532925199433</Value>
+                            </X>
+                           </Angles>
                           </OriBryant>
                          </Orientation>
                          <LockX>true</LockX>
@@ -987,6 +992,11 @@
                                  <Name>Frame</Name>
                                  <Orientation>
                                   <OriBryant>
+                                   <Angles>
+                                    <X>
+                                     <Value>0.349065850398866</Value>
+                                    </X>
+                                   </Angles>
                                   </OriBryant>
                                  </Orientation>
                                  <LockX>true</LockX>
@@ -2690,7 +2700,7 @@
     <OutputVelocity>false</OutputVelocity>
     <OutputConstraintForces>false</OutputConstraintForces>
     <OverrideConstraintParameter>false</OverrideConstraintParameter>
-    <InitialValue>0.0</InitialValue>
+    <InitialValue>-0.17453292519943295</InitialValue>
     <InitValLocked>false</InitValLocked>
    </Joint3D>
    <Joint3D>
@@ -2750,7 +2760,7 @@
     <OutputVelocity>false</OutputVelocity>
     <OutputConstraintForces>false</OutputConstraintForces>
     <OverrideConstraintParameter>false</OverrideConstraintParameter>
-    <InitialValue>0.0</InitialValue>
+    <InitialValue>0.3490658503988659</InitialValue>
     <InitValLocked>false</InitValLocked>
    </Joint3D>
    <Joint3D>
